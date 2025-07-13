@@ -1,0 +1,28 @@
+/* Navbar styling */
+.navbar .theme-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  top: 1px; /* Fine-tune vertical alignment if needed */
+}
+
+/* Additional styling for contact info items */
+.navbar .nav-item {
+  margin-right: 1.5rem;
+}
+
+/* Make sure contact text and icons are aligned */
+.navbar .d-flex.align-items-center {
+  height: 100%;
+}
+
+/* Brand name styling */
+.bistro-brand {
+  font-family: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  font-size: 42px;
+  font-weight: 700;
+  margin: 0;
+  color: var(--color-primary);
+  line-height: 1.2;
+}

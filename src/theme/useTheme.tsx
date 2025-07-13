@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import ThemeContext from "./ThemeContext.jsx";
+import ThemeContext from "./ThemeContext.js";
 
 export default function useMoviesContext() {
     const ctx = useContext(ThemeContext);
