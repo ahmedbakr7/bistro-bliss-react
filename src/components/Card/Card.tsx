@@ -11,6 +11,7 @@ interface CardContainerProps {
     classes?: string;
     className?: string;
     imageOverlay?: boolean;
+    sameHeight?: boolean;
     image?: {
         src: string;
         alt?: string;
@@ -26,7 +27,8 @@ interface CardContainerProps {
 }
 
 export default function Card({
-imageOverlay=false,
+    imageOverlay = false,
+sameHeight=true,
     style,
     classes = "",
     className = "",
@@ -39,36 +41,33 @@ imageOverlay=false,
     links,
     ...props
 }: CardContainerProps): ReactNode {
-
     return (
         <div
             style={style}
-            className={className ? className : `card ${classes}`}
+            className={className ? className : `card ${sameHeight&&"h-100"} ${classes}`}
             {...props}
         >
-                {image && <img className="card-img-top" {...image} />}
-                <div className="card-header">{header}</div>
-                <div className={ `card-${imageOverlay?"img-Overlay":"body"}` }>
-                    <h5 className="card-title">{title}</h5>
-                    <h6 className="card-subtitle mb-2 text-muted">
-                        {subtitle}
-                    </h6>
-                    <p className="card-text">{text}</p>
-                    {links?.map((link: LinkType, index) => {
-                        const { text, href, ...restProps } = link;
-                        return (
-                            <a
-                                key={index}
-                                href={href}
-                                className="card-link"
-                                {...restProps}
-                            >
-                                {text}
-                            </a>
-                        );
-                    })}
-                </div>
-                <div className="card-footer text-muted">{footer}</div>
+            {image && <img className="card-img-top" {...image} />}
+            <div className="card-header">{header}</div>
+            <div className={`card-${imageOverlay ? "img-Overlay" : "body"}`}>
+                <h5 className="card-title">{title}</h5>
+                <h6 className="card-subtitle mb-2 text-muted">{subtitle}</h6>
+                <p className="card-text">{text}</p>
+                {links?.map((link: LinkType, index) => {
+                    const { text, href, ...restProps } = link;
+                    return (
+                        <a
+                            key={index}
+                            href={href}
+                            className="card-link"
+                            {...restProps}
+                        >
+                            {text}
+                        </a>
+                    );
+                })}
+            </div>
+            <div className="card-footer text-muted">{footer}</div>
         </div>
     );
 }

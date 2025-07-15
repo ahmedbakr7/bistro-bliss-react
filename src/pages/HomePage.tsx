@@ -19,10 +19,19 @@ export default function HomePage(): ReactNode {
             />
 
             <Section title="Browse Our Menu">
-                <GridContainer spacing={4}>
-                    <Card style={{width:"10rem"}} {...menuItem1} />
-                    <Card style={{width:"10rem"}} {...dessertItem} />
-                    <Card style={{width:"10rem"}} {...specialItem} />
+                <GridContainer columnNumber={4} spacing={2}>
+                    <Card
+                        style={{ width: "19rem", height: "100%" }}
+                        {...menuItem1}
+                    />
+                    <Card
+                        style={{ width: "19rem", height: "100%" }}
+                        {...dessertItem}
+                    />
+                    <Card
+                        style={{ width: "19rem", height: "100%" }}
+                        {...specialItem}
+                    />
                 </GridContainer>
             </Section>
         </main>
