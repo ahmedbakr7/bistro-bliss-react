@@ -12,6 +12,14 @@ interface HeroFullScreenProps
 
 /**
  * Full screen hero component with background image
+ *
+ * @example
+ * <HeroFullScreen
+ *   title="Welcome"
+ *   subtitle="To our restaurant"
+ *   image="/path/to/image.jpg"
+ *   useOverlay={true}
+ * />
  */
 export default function HeroFullScreen({
     title = "Welcome to Bistro Bliss",
@@ -21,8 +29,9 @@ export default function HeroFullScreen({
     ctaLink = "#",
     secondaryCtaText,
     secondaryCtaLink = "#",
-    image,
+    image=undefined,
     center = true,
+    height,
     children,
 }: HeroFullScreenProps): ReactNode {
     // Create image styles
@@ -32,10 +41,14 @@ export default function HeroFullScreen({
         backgroundRepeat: "no-repeat",
         backgroundSize: "cover",
         backgroundPosition: "center",
+        ...(height ? { height } : {}),
     };
 
     return (
-        <section className="position-relative min-vh-100">
+        <section
+            className="position-relative min-vh-100"
+            style={height ? { height } : undefined}
+        >
             {/* Full screen background image */}
             <div
                 className="position-absolute top-0 start-0 w-100 h-100 z-n1"
@@ -51,7 +64,9 @@ export default function HeroFullScreen({
                             : ""
                     }`}
                 >
-                    <div className="col-lg-6">
+                    <div
+                        className={center ? "col-lg-6" : "col-lg-6 offset-lg-6"}
+                    >
                         <HeroContent
                             title={title}
                             subtitle={subtitle}
@@ -66,8 +81,8 @@ export default function HeroFullScreen({
                         </HeroContent>
                     </div>
                     {!center && (
-                        <div className="col-lg-6">
-                            {/* This is an empty div to maintain the split layout when not centered */}
+                        <div className="col-lg-6 order-first">
+                            {/* This div maintains the grid layout when not centered */}
                         </div>
                     )}
                 </div>

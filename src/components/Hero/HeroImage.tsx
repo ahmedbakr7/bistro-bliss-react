@@ -7,7 +7,7 @@ interface HeroImageProps{
 }
 
 export default function HeroImage({
-    path="",
+    path="/public/images/placeholder_image.png",
     imageStyles = {
         aspectRatio: 16 / 9,
         backgroundColor: "grey",

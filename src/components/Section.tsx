@@ -32,7 +32,7 @@ padding="",
             {...props}
         >
             {title && <h1>{title}</h1>}
-            <div>{children}</div>
+            {children}
         </section>
     );
 }
