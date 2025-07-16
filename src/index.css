@@ -18,6 +18,7 @@
 }
 
 html, body {
+  font-size: 16px; /* Default browser font size */
   height: 100%;
 }
 

@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 
 export interface HeroContentProps {
     title: string;
@@ -10,6 +10,8 @@ export interface HeroContentProps {
     useOverlay?: boolean;
     children?: ReactNode;
     center?: boolean;
+    className?: string;
+    style?: CSSProperties;
 }
 
 /**
@@ -25,18 +27,20 @@ export default function HeroContent({
     useOverlay = false,
     center = false,
     children,
+    className = "",
+    style,
 }: HeroContentProps): ReactNode {
     return (
         <div
             className={`${
                 useOverlay ? "theme-text-inverse" : ""
-            } d-flex flex-column justify-content-center ${
+            } ${className} d-flex flex-column justify-content-center ${
                 center ? "text-center" : ""
             }`}
             style={
                 useOverlay
-                    ? { textShadow: "0 2px 4px rgba(0,0,0,0.3)" }
-                    : undefined
+                    ? { ...style, textShadow: "0 2px 4px rgba(0,0,0,0.3)" }
+                    : style
             }
         >
             {children ?? (

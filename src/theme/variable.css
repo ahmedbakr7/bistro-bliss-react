@@ -114,6 +114,9 @@ html {
 
 .theme-icon{
   background-color: var(--color-icon);
+}
+
+.theme-text-icon{
   color: var(--color-icon);
 }
 

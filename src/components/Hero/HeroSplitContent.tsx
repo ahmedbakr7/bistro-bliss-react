@@ -13,12 +13,14 @@ export default function HeroSplitContent({
     secondaryCtaLink = "#",
     useOverlay = false,
     children,
+className
 }: HeroSplitContentProps): ReactNode {
     const { center } = useHeroSplitContext();
 
     return (
         <div className="col-lg-6">
             <HeroContent
+                className={className}
                 title={title}
                 subtitle={subtitle}
                 ctaText={ctaText}

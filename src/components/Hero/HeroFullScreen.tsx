@@ -29,9 +29,11 @@ export default function HeroFullScreen({
     ctaLink = "#",
     secondaryCtaText,
     secondaryCtaLink = "#",
-    image=undefined,
+    image = undefined,
     center = true,
     height,
+    className,
+    style,
     children,
 }: HeroFullScreenProps): ReactNode {
     // Create image styles
@@ -46,8 +48,8 @@ export default function HeroFullScreen({
 
     return (
         <section
-            className="position-relative min-vh-100"
-            style={height ? { height } : undefined}
+            className={`position-relative min-vh-100 ${className}`}
+            style={height ? { ...style, height } : style}
         >
             {/* Full screen background image */}
             <div

@@ -5,7 +5,7 @@ import HeroSplitContent from "./HeroSplitContent";
 
 interface HeroSplitProps {
     center?: boolean;
-    children: ReactNode;
+    children?: ReactNode;
 }
 
 /**

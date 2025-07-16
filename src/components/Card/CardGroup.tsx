@@ -1,56 +1,18 @@
-import type { CSSProperties, ReactNode } from "react";
-
-export type CardSpacing = 0 | 1 | 2 | 3 | 4 | 5;
+import type { ReactNode } from "react";
 
 interface CardGroupProps {
-    /**
-     * Cards to be displayed in the group
-     */
-    children?: ReactNode;
-
-    /**
-     * Whether cards should have spacing between them
-        bootstrap constants from 0 to 5
-     */
-    spacing?: CardSpacing;
-
-    /**
-     * Custom CSS styles
-     */
-    style?: CSSProperties;
-
-    /**
-     * Additional CSS classes
-     */
     className?: string;
-
-    /**
-     * Custom data attributes or other props
-     */
-    [key: string]: unknown;
+    children: ReactNode;
 }
 
 /**
- * CardGroup component for displaying a group of cards with configurable spacing
+ * CardGroup component to display multiple cards in a row with equal height
  */
-export default function CardGroup({
-    children,
-    spacing = 0,
-    style,
+export function CardGroup({
     className = "",
-    ...props
+    children,
 }: CardGroupProps): ReactNode {
-    return (
-        <div
-            style={style}
-            {...props}
-            className={`${className} card-${spacing === 0 ? "group" : "deck"}`}
-        >
-            {children ?? (
-                <>
-                    <p>No Content</p>
-                </>
-            )}
-        </div>
-    );
+    return <div className={`card-group ${className}`}>{children}</div>;
 }
+
+export default CardGroup;
