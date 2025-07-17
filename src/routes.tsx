@@ -4,7 +4,9 @@ import AboutPage from "./pages/AboutPage";
 import MenuPage from "./pages/MenuPage";
 import PagesPage from "./pages/PagesPage";
 import ContactPage from "./pages/ContactPage";
-import HomePage from "./pages/Homepage";
+import HomePage from "./pages/HomePage";
+import BookPage from "./pages/BookPage";
+import PageDetailsPage from "./pages/PageDetailsPage";
 
 const paths = {
     homePage: "/",
@@ -12,6 +14,9 @@ const paths = {
     menu: "/menu",
     pages: "/pages",
     contact: "/contact",
+    book: "/book",
+    pageDetails: "/page-details",
+    wishlist: "/wishlist",
 };
 
 const router = createBrowserRouter([
@@ -34,6 +39,18 @@ const router = createBrowserRouter([
             {
                 element: <PagesPage />,
                 path: paths.pages,
+            },
+            {
+                element: <BookPage />,
+                path: paths.book,
+            },
+            {
+                element: <PageDetailsPage />,
+                path: paths.pageDetails,
+            },
+            {
+                element: <Wishlist />,
+                path: paths.wishlist,
             },
             {
                 element: <ContactPage />,

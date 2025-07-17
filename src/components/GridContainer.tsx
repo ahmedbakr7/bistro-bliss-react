@@ -1,15 +1,14 @@
-import { Children, type CSSProperties, type ReactNode } from "react";
+import { Children, type CSSProperties, type ReactNode, type HTMLAttributes } from "react";
 
 export type Spacing = 0 | 1 | 2 | 3 | 4 | 5;
 
-interface GridContainerProps {
+interface GridContainerProps extends HTMLAttributes<HTMLDivElement> {
     children?: ReactNode;
     style?: CSSProperties;
     className?: string;
     numberOfColumns?: number;
     spacing?: Spacing;
     // groupWithNoSpacing?: boolean;
-    [key: string]: unknown;
 }
 
 export default function GridContainer({

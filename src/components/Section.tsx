@@ -1,6 +1,6 @@
-import type { CSSProperties, ReactNode } from "react";
+import type { CSSProperties, HTMLAttributes, ReactNode } from "react";
 
-interface SectionProps {
+interface SectionProps extends HTMLAttributes<HTMLDivElement> {
     children?: ReactNode;
     style?: CSSProperties;
     title?: string;

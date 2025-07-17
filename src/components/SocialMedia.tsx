@@ -1,4 +1,4 @@
-import React from "react";
+import React, { type HTMLAttributes } from "react";
 import Roundel from "./Roundel/Roundel";
 
 // You would typically import these from your assets
@@ -11,7 +11,7 @@ const socialIcons = {
     youtube: "https://cdn.jsdelivr.net/npm/simple-icons@v8/icons/youtube.svg",
 };
 
-interface SocialMediaProps {
+interface SocialMediaProps extends HTMLAttributes<HTMLDivElement> {
     className?: string;
 }
 
