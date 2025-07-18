@@ -34,9 +34,9 @@ export function CardBody({
                 imageOverlay ? "img-Overlay" : "body"
             } ${className}`}
         >
-            {title && <h5 className="card-title">{title}</h5>}
+            {title && <h3 className="card-title">{title}</h3>}
             {subtitle && (
-                <h6 className="card-subtitle mb-2 text-muted">{subtitle}</h6>
+                <h3 className="card-subtitle mb-2 text-muted">{subtitle}</h3>
             )}
             {text && <p className="card-text">{text}</p>}
             {links?.map((link: LinkType, index) => {

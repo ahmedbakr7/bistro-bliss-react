@@ -31,7 +31,7 @@ export default function HeroFullScreen({
     secondaryCtaLink = "#",
     image = undefined,
     center = true,
-    height,
+    height="min-vh-100",
     className,
     style,
     children,
@@ -48,7 +48,7 @@ export default function HeroFullScreen({
 
     return (
         <section
-            className={`position-relative min-vh-100 ${className}`}
+            className={`position-relative  ${className}`}
             style={height ? { ...style, height } : style}
         >
             {/* Full screen background image */}
@@ -58,7 +58,7 @@ export default function HeroFullScreen({
             ></div>
 
             {/* Content overlay */}
-            <div className="container d-flex align-items-center justify-content-center py-5 min-vh-100 position-relative">
+            <div className="container d-flex align-items-center justify-content-center py-5 h-100 position-relative">
                 <div
                     className={`row w-100 g-5 ${
                         center

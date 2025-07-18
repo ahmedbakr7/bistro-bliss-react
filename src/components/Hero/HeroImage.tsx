@@ -1,23 +1,24 @@
-import type { CSSProperties, ReactNode } from "react";
+import type { CSSProperties, HTMLAttributes, ReactNode } from "react";
 import { useHeroSplitContext } from "./useHeroSplitContext";
 
-interface HeroImageProps{
+interface HeroImageProps extends HTMLAttributes<HTMLElement>{
     imageStyles?: CSSProperties;
     path: string;
 }
 
 export default function HeroImage({
     path="/public/images/placeholder_image.png",
-    imageStyles = {
-        aspectRatio: 16 / 9,
+    style,
+}:HeroImageProps): ReactNode {
+    const {center} = useHeroSplitContext()
+    style = {
+        ...style,
         backgroundColor: "grey",
         backgroundImage: path ? `url(${path})` : undefined,
         backgroundRepeat: "no-repeat",
         backgroundSize: "cover",
         backgroundPosition: "center",
     }
-}:HeroImageProps): ReactNode {
-    const {center} = useHeroSplitContext()
 
     return (
         <div
@@ -26,7 +27,7 @@ export default function HeroImage({
                     ? "position-absolute top-0 start-0 vw-100 vh-100 z-n1"
                     : ""
             }`}
-            style={imageStyles}
+            style={style}
         ></div>
     );
 }

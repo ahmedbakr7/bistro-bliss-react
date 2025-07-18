@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import HeroContent, { type HeroContentProps } from "./HeroContent";
 import { useHeroSplitContext } from "./useHeroSplitContext";
 
-type HeroSplitContentProps = Omit<HeroContentProps,"center">
+type HeroSplitContentProps = Omit<HeroContentProps, "center">;
 
 export default function HeroSplitContent({
     title,
@@ -13,25 +13,25 @@ export default function HeroSplitContent({
     secondaryCtaLink = "#",
     useOverlay = false,
     children,
-className
+    style,
+    className,
 }: HeroSplitContentProps): ReactNode {
     const { center } = useHeroSplitContext();
 
     return (
-        <div className="col-lg-6">
-            <HeroContent
-                className={className}
-                title={title}
-                subtitle={subtitle}
-                ctaText={ctaText}
-                ctaLink={ctaLink}
-                secondaryCtaText={secondaryCtaText}
-                secondaryCtaLink={secondaryCtaLink}
-                useOverlay={useOverlay && center}
-                center={center}
-            >
-                {children}
-            </HeroContent>
-        </div>
+        <HeroContent
+            style={style}
+            className={className}
+            title={title}
+            subtitle={subtitle}
+            ctaText={ctaText}
+            ctaLink={ctaLink}
+            secondaryCtaText={secondaryCtaText}
+            secondaryCtaLink={secondaryCtaLink}
+            useOverlay={useOverlay && center}
+            center={center}
+        >
+            {children}
+        </HeroContent>
     );
 }

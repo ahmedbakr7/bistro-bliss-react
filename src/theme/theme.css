@@ -5,7 +5,7 @@
 
 :root {
   /* Typography */
-  --font-family-base:       'Roboto', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-family-base:       'DM Sans', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   --font-family-heading:    'Playfair Display', serif;
   --font-family-accent:     'Montserrat', sans-serif;
   --font-family-mono:       monospace;
@@ -46,9 +46,9 @@
   --letter-spacing-widest:  0.1em;
 
   /* Typography presets (Material Design inspired) */
-  --typography-headline1:   var(--font-weight-light) var(--font-size-7xl)/var(--line-height-tight) var(--font-family-heading);
-  --typography-headline2:   var(--font-weight-light) var(--font-size-6xl)/var(--line-height-tight) var(--font-family-heading);
-  --typography-headline3:   var(--font-weight-regular) var(--font-size-5xl)/var(--line-height-tight) var(--font-family-heading);
+  --typography-headline1:   var(--font-weight-light) var(--font-size-6xl)/var(--line-height-tight) var(--font-family-heading);
+  --typography-headline2:   var(--font-weight-medium) var(--font-size-6xl)/var(--line-height-tight) var(--font-family-heading);
+  --typography-headline3:   var(--font-weight-bold) var(--font-size-2xl)/var(--line-height-tight) var(--font-family-heading);
   --typography-headline4:   var(--font-weight-regular) var(--font-size-4xl)/var(--line-height-tight) var(--font-family-heading);
   --typography-headline5:   var(--font-weight-regular) var(--font-size-3xl)/var(--line-height-normal) var(--font-family-heading);
   --typography-headline6:   var(--font-weight-medium) var(--font-size-2xl)/var(--line-height-normal) var(--font-family-heading);
@@ -64,7 +64,7 @@
   --color-bg:               #ffffff;
   --color-primary:          #AD343E;
   --color-secondary:        #5F7367; /* complementary to primary */
-  --color-surface:          #f0f0f0;
+  --color-surface:          #F9F9F7;
   --color-text:             #2C2F24; /* neutral 7 */
 
   /* Extended color roles */
@@ -116,7 +116,8 @@
   /* Border radius */
   --radius-sm:              0.25rem; /* 4px */
   --radius-md:              0.5rem;  /* 8px */
-  --radius-lg:              1rem;    /* 16px */
+  --radius-lg:              0.75rem;  /* 8px */
+  --radius-xl:              1rem;    /* 16px */
   --radius-full:            9999px;  /* Fully rounded */
 }
 
@@ -392,6 +393,11 @@ html {
   fill: var(--color-secondary);
 }
 
+.theme-card-border {
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-lg);
+  transition: box-shadow 0.3s ease;
+}
 /* ====== Component-specific classes ====== */
 /* Card styles */
 .theme-card {

@@ -36,8 +36,11 @@ export default function Navbar(): ReactNode {
 
             <nav role="navigation" className="navbar navbar-expand">
                 <div className="container">
-                    <Link className="navbar-brand" to={"/"}>
-                        <h1 className="bistro-brand">Bistro Bliss</h1>
+                    <Link className="navbar-brand d-flex align-items-center" to={"/"}>
+                        <img src="/public/images/logo.png" className="me-2" alt="" />
+                        <h1 className="bistro-brand text-center m-0 fst-italic" style={{
+                            fontWeight:"600"
+                        }}>Bistro Bliss</h1>
                     </Link>
                     <ul className="navbar-nav">
                         <li className="nav-item">

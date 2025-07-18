@@ -24,6 +24,14 @@ export const menuItem3 = {
     }]
 };
 
+export const menuItem4 = {
+    title: "Breakfast",
+    text: "In the new era of technology we look in the future with certainty and pride for our life.",
+    links: [{
+        text:"Explore Menu",href:"#"
+    }]
+};
+
 // // Card with Header
 // export const dessertItem = {
 //     image: {
