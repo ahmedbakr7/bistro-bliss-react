@@ -7,6 +7,7 @@ import ContactPage from "./pages/ContactPage";
 import HomePage from "./pages/HomePage";
 import BookPage from "./pages/BookPage";
 import PageDetailsPage from "./pages/PageDetailsPage";
+import WishlistPage from "./pages/Wishlist";
 
 const paths = {
     homePage: "/",
@@ -49,7 +50,7 @@ const router = createBrowserRouter([
                 path: paths.pageDetails,
             },
             {
-                element: <Wishlist />,
+                element: <WishlistPage />,
                 path: paths.wishlist,
             },
             {

@@ -1,6 +1,12 @@
-import type { CSSProperties, HTMLAttributes, ReactNode } from "react";
+import type {
+    CSSProperties,
+    ElementType,
+    HTMLAttributes,
+    ReactNode,
+} from "react";
 
-interface SectionProps extends HTMLAttributes<HTMLDivElement> {
+interface SectionProps extends HTMLAttributes<HTMLElement> {
+    HeaderElement?: ElementType;
     children?: ReactNode;
     style?: CSSProperties;
     title?: string;
@@ -10,6 +16,7 @@ interface SectionProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 export default function Section({
+    HeaderElement = "h2",
     children,
     style,
     className = "",
@@ -27,7 +34,7 @@ export default function Section({
             className={`${defaultClasses} ${className}`}
             {...props}
         >
-            {title && <h1>{title}</h1>}
+            {title && <HeaderElement>{title}</HeaderElement>}
             {children}
         </section>
     );

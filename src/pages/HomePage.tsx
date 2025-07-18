@@ -20,7 +20,7 @@ export default function HomePage(): ReactNode {
 
             <Section title="Browse Our Menu" className="text-center min-vh-100">
                 <GridContainer
-                    classes="text-center"
+                    className="text-center"
                     numberOfColumns={3}
                     spacing={5}
                 >

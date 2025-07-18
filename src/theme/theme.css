@@ -1,92 +1,221 @@
+/**
+ * Bistro Bliss Theme System
+ * A comprehensive CSS custom properties (variables) system for theming
+ */
 
 :root {
+  /* Typography */
+  --font-family-base:       'Roboto', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-family-heading:    'Playfair Display', serif;
+  --font-family-accent:     'Montserrat', sans-serif;
+  --font-family-mono:       monospace;
+
+  /* Typography Scale (Material Design inspired) */
+  --font-size-base:         16px; /* Base size - all other sizes calculated from this */
+  --font-size-xs:           0.75rem;   /* 12px */
+  --font-size-sm:           0.875rem;  /* 14px */
+  --font-size-md:           1rem;      /* 16px */
+  --font-size-lg:           1.125rem;  /* 18px */
+  --font-size-xl:           1.25rem;   /* 20px */
+  --font-size-2xl:          1.5rem;    /* 24px */
+  --font-size-3xl:          1.875rem;  /* 30px */
+  --font-size-4xl:          2.25rem;   /* 36px */
+  --font-size-5xl:          3rem;      /* 48px */
+  --font-size-6xl:          3.75rem;   /* 60px */
+  --font-size-7xl:          4.5rem;    /* 72px */
+  --font-size-8xl:          6rem;      /* 96px */
+
+  /* Font weights */
+  --font-weight-light:      300;
+  --font-weight-regular:    400;
+  --font-weight-medium:     500;
+  --font-weight-bold:       700;
+
+  /* Line heights */
+  --line-height-tight:      1.1;
+  --line-height-normal:     1.5;
+  --line-height-relaxed:    1.75;
+  --line-height-loose:      2;
+
+  /* Letter spacing */
+  --letter-spacing-tighter: -0.05em;
+  --letter-spacing-tight:   -0.025em;
+  --letter-spacing-normal:  0;
+  --letter-spacing-wide:    0.025em;
+  --letter-spacing-wider:   0.05em;
+  --letter-spacing-widest:  0.1em;
+
+  /* Typography presets (Material Design inspired) */
+  --typography-headline1:   var(--font-weight-light) var(--font-size-7xl)/var(--line-height-tight) var(--font-family-heading);
+  --typography-headline2:   var(--font-weight-light) var(--font-size-6xl)/var(--line-height-tight) var(--font-family-heading);
+  --typography-headline3:   var(--font-weight-regular) var(--font-size-5xl)/var(--line-height-tight) var(--font-family-heading);
+  --typography-headline4:   var(--font-weight-regular) var(--font-size-4xl)/var(--line-height-tight) var(--font-family-heading);
+  --typography-headline5:   var(--font-weight-regular) var(--font-size-3xl)/var(--line-height-normal) var(--font-family-heading);
+  --typography-headline6:   var(--font-weight-medium) var(--font-size-2xl)/var(--line-height-normal) var(--font-family-heading);
+  --typography-subtitle1:   var(--font-weight-regular) var(--font-size-xl)/var(--line-height-normal) var(--font-family-base);
+  --typography-subtitle2:   var(--font-weight-medium) var(--font-size-lg)/var(--line-height-normal) var(--font-family-base);
+  --typography-body1:       var(--font-weight-regular) var(--font-size-md)/var(--line-height-relaxed) var(--font-family-base);
+  --typography-body2:       var(--font-weight-regular) var(--font-size-sm)/var(--line-height-relaxed) var(--font-family-base);
+  --typography-button:      var(--font-weight-medium) var(--font-size-sm)/var(--line-height-normal) var(--font-family-accent);
+  --typography-caption:     var(--font-weight-regular) var(--font-size-xs)/var(--line-height-normal) var(--font-family-base);
+  --typography-overline:    var(--font-weight-regular) var(--font-size-xs)/var(--line-height-normal) var(--font-family-accent);
+
   /* Base colors */
-  --color-bg:      #ffffff;
-  --color-surface: #f0f0f0;
-  --color-text:    #2C2F24;  /* neutral 7 */
-  --color-primary: #AD343E;
+  --color-bg:               #ffffff;
+  --color-primary:          #AD343E;
+  --color-secondary:        #5F7367; /* complementary to primary */
+  --color-surface:          #f0f0f0;
+  --color-text:             #2C2F24; /* neutral 7 */
 
   /* Extended color roles */
-  --color-secondary: #5F7367; /* complementary to primary */
-  --color-accent:    #F2B138; /* accent gold */
-  --color-success:   #6A8E4E; /* green that works with the palette */
-  --color-warning:   #F9A03F; /* warm orange */
-  --color-error:     #AD343E; /* same as primary for consistency */
-  --color-info:      #5C95FF; /* soft blue */
+  --color-success:          #6A8E4E; /* green that works with the palette */
+  --color-warning:          #F9A03F; /* warm orange */
+  --color-error:            #AD343E; /* same as primary for consistency */
+  --color-info:             #5C95FF; /* soft blue */
 
-  /* Custom colors */
-  --color-icon: #474747;
-  --card-border: #DBDFD0;
+  /* Color variations and derivatives */
+  --color-primary-light:    #D76A73; /* lighter version of primary */
+  --color-primary-dark:     #8A2832; /* darker version of primary */
 
+  --color-secondary-light:  #8CA99B; /* lighter version of secondary */
+  --color-secondary-dark:   #455047; /* darker version of secondary */
 
-  /* Surface variants */
   --color-surface-elevated: #ffffff;
   --color-surface-lowered:  #e0e0e0;
 
-  /* Text variants */
-  --color-text-secondary:   #414536; /* neutral 6 */
+  /* Text variations */
+  --color-text-secondary:   #414536; /* slightly lighter than text */
+  --color-text-tertiary:    #6C6F62; /* even lighter, for less emphasis */
   --color-text-disabled:    #9e9e9e;
   --color-text-inverse:     #ffffff;
 
-  /* Border */
+  /* Border and structural colors */
   --color-border:           #dddddd;
+  --color-divider:          #eeeeee; /* lighter than border */
+  --color-icon:             #474747;
+  --card-border:            #DBDFD0;
 
-  /* Shadows */
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
-  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+  /* Status indicators - lighter/darker variations */
+  --color-success-light:    #8DB06F;
+  --color-success-dark:     #4C6537;
+
+  --color-warning-light:    #FBBA71;
+  --color-warning-dark:     #D07B1A;
+
+  --color-error-light:      #D76A73;
+  --color-error-dark:       #8A2832;
+
+  --color-info-light:       #7FADFF;
+  --color-info-dark:        #3A71CC;
+
+  /* Shadows - Material Design Elevation system */
+  --shadow-sm:              0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md:              0 4px 6px rgba(0, 0, 0, 0.1);
+  --shadow-lg:              0 10px 15px rgba(0, 0, 0, 0.1);
+
+  /* Border radius */
+  --radius-sm:              0.25rem; /* 4px */
+  --radius-md:              0.5rem;  /* 8px */
+  --radius-lg:              1rem;    /* 16px */
+  --radius-full:            9999px;  /* Fully rounded */
 }
 
 /*
-  2. Define the dark theme override.
-     This single rule will apply whenever the html element has data-theme="dark".
-*/
+ * Dark theme overrides
+ * Applied when the html element has data-theme="dark"
+ */
 html[data-theme='dark'] {
   /* Base colors */
-  --color-bg:      #1A1C16; /* dark version of neutral color */
-  --color-surface: #242821; /* slightly lighter than bg */
-  --color-text:    #E8E9E6; /* light version of neutral 7 */
-  --color-primary: #D76A73; /* lighter version of primary */
+  --color-bg:               #1A1C16; /* dark version of neutral color */
+  --color-surface:          #242821; /* slightly lighter than bg */
+  --color-text:             #E8E9E6; /* light version of neutral 7 */
 
-  /* Extended color roles */
-  --color-secondary: #8CA99B; /* lighter version of secondary */
-  --color-accent:    #F8C766; /* lighter version of accent */
-  --color-success:   #8DB06F; /* lighter version of success */
-  --color-warning:   #FBBA71; /* lighter version of warning */
-  --color-error:     #D76A73; /* lighter version of error */
-  --color-info:      #7FADFF; /* lighter version of info */
+  /* Color variations and derivatives for dark theme */
+  --color-primary:          #D76A73; /* lighter version of primary for dark mode */
+  --color-primary-light:    #E59098; /* even lighter */
+  --color-primary-dark:     #AD343E; /* original primary becomes dark in dark mode */
 
-  /* Surface variants */
+  --color-secondary:        #8CA99B; /* lighter version of secondary */
+  --color-secondary-light:  #A5BEB2; /* even lighter */
+  --color-secondary-dark:   #5F7367; /* original secondary */
+
   --color-surface-elevated: #2F3329; /* slightly lighter than surface */
   --color-surface-lowered:  #121410; /* slightly darker than bg */
 
-  /* Text variants */
+  /* Text variations */
   --color-text-secondary:   #BCBEB7; /* lighter version of text-secondary */
+  --color-text-tertiary:    #9A9C96; /* midtone for dark theme */
   --color-text-disabled:    #7E7F7A; /* muted text color */
   --color-text-inverse:     #1A1C16; /* same as dark bg */
 
-  /* Border */
+  /* Border and structural colors */
   --color-border:           #3A3E34; /* darker version of neutral */
+  --color-divider:          #2A2E24; /* darker than border */
+  --color-icon:             #A6A8A2; /* light version for dark theme */
+  --card-border:            #3A3E34; /* darker version for dark theme */
 
-  /* Custom colors */
-  --color-icon: #A6A8A2; /* light version for dark theme */
-  --card-border: #3A3E34; /* darker version for dark theme */
+  /* Status indicators adjust for dark theme */
+  --color-success:          #8DB06F; /* lighter for dark mode */
+  --color-warning:          #FBBA71; /* lighter for dark mode */
+  --color-error:            #D76A73; /* lighter for dark mode */
+  --color-info:             #7FADFF; /* lighter for dark mode */
 
-  /* Shadows remain the same as they're functional rather than thematic */
+  --color-success-light:    #A5C48E;
+  --color-success-dark:     #6A8E4E;
+
+  --color-warning-light:    #FCCC90;
+  --color-warning-dark:     #F9A03F;
+
+  --color-error-light:      #E59098;
+  --color-error-dark:       #AD343E;
+
+  --color-info-light:       #9CC2FF;
+  --color-info-dark:        #5C95FF;
+
+  /* Shadow adjustments for dark theme */
+  --shadow-sm:              0 1px 2px rgba(0, 0, 0, 0.2);
+  --shadow-md:              0 4px 6px rgba(0, 0, 0, 0.3);
+  --shadow-lg:              0 10px 15px rgba(0, 0, 0, 0.3);
 }
 
-/* Global transitions */
+/* Global transitions for smooth theme switching */
 html {
   transition: background-color 0.3s, color 0.3s;
-  -webkit-transition: background-color 0.3s, color 0.3s;
-  -moz-transition: background-color 0.3s, color 0.3s;
-  -ms-transition: background-color 0.3s, color 0.3s;
-  -o-transition: background-color 0.3s, color 0.3s;
 }
 
-/* Background color classes */
+/* ====== Background color utilities ====== */
 .theme-bg-main {
   background-color: var(--color-bg);
+}
+
+.theme-bg-primary {
+  background-color: var(--color-primary);
+  color: var(--color-text-inverse);
+}
+
+.theme-bg-primary-light {
+  background-color: var(--color-primary-light);
+  color: var(--color-text-inverse);
+}
+
+.theme-bg-primary-dark {
+  background-color: var(--color-primary-dark);
+  color: var(--color-text-inverse);
+}
+
+.theme-bg-secondary {
+  background-color: var(--color-secondary);
+  color: var(--color-text-inverse);
+}
+
+.theme-bg-secondary-light {
+  background-color: var(--color-secondary-light);
+  color: var(--color-text);
+}
+
+.theme-bg-secondary-dark {
+  background-color: var(--color-secondary-dark);
+  color: var(--color-text-inverse);
 }
 
 .theme-bg-surface {
@@ -100,29 +229,6 @@ html {
 
 .theme-bg-surface-lowered {
   background-color: var(--color-surface-lowered);
-}
-
-.theme-bg-primary {
-  background-color: var(--color-primary);
-  color: var(--color-text-inverse);
-}
-
-.theme-bg-secondary {
-  background-color: var(--color-secondary);
-  color: var(--color-text-inverse);
-}
-
-.theme-icon{
-  background-color: var(--color-icon);
-}
-
-.theme-text-icon{
-  color: var(--color-icon);
-}
-
-.theme-bg-accent {
-  background-color: var(--color-accent);
-  color: var(--color-text-inverse);
 }
 
 .theme-bg-success {
@@ -145,7 +251,7 @@ html {
   color: var(--color-text-inverse);
 }
 
-/* Text color classes */
+/* ====== Text colors ====== */
 .theme-text-main {
   color: var(--color-text);
 }
@@ -154,16 +260,32 @@ html {
   color: var(--color-text-secondary);
 }
 
+.theme-text-tertiary {
+  color: var(--color-text-tertiary);
+}
+
 .theme-text-disabled {
   color: var(--color-text-disabled);
+}
+
+.theme-text-inverse {
+  color: var(--color-text-inverse);
 }
 
 .theme-text-primary {
   color: var(--color-primary);
 }
 
-.theme-text-accent {
-  color: var(--color-accent);
+.theme-text-primary-light {
+  color: var(--color-primary-light);
+}
+
+.theme-text-primary-dark {
+  color: var(--color-primary-dark);
+}
+
+.theme-text-secondary {
+  color: var(--color-secondary);
 }
 
 .theme-text-success {
@@ -182,11 +304,7 @@ html {
   color: var(--color-info);
 }
 
-.theme-text-inverse {
-  color: var(--color-text-inverse);
-}
-
-/* Border classes */
+/* ====== Border styles ====== */
 .theme-border {
   border: 1px solid var(--color-border);
 }
@@ -207,7 +325,31 @@ html {
   border-left: 1px solid var(--color-border);
 }
 
-/* Shadow classes */
+.theme-border-primary {
+  border-color: var(--color-primary);
+}
+
+.theme-border-secondary {
+  border-color: var(--color-secondary);
+}
+
+.theme-border-success {
+  border-color: var(--color-success);
+}
+
+.theme-border-warning {
+  border-color: var(--color-warning);
+}
+
+.theme-border-error {
+  border-color: var(--color-error);
+}
+
+.theme-border-info {
+  border-color: var(--color-info);
+}
+
+/* ====== Shadow utilities ====== */
 .theme-shadow-sm {
   box-shadow: var(--shadow-sm);
 }
@@ -220,39 +362,199 @@ html {
   box-shadow: var(--shadow-lg);
 }
 
-/* Legacy class - already prefixed with theme- */
-.theme-bg {
-  background-color: var(--color-bg);
+/* ====== Border radius utilities ====== */
+.theme-rounded-sm {
+  border-radius: var(--radius-sm);
 }
 
-/* Base button class with shared properties */
-.theme-button-base {
-  display: inline-flex;      /* Better for alignment */
-  align-items: center;       /* Vertical centering */
-  justify-content: center;   /* Horizontal centering */
-  padding: 0.6em 1.2em;      /* vertical ⨉ horizontal */
-  font-size: 1rem;           /* scales with user font size */
-  border-radius: 9999px;
-  text-decoration: none;     /* Remove underline from links */
-  cursor: pointer;           /* Show pointer cursor */
-  transition: all 0.2s ease; /* Smooth transitions */
+.theme-rounded-md {
+  border-radius: var(--radius-md);
+}
+
+.theme-rounded-lg {
+  border-radius: var(--radius-lg);
+}
+
+.theme-rounded-full {
+  border-radius: var(--radius-full);
+}
+
+/* ====== Icon utilities ====== */
+.theme-icon {
+  fill: var(--color-icon);
+}
+
+.theme-icon-primary {
+  fill: var(--color-primary);
+}
+
+.theme-icon-secondary {
+  fill: var(--color-secondary);
+}
+
+/* ====== Component-specific classes ====== */
+/* Card styles */
+.theme-card {
+  background-color: var(--color-surface-elevated);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-md);
+  transition: box-shadow 0.3s ease;
+}
+
+.theme-card:hover {
+  box-shadow: var(--shadow-md);
+}
+
+/* Button base styling */
+.theme-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.6em 1.2em;
+  font-size: 1rem;
+  border-radius: var(--radius-full);
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: var(--font-family-accent);
 }
 
 /* Primary button */
-.theme-button {
+.theme-btn-primary {
   background-color: var(--color-primary);
   border: 1px solid var(--color-primary);
-  color: var(--color-text);
+  color: var(--color-text-inverse);
 }
 
-/* Secondary button inherits from base */
-.theme-secondary-button {
+.theme-btn-primary:hover {
+  background-color: var(--color-primary-dark);
+  border-color: var(--color-primary-dark);
+}
+
+/* Secondary button */
+.theme-btn-secondary {
   background-color: var(--color-bg);
   border: 1px solid var(--color-text);
   color: var(--color-text);
 }
 
-/* Apply base styles to both button types manually since this isn't CSS Modules */
+.theme-btn-secondary:hover {
+  background-color: rgba(0,0,0,0.05);
+}
+
+/* Text button (no background) */
+.theme-btn-text {
+  background-color: transparent;
+  border: none;
+  color: var(--color-primary);
+  padding: 0.4em 0.8em;
+}
+
+.theme-btn-text:hover {
+  background-color: rgba(0,0,0,0.05);
+}
+
+/* Outlined button */
+.theme-btn-outline {
+  background-color: transparent;
+  border: 1px solid var(--color-primary);
+  color: var(--color-primary);
+}
+
+.theme-btn-outline:hover {
+  background-color: var(--color-primary);
+  color: var(--color-text-inverse);
+}
+
+/* Success button */
+.theme-btn-success {
+  background-color: var(--color-success);
+  border: 1px solid var(--color-success);
+  color: var(--color-text-inverse);
+}
+
+.theme-btn-success:hover {
+  background-color: var(--color-success-dark);
+}
+
+/* Warning button */
+.theme-btn-warning {
+  background-color: var(--color-warning);
+  border: 1px solid var(--color-warning);
+  color: var(--color-text-inverse);
+}
+
+.theme-btn-warning:hover {
+  background-color: var(--color-warning-dark);
+}
+
+/* Error button */
+.theme-btn-error {
+  background-color: var(--color-error);
+  border: 1px solid var(--color-error);
+  color: var(--color-text-inverse);
+}
+
+.theme-btn-error:hover {
+  background-color: var(--color-error-dark);
+}
+
+/* Disabled button */
+.theme-btn-disabled, .theme-btn:disabled {
+  background-color: var(--color-surface);
+  border-color: var(--color-border);
+  color: var(--color-text-disabled);
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* Button sizes */
+.theme-btn-sm {
+  font-size: 0.875rem;
+  padding: 0.4em 0.8em;
+}
+
+.theme-btn-lg {
+  font-size: 1.125rem;
+  padding: 0.8em 1.6em;
+}
+
+/* Make sure links styled as buttons don't have underlines */
+a.theme-btn {
+  text-decoration: none;
+}
+
+/* Legacy classes for backward compatibility */
+.theme-bg-main { background-color: var(--color-bg); }
+.theme-bg-surface { background-color: var(--color-surface); }
+.theme-bg-surface-elevated { background-color: var(--color-surface-elevated); box-shadow: var(--shadow-sm); }
+.theme-bg-surface-lowered { background-color: var(--color-surface-lowered); }
+.theme-bg-primary { background-color: var(--color-primary); color: var(--color-text-inverse); }
+.theme-bg-secondary { background-color: var(--color-secondary); color: var(--color-text-inverse); }
+.theme-bg-success { background-color: var(--color-success); color: var(--color-text-inverse); }
+.theme-bg-warning { background-color: var(--color-warning); color: var(--color-text-inverse); }
+.theme-bg-error { background-color: var(--color-error); color: var(--color-text-inverse); }
+.theme-bg-info { background-color: var(--color-info); color: var(--color-text-inverse); }
+.theme-bg { background-color: var(--color-bg); }
+.theme-icon { background-color: var(--color-icon); }
+.theme-text-icon { color: var(--color-icon); }
+.theme-text-main { color: var(--color-text); }
+.theme-text-secondary { color: var(--color-text-secondary); }
+.theme-text-disabled { color: var(--color-text-disabled); }
+.theme-text-primary { color: var(--color-primary); }
+.theme-text-success { color: var(--color-success); }
+.theme-text-warning { color: var(--color-warning); }
+.theme-text-error { color: var(--color-error); }
+.theme-text-info { color: var(--color-info); }
+.theme-text-inverse { color: var(--color-text-inverse); }
+.theme-border { border: 1px solid var(--color-border); }
+.theme-border-top { border-top: 1px solid var(--color-border); }
+.theme-border-right { border-right: 1px solid var(--color-border); }
+.theme-border-bottom { border-bottom: 1px solid var(--color-border); }
+.theme-border-left { border-left: 1px solid var(--color-border); }
+.theme-shadow-sm { box-shadow: var(--shadow-sm); }
+.theme-shadow-md { box-shadow: var(--shadow-md); }
+.theme-shadow-lg { box-shadow: var(--shadow-lg); }
 .theme-button, .theme-secondary-button {
   display: inline-flex;
   align-items: center;
@@ -264,18 +566,8 @@ html {
   cursor: pointer;
   transition: all 0.2s ease;
 }
-
-/* Ensure all button links have no underlines */
-a.theme-button,
-a.theme-secondary-button {
-  text-decoration: none;
-}
-
-/* Hover states */
-.theme-button:hover {
-  opacity: 0.9;
-}
-
-.theme-secondary-button:hover {
-  background-color: rgba(0,0,0,0.05);
-}
+.theme-button { background-color: var(--color-primary); border: 1px solid var(--color-primary); color: var(--color-text-inverse); }
+.theme-secondary-button { background-color: var(--color-bg); border: 1px solid var(--color-text); color: var(--color-text); }
+.theme-button:hover { opacity: 0.9; }
+.theme-secondary-button:hover { background-color: rgba(0,0,0,0.05); }
+a.theme-button, a.theme-secondary-button { text-decoration: none; }

@@ -1,0 +1,12 @@
+/**
+ * Bistro Bliss Style System
+ *
+ * This file combines all the theme-related CSS files to establish a consistent
+ * design system throughout the application.
+ */
+
+/* Import theme variables and utility classes */
+@import './theme.css';
+
+/* Import typography reset that applies theme variables to HTML elements */
+@import './typography-reset.css';
