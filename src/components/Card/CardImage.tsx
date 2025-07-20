@@ -1,10 +1,9 @@
-import type { ReactNode } from "react";
+import type { HTMLAttributes, ReactNode } from "react";
 
-interface CardImageProps {
+interface CardImageProps extends HTMLAttributes<HTMLElement> {
     src: string;
     alt?: string;
     className?: string;
-    [key: string]: unknown;
 }
 
 export function CardImage({

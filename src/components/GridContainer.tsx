@@ -8,6 +8,7 @@ interface GridContainerProps extends HTMLAttributes<HTMLDivElement> {
     className?: string;
     numberOfColumns?: number;
     spacing?: Spacing;
+    childrenClassName?: string;
     // groupWithNoSpacing?: boolean;
 }
 
@@ -18,9 +19,10 @@ export default function GridContainer({
     numberOfColumns = 4,
     // groupWithNoSpacing = false, // attach className "card-group" to the container to make all cards as one piece with the same height
     spacing = 0,
+    childrenClassName="",
     ...props
 }: GridContainerProps): ReactNode {
-    const defaultClasses = `row  row-cols-1 row-cols-sm-2 row-cols-lg-${numberOfColumns} g-${spacing}`;
+    const defaultClasses = `row  row-cols-1 row-cols-md-2 row-cols-lg-${numberOfColumns} g-${spacing}`;
     return (
         <div
             style={style}
@@ -28,7 +30,7 @@ export default function GridContainer({
             {...props}
         >
             {Children.map(children, (child, index) => (
-                <div key={index} className="col">
+                <div key={index} className={`col ${childrenClassName}`}>
                     {child}
                 </div>
             ))}

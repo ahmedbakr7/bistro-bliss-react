@@ -1,8 +1,9 @@
 import type { ReactNode } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { FiPhone } from "react-icons/fi";
 import SocialMedia from "../SocialMedia";
 import "./Navbar.css";
+import Logo from "./Logo";
 
 // interface NavbarProps {
 //     children: ReactNode;
@@ -36,12 +37,7 @@ export default function Navbar(): ReactNode {
 
             <nav role="navigation" className="navbar navbar-expand">
                 <div className="container">
-                    <Link className="navbar-brand d-flex align-items-center" to={"/"}>
-                        <img src="/public/images/logo.png" className="me-2" alt="" />
-                        <h1 className="bistro-brand text-center m-0 fst-italic" style={{
-                            fontWeight:"600"
-                        }}>Bistro Bliss</h1>
-                    </Link>
+                    <Logo />
                     <ul className="navbar-nav">
                         <li className="nav-item">
                             <NavLink
@@ -68,4 +64,5 @@ export default function Navbar(): ReactNode {
             </nav>
         </header>
     );
+
 }

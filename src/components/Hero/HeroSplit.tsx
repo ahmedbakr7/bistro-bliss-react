@@ -6,7 +6,6 @@ import HeroSplitContent from "./HeroSplitContent";
 interface HeroSplitProps extends HTMLAttributes<HTMLElement> {
     center?: boolean;
     children?: ReactNode;
-    className?: string;
 }
 
 /**
@@ -15,27 +14,23 @@ interface HeroSplitProps extends HTMLAttributes<HTMLElement> {
 export default function HeroSplit({
     center=false,
     children,
-    className,
+    className="",
     ...restProps
 }: HeroSplitProps): ReactNode {
     // Create image styles
 
     return (
         <HeroSplitContext.Provider value={{title:"",center}}>
-            <section
-                className={`container d-flex align-items-center justify-content-center position-relative ${className}`}
-                {...restProps}
-            >
                 <div
-                    className={`row w-100 g-5 ${
+                    className={`${className} h-100 row w-100 g-5 ${
                         center
                             ? " justify-content-center align-items-center"
                             : ""
                     }`}
+                    {...restProps}
                 >
                     {children}
                 </div>
-            </section>
         </HeroSplitContext.Provider>
     );
 }

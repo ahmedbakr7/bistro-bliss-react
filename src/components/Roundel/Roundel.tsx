@@ -1,10 +1,12 @@
-import type { ReactNode, ElementType } from "react";
+import type { ReactNode, ElementType, CSSProperties } from "react";
 import "./Roundel.css";
 import type { HTMLAttributes } from "react";
 
 interface Image {
     src: string;
     alt?: string;
+    className?: string;
+    style?: CSSProperties;
 }
 
 interface RoundelProps extends HTMLAttributes<HTMLElement> {
@@ -17,6 +19,7 @@ interface RoundelProps extends HTMLAttributes<HTMLElement> {
 }
 
 export default function Roundel({
+rounded,
     image,
     children,
     style = { padding: "3%" },
@@ -44,7 +47,7 @@ export default function Roundel({
 
     return (
         <Wrapper
-            className={`d-flex justify-content-center align-items-center ${className}`}
+        className={`d-flex justify-content-center align-items-center ${className} ${rounded?"rounded-circle":""} `}
             {...props}
         >
             {content}

@@ -9,6 +9,7 @@ interface HeroImageProps extends HTMLAttributes<HTMLElement>{
 export default function HeroImage({
     path="/public/images/placeholder_image.png",
     style,
+    className=""
 }:HeroImageProps): ReactNode {
     const {center} = useHeroSplitContext()
     style = {
@@ -22,7 +23,7 @@ export default function HeroImage({
 
     return (
         <div
-            className={`col-lg-6 ${
+            className={`${className} col-lg-6 ${
                 center
                     ? "position-absolute top-0 start-0 vw-100 vh-100 z-n1"
                     : ""

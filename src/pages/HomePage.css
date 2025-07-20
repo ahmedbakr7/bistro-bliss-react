@@ -1,0 +1,6 @@
+/* @import '../theme/theme.css'; */
+
+.customers#customers h3{
+    color: var(--color-primary);
+        font-weight: bold;
+}

@@ -12,11 +12,12 @@ interface SectionProps extends HTMLAttributes<HTMLElement> {
     title?: string;
     className?: string;
     padding?: string;
-    [key: string]: unknown;
+    center?:boolean,
 }
 
 export default function Section({
     HeaderElement = "h2",
+center=false,
     children,
     style,
     className = "",
@@ -34,7 +35,7 @@ export default function Section({
             className={`${defaultClasses} ${className}`}
             {...props}
         >
-            {title && <HeaderElement>{title}</HeaderElement>}
+            {title && <HeaderElement className={ `${center?"text-center":""}` }>{title}</HeaderElement>}
             {children}
         </section>
     );

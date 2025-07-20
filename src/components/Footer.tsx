@@ -1,87 +1,226 @@
 import type { ReactNode } from "react";
-import SocialMedia from "./SocialMedia";
-import Card from "./Card/Card";
+import Logo from "./Navbar/Logo";
+import Roundel from "./Roundel/Roundel";
 
 export default function Footer(): ReactNode {
     return (
-        <footer className="theme-icon p-5 ">
+        <footer className="theme-icon d-flex flex-column justify-content-between theme-text-disabled p-5 ">
             <div className="row  row-cols-1 row-cols-sm-2 row-cols-lg-4">
-                <div className="col">
-                    <h1>Bistro Bliss</h1>
-                    <SocialMedia />
+                <div className="col theme-text-inverse">
+                    <Logo
+                        style={{ fontSize: "32.67px " }}
+                        className="text-start"
+                    />
+                    <p>
+                        In the new era of technology we look in the futur with
+                        certainty and rpide for our company
+                    </p>
+                    <div
+                        className="d-flex justify-content-between "
+                        style={{ width: "176px" }}
+                    >
+                        <Roundel style={{padding:"9px"}} className="theme-bg-primary" rounded>
+                            <svg
+                                width="15"
+                                height="12"
+                                viewBox="0 0 15 12"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                <path
+                                    d="M14.2487 1.73327C13.7249 1.96606 13.172 2.11156 12.59 2.19885C13.172 1.84967 13.6376 1.29679 13.8413 0.62752C13.2884 0.947606 12.6773 1.1804 12.0081 1.32589C11.4843 0.773013 10.7277 0.423828 9.91294 0.423828C8.34161 0.423828 7.06126 1.70417 7.06126 3.27551C7.06126 3.5083 7.09036 3.71199 7.14856 3.91568C4.79156 3.79928 2.66735 2.66443 1.24151 0.918507C1.00872 1.35499 0.863225 1.82057 0.863225 2.34435C0.863225 3.3337 1.3579 4.20667 2.14357 4.73044C1.67799 4.70135 1.24151 4.58495 0.834127 4.38126V4.41036C0.834127 5.8071 1.82348 6.97105 3.13293 7.23294C2.90014 7.29114 2.63825 7.32023 2.37636 7.32023C2.20177 7.32023 1.99808 7.29114 1.82348 7.26204C2.20177 8.39689 3.24932 9.24075 4.50057 9.24075C3.51121 9.99732 2.28906 10.4629 0.950522 10.4629C0.717731 10.4629 0.484941 10.4629 0.28125 10.4338C1.5616 11.2486 3.04563 11.7141 4.67516 11.7141C9.94204 11.7141 12.8228 7.34933 12.8228 3.56649C12.8228 3.4501 12.8228 3.30461 12.8228 3.18821C13.3757 2.80993 13.8704 2.31525 14.2487 1.73327Z"
+                                    fill="white"
+                                />
+                            </svg>
+                        </Roundel>
+                        <Roundel style={{padding:"9px"}} className="theme-bg-primary" rounded>
+                            <svg
+                                width="9"
+                                height="16"
+                                viewBox="0 0 9 16"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                <path
+                                    d="M2.88298 15.3846V8.44271H0.546875V5.7373H2.88298V3.74214C2.88298 1.42678 4.29713 0.166016 6.36259 0.166016C7.35197 0.166016 8.2023 0.239677 8.4501 0.272601V2.6923L7.01759 2.69295C5.89427 2.69295 5.67677 3.22673 5.67677 4.01002V5.7373H8.35577L8.00696 8.44271H5.67677V15.3846H2.88298Z"
+                                    fill="white"
+                                />
+                            </svg>
+                        </Roundel>
+                        <Roundel style={{padding:"9px"}} className="theme-bg-primary" rounded>
+                            <svg
+                                width="17"
+                                height="17"
+                                viewBox="0 0 17 17"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                <path
+                                    d="M8.49899 1.56389C10.7599 1.56389 11.0276 1.57236 11.9208 1.61309C12.4578 1.61966 12.9897 1.71826 13.4933 1.90462C13.8586 2.04548 14.1903 2.26127 14.4671 2.53809C14.744 2.8149 14.9597 3.14662 15.1006 3.51188C15.287 4.01555 15.3856 4.54745 15.3921 5.08446C15.4325 5.9776 15.4413 6.24534 15.4413 8.50623C15.4413 10.7671 15.4329 11.0349 15.3921 11.928C15.3856 12.465 15.287 12.9969 15.1006 13.5006C14.9597 13.8658 14.744 14.1976 14.4671 14.4744C14.1903 14.7512 13.8586 14.967 13.4933 15.1078C12.9897 15.2942 12.4578 15.3928 11.9208 15.3994C11.028 15.4397 10.7603 15.4486 8.49899 15.4486C6.2377 15.4486 5.96996 15.4401 5.07722 15.3994C4.54021 15.3928 4.00831 15.2942 3.50464 15.1078C3.13938 14.967 2.80766 14.7512 2.53085 14.4744C2.25403 14.1976 2.03824 13.8658 1.89738 13.5006C1.71102 12.9969 1.61242 12.465 1.60585 11.928C1.56552 11.0349 1.55665 10.7671 1.55665 8.50623C1.55665 6.24534 1.56512 5.9776 1.60585 5.08446C1.61242 4.54745 1.71102 4.01555 1.89738 3.51188C2.03824 3.14662 2.25403 2.8149 2.53085 2.53809C2.80766 2.26127 3.13938 2.04548 3.50464 1.90462C4.00831 1.71826 4.54021 1.61966 5.07722 1.61309C5.97036 1.57276 6.2381 1.56389 8.49899 1.56389ZM8.49899 0.0380859C6.2006 0.0380859 5.91109 0.0477633 5.00786 0.0888924C4.30506 0.102871 3.60972 0.235941 2.95141 0.482441C2.38669 0.695209 1.8752 1.02864 1.45262 1.45946C1.02141 1.88219 0.687699 2.39397 0.474798 2.95905C0.228298 3.61736 0.095229 4.3127 0.08125 5.01551C0.0409274 5.91792 0.03125 6.20744 0.03125 8.50583C0.03125 10.8042 0.0409274 11.0937 0.0820564 11.997C0.0960354 12.6998 0.229105 13.3951 0.475605 14.0534C0.688269 14.6184 1.0217 15.1302 1.45262 15.553C1.87543 15.9839 2.38721 16.3174 2.95222 16.53C3.61052 16.7765 4.30587 16.9096 5.00867 16.9236C5.91189 16.9639 6.2002 16.9744 8.4998 16.9744C10.7994 16.9744 11.0877 16.9647 11.9909 16.9236C12.6937 16.9096 13.3891 16.7765 14.0474 16.53C14.6097 16.3121 15.1204 15.9791 15.5467 15.5525C15.973 15.1259 16.3056 14.6151 16.5232 14.0526C16.7697 13.3943 16.9028 12.699 16.9167 11.9962C16.9571 11.0937 16.9667 10.8042 16.9667 8.50583C16.9667 6.20744 16.9571 5.91793 16.9159 5.0147C16.9019 4.3119 16.7689 3.61655 16.5224 2.95825C16.3097 2.39324 15.9763 1.88146 15.5454 1.45865C15.1225 1.02773 14.6108 0.694299 14.0458 0.481634C13.3875 0.235134 12.6921 0.102065 11.9893 0.088086C11.0869 0.0477634 10.7974 0.0380859 8.49899 0.0380859Z"
+                                    fill="white"
+                                />
+                                <path
+                                    d="M8.49683 4.16211C7.6368 4.16211 6.79608 4.41714 6.08099 4.89494C5.3659 5.37275 4.80856 6.05188 4.47944 6.84644C4.15032 7.641 4.06421 8.51532 4.23199 9.35882C4.39978 10.2023 4.81392 10.9771 5.42205 11.5853C6.03019 12.1934 6.80499 12.6075 7.6485 12.7753C8.492 12.9431 9.36632 12.857 10.1609 12.5279C10.9554 12.1988 11.6346 11.6414 12.1124 10.9263C12.5902 10.2112 12.8452 9.37053 12.8452 8.5105C12.8452 7.35723 12.3871 6.2512 11.5716 5.43572C10.7561 4.62024 9.65009 4.16211 8.49683 4.16211ZM8.49683 11.3331C7.93857 11.3331 7.39286 11.1675 6.92868 10.8574C6.46451 10.5472 6.10274 10.1064 5.8891 9.59065C5.67547 9.07489 5.61957 8.50736 5.72848 7.95984C5.83739 7.41231 6.10622 6.90938 6.50096 6.51463C6.89571 6.11989 7.39864 5.85106 7.94617 5.74215C8.49369 5.63324 9.06122 5.68914 9.57698 5.90277C10.0927 6.11641 10.5336 6.47818 10.8437 6.94235C11.1539 7.40653 11.3194 7.95224 11.3194 8.5105C11.3194 9.25909 11.022 9.97703 10.4927 10.5064C9.96336 11.0357 9.24542 11.3331 8.49683 11.3331Z"
+                                    fill="white"
+                                />
+                                <path
+                                    d="M13.0318 5.00394C13.5929 5.00394 14.0479 4.549 14.0479 3.98781C14.0479 3.42662 13.5929 2.97168 13.0318 2.97168C12.4706 2.97168 12.0156 3.42662 12.0156 3.98781C12.0156 4.549 12.4706 5.00394 13.0318 5.00394Z"
+                                    fill="white"
+                                />
+                            </svg>
+                        </Roundel>
+                        <Roundel style={{padding:"9px"}} className="theme-bg-primary" rounded>
+                            <svg
+                                width="17"
+                                height="16"
+                                viewBox="0 0 17 16"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                <path
+                                    fill-rule="evenodd"
+                                    clip-rule="evenodd"
+                                    d="M8.27956 0.0380859C3.79088 0.0380859 0.179688 3.64928 0.179688 8.13795C0.179688 11.7154 2.5084 14.7528 5.7146 15.8328C6.11959 15.9003 6.25459 15.6641 6.25459 15.4278C6.25459 15.2253 6.25459 14.7191 6.25459 14.0441C3.99338 14.5504 3.52088 12.9641 3.52088 12.9641C3.14964 12.0191 2.60965 11.7829 2.60965 11.7829C1.86716 11.2767 2.67715 11.2767 2.67715 11.2767C3.48713 11.3442 3.92588 12.1204 3.92588 12.1204C4.63462 13.3691 5.81585 12.9979 6.28834 12.7954C6.35584 12.2554 6.55834 11.9179 6.79458 11.7154C5.00586 11.5129 3.11589 10.8042 3.11589 7.69921C3.11589 6.82173 3.41964 6.07924 3.95963 5.53925C3.89213 5.33675 3.58838 4.52676 4.02713 3.37928C4.02713 3.37928 4.70212 3.17678 6.25459 4.22302C6.89583 4.05427 7.60457 3.95302 8.27956 3.95302C8.95455 3.95302 9.66329 4.05427 10.3045 4.22302C11.857 3.17678 12.532 3.37928 12.532 3.37928C12.9707 4.49301 12.7007 5.303 12.5995 5.53925C13.1057 6.11299 13.4432 6.82173 13.4432 7.69921C13.4432 10.8042 11.5533 11.4791 9.73078 11.6816C10.0345 11.9179 10.2708 12.4241 10.2708 13.1666C10.2708 14.2466 10.2708 15.1241 10.2708 15.3941C10.2708 15.5966 10.4058 15.8666 10.8445 15.7991C14.0507 14.7528 16.3794 11.7154 16.3794 8.13795C16.3794 3.64928 12.7682 0.0380859 8.27956 0.0380859Z"
+                                    fill="white"
+                                />
+                            </svg>
+                        </Roundel>
+                    </div>
                 </div>
 
                 <div className="col">
-                    <div>Pages</div>
+                    <b className="mb-4 theme-text-inverse">Pages</b>
                     <ul className="navbar-nav">
                         <li className="nav-item">
-                            <a className="nav-link" href={"/"}>Home</a>
-
+                            <a className="nav-link" href={"/"}>
+                                Home
+                            </a>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link" href={"#"}>About</a>
+                            <a className="nav-link" href={"#"}>
+                                About
+                            </a>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link" href={"#"}>Menu</a>
+                            <a className="nav-link" href={"#"}>
+                                Menu
+                            </a>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link" href={"#"}>Pricing</a>
+                            <a className="nav-link" href={"#"}>
+                                Pricing
+                            </a>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link" href={"#"}>Blog</a>
+                            <a className="nav-link" href={"#"}>
+                                Blog
+                            </a>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link" href={"#"}>Contact</a>
+                            <a className="nav-link" href={"#"}>
+                                Contact
+                            </a>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link" href={"#"}>Delivery</a>
+                            <a className="nav-link" href={"#"}>
+                                Delivery
+                            </a>
                         </li>
                     </ul>
                 </div>
 
                 <div className="col">
-                    <div>Utility Pages</div>
+                    <b className="mb-4 theme-text-inverse">Utility Pages</b>
                     <ul className="navbar-nav">
                         <li className="nav-item">
-                            <a className="nav-link" href={"#"}>Start Here</a>
+                            <a className="nav-link" href={"#"}>
+                                Start Here
+                            </a>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link" href={"#"}>Styleguid</a>
+                            <a className="nav-link" href={"#"}>
+                                Styleguid
+                            </a>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link" href={"#"}>Password Protected</a>
+                            <a className="nav-link" href={"#"}>
+                                Password Protected
+                            </a>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link" href={"#"}>404 Not Found</a>
+                            <a className="nav-link" href={"#"}>
+                                404 Not Found
+                            </a>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link" href={"#"}>Licenses</a>
+                            <a className="nav-link" href={"#"}>
+                                Licenses
+                            </a>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link" href={"#"}>Changelog</a>
+                            <a className="nav-link" href={"#"}>
+                                Changelog
+                            </a>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link" href={"#"}>View More</a>
+                            <a className="nav-link" href={"#"}>
+                                View More
+                            </a>
                         </li>
                     </ul>
                 </div>
 
-                <div className="col d-flex justify-content-between">
-                    <h4 className="mb-3">Follow Us On Instagram</h4>
-                    <div className="row g-2 row-cols-2">
-                        <Card imageOverlay image={{src:"/src/assets/mac&cheese.png"}} />
-                    </div>
-                    <div className="row g-2 row-cols-2">
-                        <Card imageOverlay image={{src:"/src/assets/fries.png"}} />
-                    </div>
-                    <div className="row g-2 row-cols-2">
-                        <Card imageOverlay image={{src:"/src/assets/salad.png"}} />
-                    </div>
-                    <div className="row g-2 row-cols-2">
-                        <Card imageOverlay image={{src:"/src/assets/pancakes.png"}} />
+                <div className="col d-flex flex-column ">
+                    <b className="mb-4 theme-text-inverse">
+                        Follow Us On Instagram
+                    </b>
+                    <div className="row p-2 g-4 row-cols-xl-2">
+                        <div
+                            className="col-xl "
+                            style={{ height: "121.06px", width: "137.29px" }}
+                        >
+                            <img
+                                className="rounded-4 h-100"
+                                src="/src/assets/mac&cheese.png"
+                                alt=""
+                            />
+                        </div>
+                        <div
+                            className="col-xl "
+                            style={{ height: "121.06px", width: "137.29px" }}
+                        >
+                            <img
+                                className="rounded-4 h-100"
+                                src="/src/assets/fries.png"
+                                alt=""
+                            />
+                        </div>
+                        <div
+                            className="col-xl "
+                            style={{ height: "121.06px", width: "137.29px" }}
+                        >
+                            <img
+                                className="rounded-4 h-100"
+                                src="/src/assets/salad.png"
+                                alt=""
+                            />
+                        </div>
+                        <div
+                            className="col-xl "
+                            style={{ height: "121.06px", width: "137.29px" }}
+                        >
+                            <img
+                                className="rounded-4 h-100"
+                                src="/src/assets/pancakes.png"
+                                alt=""
+                            />
+                        </div>
                     </div>
                 </div>
             </div>
+            <p className="mt-5 text-center">
+                Copyright © 2023 Hashtag Developer. All Rights Reserved
+            </p>
         </footer>
     );
 }

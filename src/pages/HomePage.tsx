@@ -12,6 +12,7 @@ import {
     DishIcon,
     DrinkIcon,
 } from "../common/constants/Svgs";
+import "./HomePage.css";
 
 export default function HomePage(): ReactNode {
     return (
@@ -32,7 +33,10 @@ your taste"
                     numberOfColumns={4}
                     spacing={5}
                 >
-                    <Card sameHeight className="align-items-center theme-card-border p-4">
+                    <Card
+                        sameHeight
+                        className="align-items-center theme-card-border p-4"
+                    >
                         <Roundel
                             href="#"
                             className="theme-bg-surface rounded-circle"
@@ -42,7 +46,10 @@ your taste"
                         </Roundel>
                         <Card.Body {...menuItem1} />
                     </Card>
-                    <Card sameHeight className="align-items-center theme-card-border p-4">
+                    <Card
+                        sameHeight
+                        className="align-items-center theme-card-border p-4"
+                    >
                         <Roundel
                             href="#"
                             className="theme-bg-surface rounded-circle"
@@ -52,7 +59,10 @@ your taste"
                         </Roundel>
                         <Card.Body {...menuItem2} />
                     </Card>
-                    <Card sameHeight className="align-items-center theme-card-border p-4">
+                    <Card
+                        sameHeight
+                        className="align-items-center theme-card-border p-4"
+                    >
                         <Roundel
                             href="#"
                             className="theme-bg-surface rounded-circle"
@@ -62,7 +72,10 @@ your taste"
                         </Roundel>
                         <Card.Body {...menuItem3} />
                     </Card>
-                    <Card sameHeight className="align-items-center theme-card-border p-4">
+                    <Card
+                        sameHeight
+                        className="align-items-center theme-card-border p-4"
+                    >
                         <Roundel
                             href="#"
                             className="theme-bg-surface rounded-circle"
@@ -76,19 +89,26 @@ your taste"
             </Section>
 
             <Section
-                className="theme-bg-surface "
-                style={{ padding: "0", width: "100%", maxWidth: "None" }}
+                style={{ padding: "141px 0", width: "100%", maxWidth: "None" }}
+                className={`d-flex align-items-center justify-content-center theme-bg-surface position-relative `}
             >
                 <HeroSplit
+                    className="container align-items-center gap-5"
                     style={{ padding: "120px 150px" }}
                 >
                     <HeroSplit.Image
                         path="/src/assets/gyro.png"
+                        className="position-relative rounded-5"
                         style={{ width: "599px", height: "566px" }}
                     />
                     <div
-                        className="p-5 theme-text-inverse w-auto position-absolute theme-icon d-flex flex-column justify-content-between "
-                        style={{ width: "411px", height: "321px" }}
+                        className="d-none d-xxl-inline-flex rounded-5 p-4 theme-text-inverse w-auto position-absolute theme-icon d-flex flex-column justify-content-between "
+                        style={{
+                            width: "411px",
+                            height: "281px",
+                            left: "20vh",
+                            top: "20vw",
+                        }}
                     >
                         <h3 className="mb-3">Come and visit us</h3>
                         <div className="d-flex">
@@ -172,31 +192,50 @@ your taste"
                 </HeroSplit>
             </Section>
 
-            <Section title="We also offer unique services for your events">
-                <GridContainer numberOfColumns={4}>
-                    <Card sameHeight>
-                        <Card.Image src="/src/assets/kebab-set-table.png" />
+            <Section
+                className="py-5"
+                title="We also offer unique services for your events"
+            >
+                <GridContainer numberOfColumns={4} className="g-4">
+                    <Card sameHeight className="border-0">
+                        <Card.Image
+                            src="/src/assets/kebab-set-table.png"
+                            className="rounded-3"
+                            style={{ height: "319.47px" }}
+                        />
                         <Card.Body
                             title="Caterings"
                             text="In the new era of technology we look in the future with certainty for life."
                         />
                     </Card>
-                    <Card sameHeight>
-                        <Card.Image src="/src/assets/charming-lady.png" />
+                    <Card sameHeight className="border-0">
+                        <Card.Image
+                            src="/src/assets/charming-lady.png"
+                            className="rounded-3"
+                            style={{ height: "319.47px" }}
+                        />
                         <Card.Body
                             title="Birthdays"
                             text="In the new era of technology we look in the future with certainty for life."
                         />
                     </Card>
-                    <Card sameHeight>
-                        <Card.Image src="/src/assets/man-wife-sunnyday.png" />
+                    <Card sameHeight className="border-0">
+                        <Card.Image
+                            src="/src/assets/man-wife-sunnyday.png"
+                            className="rounded-3"
+                            style={{ height: "319.47px" }}
+                        />
                         <Card.Body
                             title="Weddings"
                             text="In the new era of technology we look in the future with certainty for life."
                         />
                     </Card>
-                    <Card sameHeight>
-                        <Card.Image src="/src/assets/group-friends-eating-restaurant.png" />
+                    <Card sameHeight className="border-0">
+                        <Card.Image
+                            src="/src/assets/group-friends-eating-restaurant.png"
+                            className="rounded-3"
+                            style={{ height: "319.47px" }}
+                        />
                         <Card.Body
                             title="Events"
                             text="In the new era of technology we look in the future with certainty for life."
@@ -206,86 +245,162 @@ your taste"
             </Section>
 
             {/* refactor into compound pattern */}
-            <Section>
+            <Section className="my-5" style={{ height: "627px" }}>
                 <HeroSplit>
-                    <HeroSplit.Image path="/src/assets/chef.png" />
+                    <HeroSplit.Image
+                        className="col rounded-5"
+                        path="/src/assets/chef.png"
+                    />
                     <HeroSplit.HeroSplitContent
                         title="Fastest Food Delivery in City"
                         subtitle="Our Visual designer lets you quickly and of drag a down your way to custom maps for both keep desktop."
-                        className="d-flex h-100 justify-content-center"
+                        className="d-flex col h-100 justify-content-center"
                     />
                 </HeroSplit>
             </Section>
 
             {/* TODO: add footer for the cards and refactor card Component into compound pattern */}
-            <Section title="What Our Customers Say">
-                <GridContainer numberOfColumns={3}>
-                    <Card sameHeight>
+            <Section
+                center
+                title="What Our Customers Say"
+                className="p-5"
+                style={{ minHeight: "766px" }}
+            >
+                <GridContainer
+                    id="customers"
+                    className="customers g-4"
+                    numberOfColumns={3}
+                >
+                    <Card
+                        sameHeight
+                        className="justify-content-between  p-4 theme-bg-surface border-0"
+                    >
                         <Card.Body
                             title='"The best restaurant"'
                             text="Last night, we dined at place and were simply blown away. From the moment we stepped in, we were enveloped in an inviting atmosphere and greeted with warm smiles."
                         />
+                        <hr />
+                        <div className="d-flex align-items-center">
+                            <Roundel
+                                className="me-2"
+                                rounded
+                                image={{
+                                    className: "rounded-circle",
+                                    src: "https://randomuser.me/api/portraits/men/32.jpg",
+                                    alt: "Customer Avatar",
+                                    style: { height: "81px" },
+                                }}
+                            />
+                            <div className="d-flex flex-column">
+                                <b>Sophire Robson</b>
+                                <p className="mb-0">Los Angeles</p>
+                            </div>
+                        </div>
                     </Card>
-                    <Card sameHeight>
+                    <Card
+                        sameHeight
+                        className="justify-content-between p-4 theme-bg-surface border-0"
+                    >
                         <Card.Body
-                            title="Birthdays"
+                            title='"Simply delicious"'
                             text="Place exceeded my expectations on all fronts. The ambiance was cozy and relaxed, making it a perfect venue for our anniversary dinner. Each dish was prepared and beautifully presented."
                         />
+                        <hr />
+                        <div className="d-flex align-items-center">
+                            <Roundel
+                                className="me-2"
+                                rounded
+                                image={{
+                                    className: "rounded-circle",
+                                    src: "https://randomuser.me/api/portraits/men/32.jpg",
+                                    alt: "Customer Avatar",
+                                    style: { height: "81px" },
+                                }}
+                            />
+                            <div className="d-flex flex-column">
+                                <b>Matt Cannon</b>
+                                <p className="mb-0">San Diego, CA</p>
+                            </div>
+                        </div>
                     </Card>
-                    <Card sameHeight>
+                    <Card
+                        sameHeight
+                        className="justify-content-between p-4 theme-bg-surface border-0"
+                    >
                         <Card.Body
-                            title="Weddings"
+                            title="“One of a kind restaurant”"
                             text="The culinary experience at place is first to none. The atmosphere is vibrant, the food - nothing short of extraordinary. The food was the highlight of our evening. Highly recommended."
                         />
+                        <hr />
+                        <div className="d-flex align-items-center">
+                            <Roundel
+                                className="me-2"
+                                rounded
+                                image={{
+                                    className: "rounded-circle",
+                                    src: "https://randomuser.me/api/portraits/men/32.jpg",
+                                    alt: "Customer Avatar",
+                                    style: { height: "81px" },
+                                }}
+                            />
+                            <div className="d-flex flex-column">
+                                <b>Andy Smith</b>
+                                <p className="mb-0">San Francisco, CA</p>
+                            </div>
+                        </div>
                     </Card>
                 </GridContainer>
             </Section>
 
             <Section
-                style={{ minHeight: "80vh" }}
-                className=" d-flex flex-column justify-content-evenly"
+                style={{ minHeight: "80vh",maxWidth:"None" }}
+                className=" d-flex p-5 flex-column justify-content-evenly theme-bg-surface "
             >
-                <div className="d-flex flex-row justify-content-between align-items-center">
-                    <h1>Our Blog Articles</h1>
-                    <button className="theme-button">Read all articles</button>
-                </div>
-                <div className="row row-cols-md-2 g-3">
-                    <div className="col ">
-                        <Card sameHeight>
-                            <Card.Image src="/src/assets/burger-sandwich.png" />
-                            <Card.Body
-                                title="The secret tips & tricks to prepare a perfect burger & pizza for our customers"
-                                subtitle="Lorem ipsum dolor sit amet consectetur of a adipiscing elitilmim semper adipiscing massa gravida nisi cras enim quis nibholm varius amet gravida ut facilisis neque egestas."
-                            />
-                        </Card>
+                <Section className="py-5">
+                    <div className="d-flex flex-row justify-content-between align-items-center">
+                        <h1>Our Blog & Articles</h1>
+                        <button className="theme-button">
+                            Read all articles
+                        </button>
                     </div>
-                    <div className="col row row-cols-md-2 g-3">
+                    <div className="row row-cols-1 row-cols-md-2 g-3">
                         <div className="col ">
                             <Card sameHeight>
-                                <Card.Image src="/src/assets/fries.png" />
-                                <Card.Body title="How to prepare the perfect french fries in an air fryer" />
+                                <Card.Image src="/src/assets/burger-sandwich.png" />
+                                <Card.Body
+                                    title="The secret tips & tricks to prepare a perfect burger & pizza for our customers"
+                                    subtitle="Lorem ipsum dolor sit amet consectetur of a adipiscing elitilmim semper adipiscing massa gravida nisi cras enim quis nibholm varius amet gravida ut facilisis neque egestas."
+                                />
                             </Card>
                         </div>
-                        <div className="col ">
-                            <Card sameHeight>
-                                <Card.Image src="/src/assets/tenders.png" />
-                                <Card.Body title="How to prepare delicious chicken tenders" />
-                            </Card>
-                        </div>
-                        <div className="col ">
-                            <Card sameHeight>
-                                <Card.Image src="/src/assets/cupcakespng.png" />
-                                <Card.Body title="7 delicious cheesecake recipes you can prepare" />
-                            </Card>
-                        </div>
-                        <div className="col ">
-                            <Card sameHeight>
-                                <Card.Image src="/src/assets/pizza.png" />
-                                <Card.Body title="5 great pizza restaurants you should visit this city" />
-                            </Card>
+                        <div className="col row row-cols-md-2 g-3">
+                            <div className="col ">
+                                <Card sameHeight>
+                                    <Card.Image src="/src/assets/fries.png" />
+                                    <Card.Body title="How to prepare the perfect french fries in an air fryer" />
+                                </Card>
+                            </div>
+                            <div className="col ">
+                                <Card sameHeight>
+                                    <Card.Image src="/src/assets/tenders.png" />
+                                    <Card.Body title="How to prepare delicious chicken tenders" />
+                                </Card>
+                            </div>
+                            <div className="col ">
+                                <Card sameHeight>
+                                    <Card.Image src="/src/assets/cupcakespng.png" />
+                                    <Card.Body title="7 delicious cheesecake recipes you can prepare" />
+                                </Card>
+                            </div>
+                            <div className="col ">
+                                <Card sameHeight>
+                                    <Card.Image src="/src/assets/pizza.png" />
+                                    <Card.Body title="5 great pizza restaurants you should visit this city" />
+                                </Card>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </Section>
             </Section>
         </main>
     );

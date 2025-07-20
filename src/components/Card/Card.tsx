@@ -1,15 +1,14 @@
-import type { CSSProperties, ReactNode } from "react";
+import type { CSSProperties, HTMLAttributes, ReactNode } from "react";
 import { CardImage } from "./CardImage";
 import { CardHeader } from "./CardHeader";
 import { CardBody } from "./CardBody";
 import { CardFooter } from "./CardFooter";
 
-interface CardProps {
+interface CardProps extends HTMLAttributes<HTMLElement>{
     style?: CSSProperties;
     className?: string;
     sameHeight?: boolean;
     children: ReactNode;
-    [key: string]: unknown;
 }
 
 /**
