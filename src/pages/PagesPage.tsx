@@ -94,15 +94,16 @@ const blogPosts = [
 export default function PagesPage(): ReactNode {
     return (
         <main>
-            <Section title="Our Blog Articles" className="text-center p-5">
-                <p>
+            <Section title="Our Blog & Articles" className="text-center p-5 theme-bg-surface" style={{maxWidth:"none"}}>
+                <div className="container">
+                                    <p>
                     We consider all the drivers of change gives you the
                     components you need to change to create a truly happens.
                 </p>
                 <GridContainer numberOfColumns={4} className="g-4 my-4 mb-5">
                     {blogPosts.map((post) => (
-                        <Card sameHeight key={post.id}>
-                            <Card.Image src={post.image} />
+                        <Card sameHeight className="rounded-4 text-start" key={post.id}>
+                            <Card.Image src={post.image} style={{height:"200px", width:"306px"}} />
                             <h6 className="card-subtitle m-2 text-muted">
                                 {post.date}
                             </h6>
@@ -110,6 +111,7 @@ export default function PagesPage(): ReactNode {
                         </Card>
                     ))}
                 </GridContainer>
+            </div>
             </Section>
         </main>
     );

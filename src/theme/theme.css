@@ -423,6 +423,10 @@ html {
   cursor: pointer;
   transition: all 0.2s ease;
   font-family: var(--font-family-accent);
+  -webkit-transition: all 0.2s ease;
+  -moz-transition: all 0.2s ease;
+  -ms-transition: all 0.2s ease;
+  -o-transition: all 0.2s ease;
 }
 
 /* Primary button */

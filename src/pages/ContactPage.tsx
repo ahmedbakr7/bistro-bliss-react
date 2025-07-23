@@ -14,8 +14,7 @@ export default function ContactPage(): ReactNode {
                     className="p-5 bg-white rounded shadow-lg"
                     style={{ width: "100%", maxWidth: "800px" }}
                 >
-                    <div className="row row-cols-2">
-                        <div className="col">
+                    <div className="row row-cols-2"> <div className="col">
                             <div className="mb-3">
                                 <label
                                     htmlFor="nameFormControl"

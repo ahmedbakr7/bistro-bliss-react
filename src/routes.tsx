@@ -8,16 +8,24 @@ import HomePage from "./pages/HomePage";
 import BookPage from "./pages/BookPage";
 import PageDetailsPage from "./pages/PageDetailsPage";
 import WishlistPage from "./pages/Wishlist";
+import ProfilePage from "./pages/Profile";
+import AdminLayout from "./pages/AdminLayout";
+import AuthLayout from "./pages/AuthLayout";
+import AuthLogin from "./components/Auth/AuthLogin";
+import AuthRegister from "./components/Auth/AuthRegister";
 
-const paths = {
+export const paths = {
     homePage: "/",
-    about: "/about",
-    menu: "/menu",
-    pages: "/pages",
-    contact: "/contact",
-    book: "/book",
-    pageDetails: "/page-details",
-    wishlist: "/wishlist",
+    about: "about",
+    menu: "menu",
+    pages: "pages",
+    contact: "contact",
+    login: "login",
+    register: "register",
+    book: "book",
+    pageDetails: "page-details",
+    wishlist: "wishlist",
+    profile: "profile",
 };
 
 const router = createBrowserRouter([
@@ -54,10 +62,34 @@ const router = createBrowserRouter([
                 path: paths.wishlist,
             },
             {
+                element: <ProfilePage />,
+                path: paths.profile,
+            },
+            {
                 element: <ContactPage />,
                 path: paths.contact,
             },
         ],
+    },
+    {
+        path: "/auth",
+        element: <AuthLayout />,
+        children: [
+            {
+                element: <AuthLogin />,
+                path: paths.login,
+                index: true,
+            },
+            {
+                element: <AuthRegister />,
+                path: paths.register,
+            },
+        ],
+    },
+    {
+        path: "/admin",
+        element: <AdminLayout />,
+        children: [],
     },
 ]);
 export default router;

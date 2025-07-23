@@ -1,0 +1,187 @@
+[{
+  "_id": {
+    "$oid": "67b2adf5cc26cd07f01c3d8f"
+  },
+  "name": "Lemon Drink",
+  "price": 7.25,
+  "category": "Drinks",
+  "description": "Made with eggs, lettuce, salt, oil and other ingredients",
+  "image": "..\\client\\src\\assets\\uploaded\\1739763180414-cocktail.png",
+  "createdAt": {
+    "$date": "2025-02-17T03:33:09.194Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-17T03:33:09.194Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b2ae55cc26cd07f01c3d9f"
+  },
+  "name": "Chocolate Icecream",
+  "price": 18.05,
+  "category": "Desserts",
+  "description": "Made with eggs, ice cream, salt, flour and other ingredients",
+  "image": "..\\client\\src\\assets\\uploaded\\1739763284462-chocoIce.png",
+  "createdAt": {
+    "$date": "2025-02-17T03:34:45.851Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-17T03:34:45.851Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b2aea1cc26cd07f01c3da9"
+  },
+  "name": "Fried Eggs",
+  "price": 12,
+  "category": "Breakfast",
+  "description": "Made with eggs, lettuce, salt, oil and other ingredients",
+  "image": "..\\client\\src\\assets\\uploaded\\1739763360577-friedEggs.png",
+  "createdAt": {
+    "$date": "2025-02-17T03:36:01.679Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-17T03:36:01.679Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b2aef1cc26cd07f01c3db3"
+  },
+  "name": "Hawaiian Pizza",
+  "price": 15.99,
+  "category": "Main Dishes",
+  "description": "Made with eggs, ruti, ada, salt, oil and other ingredients.",
+  "image": "..\\client\\src\\assets\\uploaded\\1739763439694-hwaiPizza.png",
+  "createdAt": {
+    "$date": "2025-02-17T03:37:21.854Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-17T03:37:21.854Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b2afc2cc26cd07f01c3dbf"
+  },
+  "name": "Classic Waffles",
+  "price": 12.55,
+  "category": "Main Dishes",
+  "description": "Made with waffles 😁 and other ingredients.",
+  "image": "..\\client\\src\\assets\\uploaded\\1739763630830-waffle.png",
+  "createdAt": {
+    "$date": "2025-02-17T03:40:50.765Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-17T03:40:50.765Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b2b094cc26cd07f01c3dc5"
+  },
+  "name": "Mint Lemonade",
+  "price": 5,
+  "category": "Drinks",
+  "description": "Made with lemon, salt, rc lemon and other ingredients.",
+  "image": "..\\client\\src\\assets\\uploaded\\1739763838522-lemonade.png",
+  "createdAt": {
+    "$date": "2025-02-17T03:44:20.950Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-17T03:44:20.950Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b2b10dcc26cd07f01c3dc9"
+  },
+  "name": "Butterscotch Cake",
+  "price": 20.99,
+  "category": "Desserts",
+  "description": "Made with eggs,flour, salt, oil and other ingredients.",
+  "image": "..\\client\\src\\assets\\uploaded\\1739763966451-butterCake.png",
+  "createdAt": {
+    "$date": "2025-02-17T03:46:21.489Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-17T03:46:21.489Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b2b267cc26cd07f01c3e05"
+  },
+  "name": "Cheese Burger",
+  "price": 12.55,
+  "category": "Main Dishes",
+  "description": "Made with eggs, lettuce, salt, bread and other ingredients.",
+  "image": "..\\client\\src\\assets\\uploaded\\1739764303157-urzj1d1587670726.jpg",
+  "createdAt": {
+    "$date": "2025-02-17T03:52:07.468Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-17T03:52:07.468Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b2b29fcc26cd07f01c3e0f"
+  },
+  "name": "Shakshuka ",
+  "price": 25.5,
+  "category": "Breakfast",
+  "description": "Made with eggs, lettuce, salt, bread and other ingredients.",
+  "image": "..\\client\\src\\assets\\uploaded\\1739764383273-g373701551450225.jpg",
+  "createdAt": {
+    "$date": "2025-02-17T03:53:03.941Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-17T03:53:03.941Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b2b2cccc26cd07f01c3e11"
+  },
+  "name": "English Muffin",
+  "price": 35,
+  "category": "Breakfast",
+  "description": "Made with eggs, lettuce, salt, bread and other ingredients.",
+  "image": "..\\client\\src\\assets\\uploaded\\1739764408014-qqpwsy1511796276.jpg",
+  "createdAt": {
+    "$date": "2025-02-17T03:53:48.592Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-17T03:53:48.592Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67b2b37acc26cd07f01c3e31"
+  },
+  "name": "Cheese cake",
+  "price": 10,
+  "category": "Desserts",
+  "description": "Made with eggs, lettuce, salt, oil and other ingredients.",
+  "image": "..\\client\\src\\assets\\uploaded\\1739764601317-uuxwvq1483907861.jpg",
+  "createdAt": {
+    "$date": "2025-02-17T03:56:42.446Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-17T03:56:42.446Z"
+  },
+  "__v": 0
+}]
