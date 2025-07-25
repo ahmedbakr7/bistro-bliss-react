@@ -3,6 +3,8 @@ import Form from "../Form/Form";
 import { resetRegister, submitRegister } from "./AuthController";
 import { registerSchema } from "../../schemas/auth/registerSchema";
 import Input from "../Form/Input";
+import { useMutation } from "@tanstack/react-query";
+import type { FormikHelpers } from "formik";
 
 export interface RegisterDataType {
     fullname: string;
@@ -14,6 +16,35 @@ export interface RegisterDataType {
 }
 
 export default function AuthRegister(): ReactNode {
+    const registerMutation = useMutation({
+        mutationFn: async (loginData: RegisterDataType) => {
+            return await submitRegister(loginData);
+        },
+        onSuccess: () => {
+            // Handle successful registration - UI will show success message
+            console.log("Registration successful!");
+        },
+        onError: (error) => {
+            // Handle registration error - UI will show error message
+            console.error("Registration failed:", error);
+        },
+    });
+
+    // Custom submit handler that uses the mutation
+    const handleSubmit = async (
+        values: RegisterDataType,
+        { resetForm }: FormikHelpers<RegisterDataType>
+    ) => {
+        try {
+            await registerMutation.mutateAsync(values);
+            // Reset form on successful submission
+            resetForm();
+        } catch (error) {
+            // Error is handled by the mutation's onError callback
+            console.log(error);
+        }
+    };
+
     return (
         <div
             className="p-5 theme-bg-main rounded shadow-lg"
@@ -29,7 +60,7 @@ export default function AuthRegister(): ReactNode {
                     confirmPassword: "",
                 }}
                 onReset={resetRegister}
-                onSubmit={submitRegister}
+                onSubmit={handleSubmit}
                 validationSchema={registerSchema}
             >
                 {(formProps) => (
@@ -150,6 +181,31 @@ export default function AuthRegister(): ReactNode {
                                 Sign In
                             </a>
                         </div>
+
+                        {registerMutation.isError && (
+                            <div
+                                className="alert alert-danger mt-3"
+                                role="alert"
+                            >
+                                Failed to create account. Please try again.
+                                <br />
+                                <b>Error:</b>{" "}
+                                <span className="subtitle">
+                                    {registerMutation.error.message}
+                                </span>
+                            </div>
+                        )}
+
+                        {/* Display success message if mutation succeeded */}
+                        {registerMutation.isSuccess && (
+                            <div
+                                className="alert alert-success mt-3"
+                                role="alert"
+                            >
+                                Account created successfully! You can now sign
+                                in with your credentials.
+                            </div>
+                        )}
                     </>
                 )}
             </Form>

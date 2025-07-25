@@ -4,6 +4,8 @@ import Form from "../../components/Form/Form";
 import { contactSchema } from "../../schemas/contactus/registerSchema";
 import { resetContact, submitContact } from "./ContactController";
 import Input from "../../components/Form/Input";
+import { useMutation } from "@tanstack/react-query";
+import type { FormikHelpers } from "formik";
 
 export interface ContactDataType {
     name: string;
@@ -13,6 +15,35 @@ export interface ContactDataType {
 }
 
 export default function ContactPage(): ReactNode {
+    const contactMutation = useMutation({
+        mutationFn: async (contactData: ContactDataType) => {
+            return await submitContact(contactData);
+        },
+        onSuccess: () => {
+            // Handle successful booking - UI will show success message
+            console.log("Table booked successfully!");
+        },
+        onError: (error) => {
+            // Handle booking error - UI will show error message
+            console.error("Booking failed:", error);
+        },
+    });
+
+    // Custom submit handler that uses the mutation
+    const handleSubmit = async (
+        values: ContactDataType,
+        { resetForm }: FormikHelpers<ContactDataType>
+    ) => {
+        try {
+            await contactMutation.mutateAsync(values);
+            // Reset form on successful submission
+            resetForm();
+        } catch (error) {
+            // Error is handled by the mutation's onError callback
+            console.log(error);
+        }
+    };
+
     return (
         <main>
             <Section
@@ -30,7 +61,7 @@ export default function ContactPage(): ReactNode {
                     style={{ width: "100%", maxWidth: "800px" }}
                 >
                     <Form<ContactDataType>
-                        onSubmit={submitContact}
+                        onSubmit={handleSubmit}
                         onReset={resetContact}
                         validationSchema={contactSchema}
                         initialValues={{
@@ -109,9 +140,39 @@ export default function ContactPage(): ReactNode {
                                         style={{ resize: "vertical" }}
                                     />
                                 </div>
-                                <button className="theme-button w-100">
-                                    Send
+                                <button
+                                    type="submit"
+                                    className="theme-button w-100"
+                                    disabled={contactMutation.isPending}
+                                >
+                                    {contactMutation.isPending
+                                        ? "Sending..."
+                                        : "Send"}
                                 </button>
+                                {contactMutation.isError && (
+                                    <div
+                                        className="alert alert-danger mt-3"
+                                        role="alert"
+                                    >
+                                        Failed to book table. Please try again.
+                                        <br />
+                                        <b>Error</b>
+                                        <span className="subtitle">
+                                            {contactMutation.error.message}
+                                        </span>
+                                    </div>
+                                )}
+
+                                {/* Display success message if mutation succeeded */}
+                                {contactMutation.isSuccess && (
+                                    <div
+                                        className="alert alert-success mt-3"
+                                        role="alert"
+                                    >
+                                        Table booked successfully! We'll confirm
+                                        your reservation shortly.
+                                    </div>
+                                )}
                             </>
                         )}
                     </Form>

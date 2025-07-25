@@ -1,4 +1,6 @@
 import { type ReactNode, useMemo } from "react";
+import { useMutation } from "@tanstack/react-query";
+import type { FormikHelpers } from "formik";
 import Form from "../../components/Form/Form";
 import { bookSchema } from "../../schemas/book/book";
 import { resetBook, submitBook } from "./BookController";
@@ -53,6 +55,35 @@ export default function BookPage(): ReactNode {
         return { minTime, maxTime, defaultTime, step };
     }, []);
 
+    // useMutation for handling the booking submission
+    const bookTableMutation = useMutation({
+        mutationFn: async (bookData: BookDataType) => {
+            return await submitBook(bookData);
+        },
+        onSuccess: () => {
+            // Handle successful booking - UI will show success message
+            console.log("Table booked successfully!");
+        },
+        onError: (error) => {
+            // Handle booking error - UI will show error message
+            console.error("Booking failed:", error);
+        },
+    });
+
+    // Custom submit handler that uses the mutation
+    const handleSubmit = async (
+        values: BookDataType,
+        { resetForm }: FormikHelpers<BookDataType>
+    ) => {
+        try {
+            await bookTableMutation.mutateAsync(values);
+            // Reset form on successful submission
+            resetForm();
+        } catch {
+            // Error is handled by the mutation's onError callback
+        }
+    };
+
     return (
         <main style={{ maxHeight: "900px", height: "100vh" }}>
             <section className="d-flex flex-column h-100 align-items-center position-relative container py-5">
@@ -88,137 +119,177 @@ export default function BookPage(): ReactNode {
                             time: timeConstraints.defaultTime,
                         }}
                         onReset={resetBook}
-                        onSubmit={submitBook}
+                        onSubmit={handleSubmit}
                         validationSchema={bookSchema}
                     >
-                        {(_formProps) => (
-                            <>
-                                <div className="row row-cols-2">
-                                    <div className="col">
-                                        <div className="mb-3">
-                                            <label
-                                                htmlFor="dateFormControl"
-                                                className="form-label"
-                                            >
-                                                Date
-                                            </label>{" "}
-                                            <Input
-                                                name="date"
-                                                type="date"
-                                                className="form-control"
-                                                id="dateFormControl"
-                                                min={dateConstraints.min}
-                                                max={dateConstraints.max}
-                                            />
+                        {
+                            (/* _formProps */) => (
+                                <>
+                                    <div className="row row-cols-2">
+                                        <div className="col">
+                                            <div className="mb-3">
+                                                <label
+                                                    htmlFor="dateFormControl"
+                                                    className="form-label"
+                                                >
+                                                    Date
+                                                </label>{" "}
+                                                <Input
+                                                    name="date"
+                                                    type="date"
+                                                    className="form-control"
+                                                    id="dateFormControl"
+                                                    min={dateConstraints.min}
+                                                    max={dateConstraints.max}
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="col">
+                                            <div className="mb-3">
+                                                <label
+                                                    htmlFor="timeFormControl"
+                                                    className="form-label"
+                                                >
+                                                    Time
+                                                </label>{" "}
+                                                <Input
+                                                    name="time"
+                                                    type="time"
+                                                    className="form-control"
+                                                    id="timeFormControl"
+                                                    min={
+                                                        timeConstraints.minTime
+                                                    }
+                                                    max={
+                                                        timeConstraints.maxTime
+                                                    }
+                                                    step={timeConstraints.step}
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="col">
+                                            <div className="mb-3">
+                                                <label
+                                                    htmlFor="nameFormControl"
+                                                    className="form-label"
+                                                >
+                                                    Name
+                                                </label>
+                                                <Input
+                                                    name="name"
+                                                    type="text"
+                                                    className="form-control "
+                                                    style={{
+                                                        borderRadius: "9999px",
+                                                    }}
+                                                    placeholder="Enter your name"
+                                                    // minLength={1}
+                                                    // formEncType=""
+                                                    id="nameFormControl"
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="col">
+                                            <div className="mb-3">
+                                                <label
+                                                    htmlFor="phoneFormControl"
+                                                    className="form-label"
+                                                >
+                                                    Phone
+                                                </label>
+                                                <Input
+                                                    name="phone"
+                                                    id="phoneFormControl"
+                                                    type="tel"
+                                                    className="form-control"
+                                                    placeholder="x-xxx-xxx-xxxx"
+                                                    minLength={11}
+                                                    maxLength={11}
+                                                />
+                                            </div>
                                         </div>
                                     </div>
-                                    <div className="col">
-                                        <div className="mb-3">
-                                            <label
-                                                htmlFor="timeFormControl"
-                                                className="form-label"
-                                            >
-                                                Time
-                                            </label>{" "}
-                                            <Input
-                                                name="time"
-                                                type="time"
-                                                className="form-control"
-                                                id="timeFormControl"
-                                                min={timeConstraints.minTime}
-                                                max={timeConstraints.maxTime}
-                                                step={timeConstraints.step}
-                                            />
-                                        </div>
+                                    <div className="mb-3 w-100 ">
+                                        <label
+                                            htmlFor="personFormControl"
+                                            className="form-label"
+                                        >
+                                            Number of Persons
+                                        </label>
+                                        <Input
+                                            name="totalPerson"
+                                            as="select"
+                                            className="form-select"
+                                            id="personFormControl"
+                                        >
+                                            <option value="1" key="1">
+                                                1 Person
+                                            </option>
+                                            <option value="2" key="2">
+                                                2 Person
+                                            </option>
+                                            <option value="3" key="3">
+                                                3 Person
+                                            </option>
+                                            <option value="4" key="4">
+                                                4 Person
+                                            </option>
+                                            <option value="5" key="5">
+                                                5 Person
+                                            </option>
+                                            <option value="6" key="6">
+                                                6 Person
+                                            </option>
+                                            <option value="7" key="7">
+                                                7 Person
+                                            </option>
+                                            <option value="8" key="8">
+                                                8 Person
+                                            </option>
+                                        </Input>
                                     </div>
-                                    <div className="col">
-                                        <div className="mb-3">
-                                            <label
-                                                htmlFor="nameFormControl"
-                                                className="form-label"
-                                            >
-                                                Name
-                                            </label>
-                                            <Input
-                                                name="name"
-                                                type="text"
-                                                className="form-control "
-                                                style={{
-                                                    borderRadius: "9999px",
-                                                }}
-                                                placeholder="Enter your name"
-                                                // minLength={1}
-                                                // formEncType=""
-                                                id="nameFormControl"
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className="col">
-                                        <div className="mb-3">
-                                            <label
-                                                htmlFor="phoneFormControl"
-                                                className="form-label"
-                                            >
-                                                Phone
-                                            </label>
-                                            <Input
-                                                name="phone"
-                                                id="phoneFormControl"
-                                                type="tel"
-                                                className="form-control"
-                                                placeholder="x-xxx-xxx-xxxx"
-                                                minLength={11}
-                                            />
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="mb-3 w-100 ">
-                                    <label
-                                        htmlFor="personFormControl"
-                                        className="form-label"
+                                    <button
+                                        type="submit"
+                                        className="theme-button w-100"
+                                        disabled={bookTableMutation.isPending}
                                     >
-                                        Number of Persons
-                                    </label>
-                                    <Input
-                                        name="totalPerson"
-                                        as="select"
-                                        className="form-select"
-                                        id="personFormControl"
-                                    >
-                                        <option value="1" key="1">
-                                            1 Person
-                                        </option>
-                                        <option value="2" key="2">
-                                            2 Person
-                                        </option>
-                                        <option value="3" key="3">
-                                            3 Person
-                                        </option>
-                                        <option value="4" key="4">
-                                            4 Person
-                                        </option>
-                                        <option value="5" key="5">
-                                            5 Person
-                                        </option>
-                                        <option value="6" key="6">
-                                            6 Person
-                                        </option>
-                                        <option value="7" key="7">
-                                            7 Person
-                                        </option>
-                                        <option value="8" key="8">
-                                            8 Person
-                                        </option>
-                                    </Input>
-                                </div>
-                                <button
-                                    type="submit"
-                                    className="theme-button w-100"
-                                >
-                                    Book A Table
-                                </button>
-                            </>
-                        )}
+                                        {bookTableMutation.isPending
+                                            ? "Booking..."
+                                            : "Book A Table"}
+                                    </button>
+                                    {/* Display error message if mutation failed */}
+                                    {bookTableMutation.isError && (
+                                        <div
+                                            className="alert alert-danger mt-3"
+                                            role="alert"
+                                        >
+                                            Failed to book table. Please try
+                                            again.
+                                            <br />
+                                            <b>Error</b>
+                                            <span className="subtitle">
+                                                {" "}
+                                                {
+                                                    bookTableMutation.error
+                                                        .message
+                                                }
+                                            </span>
+                                        </div>
+                                    )}
+
+                                    {/* Display success message if mutation succeeded */}
+                                    {bookTableMutation.isSuccess && (
+                                        <div
+                                            className="alert alert-success mt-3"
+                                            role="alert"
+                                        >
+                                            Table booked successfully! We'll
+                                            confirm your reservation shortly.
+                                        </div>
+                                    )}
+                                </>
+                            )
+                        }
                     </Form>
                 </div>
             </section>

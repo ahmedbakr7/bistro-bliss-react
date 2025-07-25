@@ -1,10 +1,11 @@
 import type { ReactNode } from "react";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { FiPhone } from "react-icons/fi";
 import "./Navbar.css";
 import Logo from "./Logo";
 import { MdOutlineMail } from "react-icons/md";
 import SocialMediaRoundels from "../SocialMedia";
+import { paths } from "../../routes";
 
 // interface NavbarProps {
 //     children: ReactNode;
@@ -12,6 +13,7 @@ import SocialMediaRoundels from "../SocialMedia";
 // }
 
 export default function Navbar(): ReactNode {
+
     return (
         <header>
             <nav role="navigation" className="navbar theme-icon navbar-expand">
@@ -44,7 +46,7 @@ export default function Navbar(): ReactNode {
                     <ul className="navbar-nav">
                         <li className="nav-item">
                             <NavLink
-                                to={"/"}
+                                to={paths.homePage}
                                 className={({ isActive }) =>
                                     `nav-link${isActive ? " active" : ""}`
                                 }
@@ -54,7 +56,7 @@ export default function Navbar(): ReactNode {
                         </li>
                         <li className="nav-item">
                             <NavLink
-                                to={"/"}
+                                to={paths.about}
                                 className={({ isActive }) =>
                                     `nav-link${isActive ? " active" : ""}`
                                 }
@@ -64,7 +66,7 @@ export default function Navbar(): ReactNode {
                         </li>
                         <li className="nav-item">
                             <NavLink
-                                to={"/"}
+                                to={paths.menu}
                                 className={({ isActive }) =>
                                     `nav-link${isActive ? " active" : ""}`
                                 }
@@ -74,7 +76,7 @@ export default function Navbar(): ReactNode {
                         </li>
                         <li className="nav-item">
                             <NavLink
-                                to={"/"}
+                                to={paths.pages}
                                 className={({ isActive }) =>
                                     `nav-link${isActive ? " active" : ""}`
                                 }
@@ -84,18 +86,18 @@ export default function Navbar(): ReactNode {
                         </li>
                         <li className="nav-item">
                             <NavLink
-                                to={"/favorites"}
+                                to={paths.contact}
                                 className={({ isActive }) =>
                                     `nav-link${isActive ? " active" : ""}`
                                 }
                             >
-                            <b>Contact</b>
+                                <b>Contact</b>
                             </NavLink>
                         </li>
                     </ul>
-                    <button className="theme-secondary-button">
+                    <Link to={paths.book} className="theme-secondary-button">
                         Book A Table
-                    </button>
+                    </Link>
                 </div>
             </nav>
         </header>

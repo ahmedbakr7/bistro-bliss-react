@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import Logo from "../Navbar/Logo";
 import { NavLink } from "react-router-dom";
+import { paths } from "../../routes";
 
 export default function AuthNavbar(): ReactNode {
     return (
@@ -11,22 +12,22 @@ export default function AuthNavbar(): ReactNode {
                     <ul className="navbar-nav">
                         <li className="nav-item">
                             <NavLink
-                                to={"/"}
+                                to={paths.login}
                                 className={({ isActive }) =>
                                     `nav-link${isActive ? " active" : ""}`
                                 }
                             >
-                                <b>Home</b>
+                                <b>Login</b>
                             </NavLink>
                         </li>
                         <li className="nav-item">
                             <NavLink
-                                to={"/"}
+                                to={paths.register}
                                 className={({ isActive }) =>
                                     `nav-link${isActive ? " active" : ""}`
                                 }
                             >
-                                <b>About</b>
+                                <b>Register</b>
                             </NavLink>
                         </li>
                     </ul>

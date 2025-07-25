@@ -22,6 +22,5 @@ export async function submitContact({
 }
 
 export function resetContact() {
-    throw new Error("unimplemented function");
-    return;
+    console.log("reseting form");
 }

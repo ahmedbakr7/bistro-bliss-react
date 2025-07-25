@@ -1,39 +1,37 @@
 import api from "../../services/api";
+import type { LoginDataType } from "./AuthLogin";
 import type { RegisterDataType } from "./AuthRegister";
 
 export const BASE_URL = import.meta.env.VITE_API_URL;
 
-export async function submitRegister(
-    {
-        fullname:name,
-        email,
-        password,
-    }: RegisterDataType,
+export async function submitRegister(registerData: RegisterDataType) {
     // actions: {}
-) {
     try {
-        const response = await api.post("/register", {
-            name,
-            email,
-            password,
-        });
+        const response = await api.post("/register", registerData);
         console.log(response);
+        return response;
     } catch (error) {
         console.log(error);
+        throw error;
     }
 }
 
 export function resetRegister() {
-    throw new Error("unimplemented function");
-    return;
+    console.log("reseting form");
 }
 
-export function submitLogin() {
-    throw new Error("unimplemented function");
-    return;
+export async function submitLogin(loginData: LoginDataType) {
+    // actions: {}
+    try {
+        const response = await api.post("/login", loginData); // Fixed endpoint
+        console.log(response);
+        return response;
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
 }
 
 export function resetLogin() {
-    throw new Error("unimplemented function");
-    return;
+    console.log("reseting form");
 }

@@ -2,13 +2,14 @@ import api from "../../services/api";
 import type { BookDataType } from "./BookPage";
 
 export async function submitBook(bookData: BookDataType) {
-    // actions: {}
     try {
-        console.log(bookData);
+        console.log("Submitting booking:", bookData);
         const response = await api.post("/booking/create-booking", bookData);
-        console.log(response);
+        console.log("Booking response:", response);
+        return response.data; // Return the response data for the mutation
     } catch (error) {
-        console.log(error);
+        console.error("Booking error:", error);
+        throw error; // Re-throw the error so useMutation can handle it
     }
 }
 
