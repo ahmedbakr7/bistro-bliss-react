@@ -5,7 +5,7 @@ import MenuPage from "./pages/MenuPage";
 import PagesPage from "./pages/PagesPage";
 import ContactPage from "./pages/contact/ContactPage";
 import HomePage from "./pages/HomePage";
-import BookPage from "./pages/BookPage";
+import BookPage from "./pages/book/BookPage";
 import PageDetailsPage from "./pages/PageDetailsPage";
 import WishlistPage from "./pages/Wishlist";
 import ProfilePage from "./pages/Profile";

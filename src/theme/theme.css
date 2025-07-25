@@ -378,6 +378,10 @@ html {
 
 .theme-rounded-full {
   border-radius: var(--radius-full);
+  -webkit-border-radius: var(--radius-full);
+  -moz-border-radius: var(--radius-full);
+  -ms-border-radius: var(--radius-full);
+  -o-border-radius: var(--radius-full);
 }
 
 /* ====== Icon utilities ====== */
@@ -427,6 +431,10 @@ html {
   -moz-transition: all 0.2s ease;
   -ms-transition: all 0.2s ease;
   -o-transition: all 0.2s ease;
+  -webkit-border-radius: var(--radius-full);
+  -moz-border-radius: var(--radius-full);
+  -ms-border-radius: var(--radius-full);
+  -o-border-radius: var(--radius-full);
 }
 
 /* Primary button */

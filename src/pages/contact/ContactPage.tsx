@@ -40,75 +40,80 @@ export default function ContactPage(): ReactNode {
                             message: "",
                         }}
                     >
-                        <div className="row row-cols-2">
-                            {" "}
-                            <div className="col">
+                        {(formProps) => (
+                            <>
+                                <div className="row row-cols-2">
+                                    <div className="col">
+                                        <div className="mb-3">
+                                            <label
+                                                htmlFor="nameFormControl"
+                                                className="form-label"
+                                            >
+                                                Name
+                                            </label>
+                                            <Input
+                                                type="text"
+                                                className="form-control"
+                                                id="nameFormControl"
+                                                name="name"
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="col">
+                                        <div className="mb-3">
+                                            <label
+                                                htmlFor="emailFormControl"
+                                                className="form-label"
+                                            >
+                                                Email
+                                            </label>
+                                            <Input
+                                                name="email"
+                                                type="email"
+                                                className="form-control"
+                                                id="emailFormControl"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
                                 <div className="mb-3">
                                     <label
-                                        htmlFor="nameFormControl"
+                                        htmlFor="subjectFormControl"
                                         className="form-label"
                                     >
-                                        Name
+                                        Subject
                                     </label>
                                     <Input
+                                        name="subject"
                                         type="text"
+                                        placeholder="Write a subject"
                                         className="form-control"
-                                        id="nameFormControl"
-                                        name="name"
+                                        id="subjectFormControl"
                                     />
                                 </div>
-                            </div>
-                            <div className="col">
                                 <div className="mb-3">
                                     <label
-                                        htmlFor="emailFormControl"
+                                        htmlFor="messageFormControl"
                                         className="form-label"
                                     >
-                                        Email
+                                        Message
                                     </label>
                                     <Input
-                                        name="email"
-                                        type="email"
+                                        as="textarea"
+                                        name="message"
+                                        type="text"
+                                        placeholder="Write a message"
                                         className="form-control"
-                                        id="emailFormControl"
+                                        id="messageFormControl"
+                                        rows={4}
+                                        style={{ resize: "vertical" }}
                                     />
                                 </div>
-                            </div>
-                        </div>
-                        <div className="mb-3">
-                            <label
-                                htmlFor="subjectFormControl"
-                                className="form-label"
-                            >
-                                Subject
-                            </label>
-                            <Input
-                                name="subject"
-                                type="text"
-                                placeholder="Write a subject"
-                                className="form-control"
-                                id="subjectFormControl"
-                            />
-                        </div>
-                        <div className="mb-3">
-                            <label
-                                htmlFor="messageFormControl"
-                                className="form-label"
-                            >
-                                Message
-                            </label>
-                            <Input
-                                as="textarea"
-                                name="message"
-                                type="text"
-                                placeholder="Write a message"
-                                className="form-control"
-                                id="messageFormControl"
-                                rows={4}
-                                style={{ resize: "vertical" }}
-                            />
-                        </div>
-                        <button className="theme-button w-100">Send</button>
+                                <button className="theme-button w-100">
+                                    Send
+                                </button>
+                            </>
+                        )}
                     </Form>
                 </div>
                 <div className="row mt-4 row-cols-3 w-100">
