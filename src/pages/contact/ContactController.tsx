@@ -9,10 +9,11 @@ export async function submitContact({
 }: ContactDataType) {
     // actions: {}
     try {
-        const response = await api.post("/register", {
+        const response = await api.post("/contact/create-contact", {
             name,
             email,
-            password,
+            subject,
+            message,
         });
         console.log(response);
     } catch (error) {
