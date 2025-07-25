@@ -3,7 +3,7 @@ import RootLayout from "./pages/RootLayout";
 import AboutPage from "./pages/AboutPage";
 import MenuPage from "./pages/MenuPage";
 import PagesPage from "./pages/PagesPage";
-import ContactPage from "./pages/ContactPage";
+import ContactPage from "./pages/contact/ContactPage";
 import HomePage from "./pages/HomePage";
 import BookPage from "./pages/BookPage";
 import PageDetailsPage from "./pages/PageDetailsPage";
@@ -16,16 +16,16 @@ import AuthRegister from "./components/Auth/AuthRegister";
 
 export const paths = {
     homePage: "/",
-    about: "about",
-    menu: "menu",
-    pages: "pages",
-    contact: "contact",
-    login: "login",
-    register: "register",
-    book: "book",
-    pageDetails: "page-details",
-    wishlist: "wishlist",
-    profile: "profile",
+    about: "/about",
+    menu: "/menu",
+    pages: "/pages",
+    contact: "/contact",
+    login: "/auth/login",
+    register: "/auth/register",
+    book: "/book",
+    pageDetails: "/page-details",
+    wishlist: "/wishlist",
+    profile: "/profile",
 };
 
 const router = createBrowserRouter([

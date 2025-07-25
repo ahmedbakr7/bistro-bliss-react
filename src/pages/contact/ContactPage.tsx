@@ -1,5 +1,16 @@
 import type { ReactNode } from "react";
-import Section from "../components/Section";
+import Section from "../../components/Section";
+import Form from "../../components/Form/Form";
+import { contactSchema } from "../../schemas/contactus/registerSchema";
+import { MdEmail } from "react-icons/md";
+import { resetContact, submitContact } from "./ContactController";
+
+export interface ContactDataType{
+    name:string,
+    email:string,
+    subject:string,
+    message:string,
+}
 
 export default function ContactPage(): ReactNode {
     return (
@@ -15,7 +26,8 @@ export default function ContactPage(): ReactNode {
                     style={{ width: "100%", maxWidth: "800px" }}
                 >
                     <div className="row row-cols-2"> <div className="col">
-                            <div className="mb-3">
+                        <Form<ContactDataType> onSubmit={submitContact} onReset={resetContact} validationSchema={contactSchema} initialValues={{name:"",email:"",subject:"",message:""}}>
+                                                        <div className="mb-3">
                                 <label
                                     htmlFor="nameFormControl"
                                     className="form-label"
@@ -27,7 +39,6 @@ export default function ContactPage(): ReactNode {
                                     className="form-control"
                                     id="nameFormControl"
                                 />
-                            </div>
                         </div>
                         <div className="col">
                             <div className="mb-3">
@@ -74,6 +85,7 @@ export default function ContactPage(): ReactNode {
                             style={{ resize: "vertical" }}
                         ></textarea>
                     </div>
+                    </Form>
                     <button className="theme-button w-100">Send</button>
                 </div>
                 <div className="row mt-4 row-cols-3 w-100">

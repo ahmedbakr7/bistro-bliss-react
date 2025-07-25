@@ -1,16 +1,21 @@
 import { useField } from "formik";
 import type { FieldHookConfig } from "formik";
-import type { ReactNode } from "react";
+import type { ReactNode, InputHTMLAttributes } from "react";
 
-// Extending the FieldHookConfig type from formik with our custom props
-interface InputProps extends FieldHookConfig<string> {
+// Extending the FieldHookConfig type from formik with our custom props and all HTML input attributes
+interface InputProps
+    extends FieldHookConfig<string>,
+        Omit<InputHTMLAttributes<HTMLInputElement>, "name"> {
+    name: string;
     className?: string;
     errorClassName?: string;
+    type: string;
+    placeholder?: string;
 }
 
 export default function Input({
     className = "",
-    errorClassName = "",
+    errorClassName = "theme-border-error",
     ...props
 }: InputProps): ReactNode {
     // const [field, meta, helper] = useField(props);
@@ -25,9 +30,9 @@ export default function Input({
                     meta.touched && meta.error ? errorClassName : ""
                 }`}
             />
-            {meta.touched && meta.error && (
-                <div className="error">{meta.error}</div>
-            )}
+            <p className="theme-text-error">
+                {meta.touched && meta.error && meta.error}
+            </p>
         </>
     );
 }
