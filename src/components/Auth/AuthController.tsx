@@ -1,3 +1,4 @@
+import { MdEmail } from "react-icons/md";
 import api from "../../services/api";
 import type { LoginDataType } from "./AuthLogin";
 import type { RegisterDataType } from "./AuthRegister";
@@ -5,9 +6,34 @@ import type { RegisterDataType } from "./AuthRegister";
 export const BASE_URL = import.meta.env.VITE_API_URL;
 
 export async function submitRegister(registerData: RegisterDataType) {
-    // actions: {}
+    console.log(registerData);
     try {
-        const response = await api.post("/register", registerData);
+        const formData = new FormData();
+        if (registerData.profileImage) {
+            formData.append("image", registerData.profileImage);
+        } else {
+            throw new Error("profile image is null");
+        }
+
+        let response = await api.post("menu/upload", formData, {
+            headers: { "Content-Type": "multipart/form-data" },
+        });
+
+        if (response.status !== 200) {
+            throw new Error(
+                `Image Upload failed, reason: ${response.statusText}`
+            );
+        }
+
+        const body = {
+            name: registerData.fullname,
+            email: registerData.email,
+            phoneNumber: registerData.phoneNumber,
+            password: registerData.password,
+            profilePic: response.data.normalizedPath,
+        };
+
+        response = await api.post("/user/register", body);
         console.log(response);
         return response;
     } catch (error) {

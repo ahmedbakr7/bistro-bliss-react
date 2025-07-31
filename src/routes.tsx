@@ -13,6 +13,7 @@ import AdminLayout from "./pages/AdminLayout";
 import AuthLayout from "./pages/AuthLayout";
 import AuthLogin from "./components/Auth/AuthLogin";
 import AuthRegister from "./components/Auth/AuthRegister";
+import OtpPage from "./pages/OtpPage";
 
 export const paths = {
     homePage: "/",
@@ -20,12 +21,13 @@ export const paths = {
     menu: "/menu",
     pages: "/pages",
     contact: "/contact",
-    login: "/auth/login",
-    register: "/auth/register",
     book: "/book",
     pageDetails: "/page-details",
     wishlist: "/wishlist",
     profile: "/profile",
+    login: "/auth/login",
+    register: "/auth/register",
+    otp: "/auth/otp",
 };
 
 const router = createBrowserRouter([
@@ -86,6 +88,10 @@ const router = createBrowserRouter([
             {
                 element: <AuthRegister />,
                 path: paths.register,
+            },
+            {
+                element: <OtpPage />,
+                path: paths.otp,
             },
         ],
     },

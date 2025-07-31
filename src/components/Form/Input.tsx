@@ -1,21 +1,22 @@
 import { useField } from "formik";
 import type { FieldHookConfig } from "formik";
-import type {
-    ReactNode,
-    InputHTMLAttributes,
-    TextareaHTMLAttributes,
-    SelectHTMLAttributes,
-    ElementType,
-    ChangeEvent,
+import {
+    type ReactNode,
+    type InputHTMLAttributes,
+    type TextareaHTMLAttributes,
+    type SelectHTMLAttributes,
+    type ElementType,
+    type ChangeEvent,
+    useCallback,
 } from "react";
 
 // Extending the FieldHookConfig type from formik with our custom props and all HTML input attributes
 export interface InputProps
     extends FieldHookConfig<string>,
         Omit<
-            InputHTMLAttributes<HTMLInputElement> &
-                TextareaHTMLAttributes<HTMLTextAreaElement> &
-                SelectHTMLAttributes<HTMLSelectElement>,
+            | InputHTMLAttributes<HTMLInputElement>
+            | TextareaHTMLAttributes<HTMLTextAreaElement>
+            | SelectHTMLAttributes<HTMLSelectElement>,
             "name"
         > {
     name: string;
@@ -23,33 +24,38 @@ export interface InputProps
     errorClassName?: string;
     type?: string;
     placeholder?: string;
-    onChange?:(e: ChangeEvent< HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement >)=>unknown,
     as?: ElementType;
+    onChangeCallback?: (
+        e: ChangeEvent<
+            HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+        >
+    ) => unknown;
 }
 
 export default function Input({
     className = "",
-    onChange,
+    onChangeCallback: customOnChange,
     errorClassName = "theme-border-error",
     as: Component = "input",
     ...props
 }: InputProps): ReactNode {
-    // const [field, meta, helper] = useField(props);
     const [field, meta, helper] = useField(props);
-    // const obj = useField({oncha})
 
-    if (onChange) {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        field.onChange = (e:React.ChangeEvent<any>) => {
-            const newValue = onChange(e)
-            helper.setValue(newValue)
+    const handleChange = useCallback((e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+        if (customOnChange) {
+            const newValue = customOnChange(e);
+            helper.setValue(newValue);
+        } else {
+            field.onChange(e);
         }
-    }
+    }, [customOnChange, helper, field]);
+
     return (
         <>
             <Component
                 {...field}
                 {...props}
+                onChange={handleChange}
                 className={`${className} ${
                     meta.touched && meta.error ? errorClassName : ""
                 }`}

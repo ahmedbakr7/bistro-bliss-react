@@ -1,10 +1,11 @@
-import { type ReactNode } from "react";
+import { useRef, type ReactNode } from "react";
 import Form from "../Form/Form";
 import { resetRegister, submitRegister } from "./AuthController";
 import { registerSchema } from "../../schemas/auth/registerSchema";
 import Input from "../Form/Input";
 import { useMutation } from "@tanstack/react-query";
 import type { FormikHelpers } from "formik";
+import FileUploader from "../FileUploader";
 
 export interface RegisterDataType {
     fullname: string;
@@ -13,12 +14,13 @@ export interface RegisterDataType {
     email: string;
     password: string;
     confirmPassword: string;
+    profileImage?: File;
 }
 
 export default function AuthRegister(): ReactNode {
     const registerMutation = useMutation({
-        mutationFn: async (loginData: RegisterDataType) => {
-            return await submitRegister(loginData);
+        mutationFn: async (values: RegisterDataType) => {
+            return await submitRegister(values);
         },
         onSuccess: () => {
             // Handle successful registration - UI will show success message
@@ -36,14 +38,16 @@ export default function AuthRegister(): ReactNode {
         { resetForm }: FormikHelpers<RegisterDataType>
     ) => {
         try {
-            await registerMutation.mutateAsync(values);
-            // Reset form on successful submission
+            const newValues = { ...values };
+            newValues.profileImage = fileUpload.current?.files?.[0];
+            await registerMutation.mutateAsync(newValues);
             resetForm();
         } catch (error) {
-            // Error is handled by the mutation's onError callback
             console.log(error);
         }
     };
+
+    const fileUpload = useRef<HTMLInputElement>(undefined);
 
     return (
         <div
@@ -58,6 +62,7 @@ export default function AuthRegister(): ReactNode {
                     email: "",
                     password: "",
                     confirmPassword: "",
+                    profileImage: undefined,
                 }}
                 onReset={resetRegister}
                 onSubmit={handleSubmit}
@@ -151,6 +156,20 @@ export default function AuthRegister(): ReactNode {
                                     />
                                 </div>
                             </div>
+                            <div className="col-12">
+                                <div className="mb-3">
+                                    <label
+                                        htmlFor="profileImageFormControl"
+                                        className="form-label"
+                                    >
+                                        Profile Image (Optional)
+                                    </label>
+                                    <FileUploader
+                                        ref={fileUpload}
+                                        name="profileImage"
+                                    />
+                                </div>
+                            </div>
                         </div>
 
                         <div className="form-check mb-3 mt-2">
@@ -169,13 +188,13 @@ export default function AuthRegister(): ReactNode {
                             </label>
                         </div>
 
-                        <button type="submit" className="theme-button w-100">
+                        <button type="submit" className="theme-button w-100" disabled={registerMutation.isPending}>
                             Create Account
                         </button>
 
                         <div className="text-center mt-3">
                             <span className="text-muted small">
-                                Already have an account?{" "}
+                                Already have an account?
                             </span>
                             <a href="#" className="small theme-text-primary">
                                 Sign In
