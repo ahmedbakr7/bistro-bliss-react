@@ -1,10 +1,11 @@
-import { useState, type ReactNode } from "react";
+import { type ReactNode } from "react";
 import Form from "../Form/Form";
 import { loginSchema } from "../../schemas/auth/loginSchema";
-import { resetLogin, submitLogin } from "./AuthController";
+import { resetLogin } from "./AuthController";
 import Input from "../Form/Input";
 import { useMutation } from "@tanstack/react-query";
 import type { FormikHelpers } from "formik";
+import useAuthContext from "../../stores/AuthContext/useAuthContext";
 
 export interface LoginDataType {
     email: string;
@@ -12,65 +13,26 @@ export interface LoginDataType {
 }
 
 export default function AuthLogin(): ReactNode {
-    const emailSubmittions = useState<boolean>(true);
-
-    const EmailComponent: ReactNode = (
-        <>
-            <label htmlFor="email" className="form-label">
-                Email
-            </label>
-            <Input
-                name="email"
-                type="email"
-                placeholder="Email"
-                className="form-control"
-                id="email"
-            />
-        </>
-    );
-
-    const PasswordComponent: ReactNode = (
-        <>
-            <label htmlFor="email" className="form-label">
-                Email
-            </label>
-            <Input
-                name="email"
-                type="email"
-                placeholder="Email"
-                className="form-control"
-                id="email"
-            />
-        </>
-    );
+    const { login } = useAuthContext();
 
     const loginMutation = useMutation({
         mutationFn: async (loginData: LoginDataType) => {
-            return await submitLogin(loginData);
+            return await login(loginData.email, loginData.password);
         },
         onSuccess: () => {
-            // Handle successful login - UI will show success message
             console.log("Login successful!");
         },
         onError: (error) => {
-            // Handle login error - UI will show error message
             console.error("Login failed:", error);
         },
     });
 
-    // Custom submit handler that uses the mutation
     const handleSubmit = async (
         values: LoginDataType,
         { resetForm }: FormikHelpers<LoginDataType>
     ) => {
-        try {
-            await loginMutation.mutateAsync(values);
-            // Reset form on successful submission
-            resetForm();
-        } catch (error) {
-            // Error is handled by the mutation's onError callback
-            console.log(error);
-        }
+        await loginMutation.mutateAsync(values);
+        resetForm();
     };
 
     return (
@@ -87,10 +49,37 @@ export default function AuthLogin(): ReactNode {
                 {(formProps) => (
                     <>
                         <div className="mb-3">
-                        {emailSubmittions ? EmailComponent : PasswordComponent}
+                            <label htmlFor="email" className="form-label">
+                                Email
+                            </label>
+                            <Input
+                                name="email"
+                                type="email"
+                                placeholder="Email"
+                                className="form-control"
+                                id="email"
+                            />
                         </div>
-                        <button type="submit" className="theme-button w-100">
-                            Login
+                        <div className="mb-3">
+                            <label htmlFor="password" className="form-label">
+                                Password
+                            </label>
+                            <Input
+                                name="password"
+                                type="password"
+                                placeholder="Password"
+                                className="form-control"
+                                id="password"
+                            />
+                        </div>
+                        <button
+                            type="submit"
+                            className="theme-button w-100"
+                            disabled={loginMutation.isPending}
+                        >
+                            {loginMutation.isPending
+                                ? "Logging in..."
+                                : "Login"}
                         </button>
                         {loginMutation.isError && (
                             <div
@@ -102,7 +91,7 @@ export default function AuthLogin(): ReactNode {
                                 <br />
                                 <b>Error:</b>{" "}
                                 <span className="subtitle">
-                                    {loginMutation.error.message}
+                                    {(loginMutation.error as Error).message}
                                 </span>
                             </div>
                         )}

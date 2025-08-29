@@ -6,11 +6,11 @@ const passwordRules = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{5,}$/;
 const nameRules = /^[a-zA-Z\s'-]+$/;
 // Only letters, spaces, hyphens, and apostrophes allowed
 
-const FILE_SIZE = 160 * 1024;
-const SUPPORTED_FORMATS = ["image/jpg", "image/jpeg", "image/gif", "image/png"];
+// const FILE_SIZE = 160 * 1024;
+// const SUPPORTED_FORMATS = ["image/jpg", "image/jpeg", "image/gif", "image/png"];
 
 export const registerSchema = yup.object().shape({
-    fullname: yup
+    name: yup
         .string()
         .matches(nameRules, {
             message:
@@ -26,7 +26,7 @@ export const registerSchema = yup.object().shape({
     phoneNumber: yup.string().length(11).required("Required"),
     password: yup
         .string()
-        .min(5)
+        .min(8)
         .matches(passwordRules, {
             message: "Please create a stronger password",
         })

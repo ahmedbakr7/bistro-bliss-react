@@ -5,7 +5,7 @@ import "./Navbar.css";
 import Logo from "./Logo";
 import { MdOutlineMail } from "react-icons/md";
 import SocialMediaRoundels from "../SocialMedia";
-import { paths } from "../../routes";
+import { paths } from "../../utils/routes/routes";
 
 // interface NavbarProps {
 //     children: ReactNode;
@@ -13,7 +13,6 @@ import { paths } from "../../routes";
 // }
 
 export default function Navbar(): ReactNode {
-
     return (
         <header>
             <nav role="navigation" className="navbar theme-icon navbar-expand">

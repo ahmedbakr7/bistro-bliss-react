@@ -6,9 +6,11 @@ import Input from "../Form/Input";
 import { useMutation } from "@tanstack/react-query";
 import type { FormikHelpers } from "formik";
 import FileUploader from "../FileUploader";
+import { useNavigate } from "react-router-dom";
+import { paths } from "../../utils/routes";
 
 export interface RegisterDataType {
-    fullname: string;
+    name: string;
     phoneNumber: string;
     termsOfServices: boolean;
     email: string;
@@ -18,13 +20,15 @@ export interface RegisterDataType {
 }
 
 export default function AuthRegister(): ReactNode {
+    const navigate= useNavigate()
+
     const registerMutation = useMutation({
         mutationFn: async (values: RegisterDataType) => {
             return await submitRegister(values);
         },
         onSuccess: () => {
-            // Handle successful registration - UI will show success message
             console.log("Registration successful!");
+            navigate(paths.otp)
         },
         onError: (error) => {
             // Handle registration error - UI will show error message
@@ -37,14 +41,10 @@ export default function AuthRegister(): ReactNode {
         values: RegisterDataType,
         { resetForm }: FormikHelpers<RegisterDataType>
     ) => {
-        try {
-            const newValues = { ...values };
-            newValues.profileImage = fileUpload.current?.files?.[0];
-            await registerMutation.mutateAsync(newValues);
-            resetForm();
-        } catch (error) {
-            console.log(error);
-        }
+        const newValues = { ...values };
+        newValues.profileImage = fileUpload.current?.files?.[0];
+        await registerMutation.mutateAsync(newValues);
+        resetForm();
     };
 
     const fileUpload = useRef<HTMLInputElement>(undefined);
@@ -56,7 +56,7 @@ export default function AuthRegister(): ReactNode {
         >
             <Form<RegisterDataType>
                 initialValues={{
-                    fullname: "",
+                    name: "",
                     phoneNumber: "",
                     termsOfServices: false,
                     email: "",
@@ -188,7 +188,11 @@ export default function AuthRegister(): ReactNode {
                             </label>
                         </div>
 
-                        <button type="submit" className="theme-button w-100" disabled={registerMutation.isPending}>
+                        <button
+                            type="submit"
+                            className="theme-button w-100"
+                            disabled={registerMutation.isPending}
+                        >
                             Create Account
                         </button>
 

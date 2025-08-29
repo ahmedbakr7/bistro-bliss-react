@@ -1,34 +1,83 @@
 import { createBrowserRouter } from "react-router-dom";
-import RootLayout from "./pages/RootLayout";
-import AboutPage from "./pages/AboutPage";
-import MenuPage from "./pages/MenuPage";
-import PagesPage from "./pages/PagesPage";
-import ContactPage from "./pages/contact/ContactPage";
-import HomePage from "./pages/HomePage";
-import BookPage from "./pages/book/BookPage";
-import PageDetailsPage from "./pages/PageDetailsPage";
-import WishlistPage from "./pages/Wishlist";
-import ProfilePage from "./pages/Profile";
-import AdminLayout from "./pages/AdminLayout";
-import AuthLayout from "./pages/AuthLayout";
-import AuthLogin from "./components/Auth/AuthLogin";
-import AuthRegister from "./components/Auth/AuthRegister";
-import OtpPage from "./pages/OtpPage";
+import {
+    RootLayout,
+    AboutPage,
+    MenuPage,
+    PagesPage,
+    ContactPage,
+    HomePage,
+    BookPage,
+    PageDetailsPage,
+    WishlistPage,
+    ProfilePage,
+    AdminLayout,
+    AuthLayout,
+    AuthLogin,
+    AuthRegister,
+    OtpPage
+} from "./routeImports";
 
-export const paths = {
-    homePage: "/",
-    about: "/about",
-    menu: "/menu",
-    pages: "/pages",
-    contact: "/contact",
-    book: "/book",
-    pageDetails: "/page-details",
-    wishlist: "/wishlist",
-    profile: "/profile",
-    login: "/auth/login",
-    register: "/auth/register",
-    otp: "/auth/otp",
-};
+import { paths } from './routePaths';
+
+// Example of route grouping for future use
+/*
+// Public routes - accessible by anyone
+const routesForPublic = [
+  {
+    path: "/service",
+    element: <div>Service Page</div>,
+  },
+  {
+    path: "/about-us",
+    element: <div>About Us</div>,
+  },
+];
+
+// Protected routes - only for authenticated users
+const routesForAuthenticatedOnly = [
+  {
+    path: "/",
+    element: <ProtectedRoute />, // You'll need to create this component
+    children: [
+      {
+        path: "/",
+        element: <div>User Home Page</div>,
+      },
+      {
+        path: "/profile",
+        element: <div>User Profile</div>,
+      },
+      {
+        path: "/logout",
+        element: <div>Logout</div>,
+      },
+    ],
+  },
+];
+
+// Routes for non-authenticated users
+const routesForNotAuthenticatedOnly = [
+  {
+    path: "/",
+    element: <div>Home Page</div>,
+  },
+  {
+    path: "/login",
+    element: <div>Login</div>,
+  },
+];
+*/
+
+// Example of how to use route grouping with authentication:
+/*
+const token = localStorage.getItem('authToken');
+
+const router = createBrowserRouter([
+  ...routesForPublic,
+  ...(!token ? routesForNotAuthenticatedOnly : []),
+  ...(token ? routesForAuthenticatedOnly : []),
+]);
+*/
 
 const router = createBrowserRouter([
     {

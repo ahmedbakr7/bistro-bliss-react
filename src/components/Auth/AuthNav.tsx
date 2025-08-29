@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import Logo from "../Navbar/Logo";
 import { NavLink } from "react-router-dom";
-import { paths } from "../../routes";
+import { paths } from "../../utils/routes/routes";
 
 export default function AuthNavbar(): ReactNode {
     return (

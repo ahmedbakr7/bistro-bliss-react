@@ -2,9 +2,9 @@ import {
     Form as FormikForm,
     Formik,
     type FormikConfig,
-    type FormikState,
     type FormikValues,
     type FormikHelpers,
+    type FormikProps,
 } from "formik";
 import type { ReactNode } from "react";
 import * as Yup from "yup";
@@ -18,7 +18,7 @@ interface FormProps<T>
         | "validateOnChange"
         | "validateOnBlur"
     > {
-    children?: ReactNode | ((formState: FormikState<T>) => ReactNode);
+    children?: ReactNode | ((formikProps: FormikProps<T>) => ReactNode);
     initialValues: T;
     validationSchema: Yup.AnySchema;
     onReset: (values: T, formikHelpers: FormikHelpers<T>) => void;
