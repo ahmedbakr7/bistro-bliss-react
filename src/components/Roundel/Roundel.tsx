@@ -1,6 +1,7 @@
 import type { ReactNode, ElementType, CSSProperties } from "react";
 import "./Roundel.css";
 import type { HTMLAttributes } from "react";
+import { Link } from "react-router-dom";
 
 interface Image {
     src: string;
@@ -32,7 +33,7 @@ rounded,
     };
 
     if (href) {
-        Wrapper = "a";
+        Wrapper = Link;
         props = {
             ...props,
             href: { href },

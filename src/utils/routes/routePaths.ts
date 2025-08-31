@@ -19,7 +19,7 @@ export type AppRoutePath =
   | "/admin";
 
 // Path constants for use throughout the application
-export const paths: Record<string, AppRoutePath> = {
+export const paths = {
   homePage: "/",
   about: "/about",
   menu: "/menu",

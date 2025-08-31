@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { Link } from "react-router-dom";
 
 interface LinkType {
     text: string;
@@ -42,14 +43,14 @@ export function CardBody({
             {links?.map((link: LinkType, index) => {
                 const { text, href, ...restProps } = link;
                 return (
-                    <a
+                    <Link
                         key={index}
-                        href={href}
+                        to={href}
                         className="card-link"
                         {...restProps}
                     >
                         {text}
-                    </a>
+                    </Link>
                 );
             })}
             {children}

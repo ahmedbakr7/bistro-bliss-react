@@ -39,7 +39,8 @@ export async function submitRegister(registerData: RegisterDataType) {
         return data;
     } catch (error) {
         console.log(error);
-        throw error;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        throw new Error((error as any).response.data);
     }
 }
 

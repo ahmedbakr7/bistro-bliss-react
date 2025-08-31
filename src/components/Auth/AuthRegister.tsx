@@ -6,8 +6,8 @@ import Input from "../Form/Input";
 import { useMutation } from "@tanstack/react-query";
 import type { FormikHelpers } from "formik";
 import FileUploader from "../FileUploader";
-import { useNavigate } from "react-router-dom";
-import { paths } from "../../utils/routes";
+import { Link, useNavigate } from "react-router-dom";
+import { paths } from "../../utils/routes/routePaths";
 
 export interface RegisterDataType {
     name: string;
@@ -20,7 +20,7 @@ export interface RegisterDataType {
 }
 
 export default function AuthRegister(): ReactNode {
-    const navigate= useNavigate()
+    const navigate = useNavigate();
 
     const registerMutation = useMutation({
         mutationFn: async (values: RegisterDataType) => {
@@ -28,7 +28,7 @@ export default function AuthRegister(): ReactNode {
         },
         onSuccess: () => {
             console.log("Registration successful!");
-            navigate(paths.otp)
+            navigate(paths.otp);
         },
         onError: (error) => {
             // Handle registration error - UI will show error message
@@ -45,6 +45,7 @@ export default function AuthRegister(): ReactNode {
         newValues.profileImage = fileUpload.current?.files?.[0];
         await registerMutation.mutateAsync(newValues);
         resetForm();
+        navigate(paths.otp);
     };
 
     const fileUpload = useRef<HTMLInputElement>(undefined);
@@ -83,7 +84,7 @@ export default function AuthRegister(): ReactNode {
                                         type="text"
                                         placeholder="Enter your name"
                                         className="form-control"
-                                        name="fullname"
+                                        name="name"
                                         id="fullNameFormControl"
                                     />
                                 </div>
@@ -197,12 +198,12 @@ export default function AuthRegister(): ReactNode {
                         </button>
 
                         <div className="text-center mt-3">
-                            <span className="text-muted small">
+                            <span className="text-muted small me-2">
                                 Already have an account?
                             </span>
-                            <a href="#" className="small theme-text-primary">
+                            <Link to={paths.login} className="small theme-text-primary">
                                 Sign In
-                            </a>
+                            </Link>
                         </div>
 
                         {registerMutation.isError && (

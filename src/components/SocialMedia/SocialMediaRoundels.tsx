@@ -13,9 +13,10 @@ export default function SocialMediaRoundels({
     return (
         <div
             className={`d-flex justify-content-between ${className}`}
-            style={{...style, width: "176px" }}
+            style={{ ...style, width: "176px" }}
         >
             <Roundel
+                href="#"
                 style={{ padding: "9px" }}
                 className="theme-bg-primary"
                 rounded
@@ -35,6 +36,7 @@ export default function SocialMediaRoundels({
             </Roundel>
             <Roundel
                 style={{ padding: "9px" }}
+                href="#"
                 className="theme-bg-primary"
                 rounded
             >
@@ -52,6 +54,7 @@ export default function SocialMediaRoundels({
                 </svg>
             </Roundel>
             <Roundel
+                href="#"
                 style={{ padding: "9px" }}
                 className="theme-bg-primary"
                 rounded
@@ -78,6 +81,7 @@ export default function SocialMediaRoundels({
                 </svg>
             </Roundel>
             <Roundel
+                href="#"
                 style={{ padding: "9px" }}
                 className="theme-bg-primary"
                 rounded

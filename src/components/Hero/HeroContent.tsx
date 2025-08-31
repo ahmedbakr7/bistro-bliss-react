@@ -1,4 +1,5 @@
 import type { CSSProperties, ReactNode } from "react";
+import { Link } from "react-router-dom";
 
 export interface HeroContentProps {
     title: string;
@@ -53,17 +54,17 @@ export default function HeroContent({
                         }`}
                     >
                         {ctaText && (
-                            <a href={ctaLink} className="theme-button me-2">
+                            <Link to={ctaLink} className="theme-button me-2">
                                 {ctaText}
-                            </a>
+                            </Link>
                         )}
                         {secondaryCtaText && (
-                            <a
-                                href={secondaryCtaLink}
+                            <Link
+                                to={secondaryCtaLink}
                                 className="theme-secondary-button me-2"
                             >
                                 {secondaryCtaText}
-                            </a>
+                            </Link>
                         )}
                     </div>
                 </>

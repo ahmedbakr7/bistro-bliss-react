@@ -5,7 +5,7 @@ import "./Navbar.css";
 import Logo from "./Logo";
 import { MdOutlineMail } from "react-icons/md";
 import SocialMediaRoundels from "../SocialMedia";
-import { paths } from "../../utils/routes/routes";
+import { paths } from "../../utils/routes/routePaths";
 
 // interface NavbarProps {
 //     children: ReactNode;

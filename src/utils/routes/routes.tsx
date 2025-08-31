@@ -14,10 +14,11 @@ import {
     AuthLayout,
     AuthLogin,
     AuthRegister,
-    OtpPage
+    OtpPage,
 } from "./routeImports";
 
-import { paths } from './routePaths';
+import { paths } from "./routePaths";
+import AuthProvider from "../../stores/AuthContext/AuthProvider";
 
 // Example of route grouping for future use
 /*
@@ -82,7 +83,11 @@ const router = createBrowserRouter([
 const router = createBrowserRouter([
     {
         path: "/",
-        element: <RootLayout />,
+        element: (
+            <AuthProvider>
+                <RootLayout />
+            </AuthProvider>
+        ),
         children: [
             {
                 index: true,
@@ -124,7 +129,11 @@ const router = createBrowserRouter([
     },
     {
         path: "/auth",
-        element: <AuthLayout />,
+        element: (
+            <AuthProvider>
+                <AuthLayout />
+            </AuthProvider>
+        ),
         children: [
             {
                 element: <AuthLogin />,
@@ -146,7 +155,11 @@ const router = createBrowserRouter([
     },
     {
         path: "/admin",
-        element: <AdminLayout />,
+        element: (
+            <AuthProvider>
+                <AdminLayout />
+            </AuthProvider>
+        ),
         children: [],
     },
 ]);

@@ -1,6 +1,8 @@
 import type { ReactNode } from "react";
 import Logo from "./Navbar/Logo";
 import SocialMediaRoundels from "./SocialMedia/SocialMediaRoundels";
+import { paths } from "../utils/routes/routePaths";
+import { Link } from "react-router-dom";
 
 export default function Footer(): ReactNode {
     return (
@@ -22,39 +24,39 @@ export default function Footer(): ReactNode {
                     <b className="mb-4 theme-text-inverse">Pages</b>
                     <ul className="navbar-nav">
                         <li className="nav-item">
-                            <a className="nav-link" href={"/"}>
+                            <Link to={paths.homePage} className="nav-link">
                                 Home
-                            </a>
+                            </Link>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link" href={"#"}>
+                            <Link to={paths.about} className="nav-link">
                                 About
-                            </a>
+                            </Link>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link" href={"#"}>
+                            <Link to={paths.menu} className="nav-link">
                                 Menu
-                            </a>
+                            </Link>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link" href={"#"}>
+                            <Link to="#" className="nav-link">
                                 Pricing
-                            </a>
+                            </Link>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link" href={"#"}>
+                            <Link to={paths.pages} className="nav-link">
                                 Blog
-                            </a>
+                            </Link>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link" href={"#"}>
+                            <Link to={paths.contact} className="nav-link">
                                 Contact
-                            </a>
+                            </Link>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link" href={"#"}>
+                            <Link to={paths.menu} className="nav-link">
                                 Delivery
-                            </a>
+                            </Link>
                         </li>
                     </ul>
                 </div>
@@ -63,39 +65,39 @@ export default function Footer(): ReactNode {
                     <b className="mb-4 theme-text-inverse">Utility Pages</b>
                     <ul className="navbar-nav">
                         <li className="nav-item">
-                            <a className="nav-link" href={"#"}>
+                            <Link to="#" className="nav-link">
                                 Start Here
-                            </a>
+                            </Link>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link" href={"#"}>
+                            <Link to="#" className="nav-link">
                                 Styleguid
-                            </a>
+                            </Link>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link" href={"#"}>
+                            <Link to="#" className="nav-link">
                                 Password Protected
-                            </a>
+                            </Link>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link" href={"#"}>
+                            <Link to="#" className="nav-link">
                                 404 Not Found
-                            </a>
+                            </Link>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link" href={"#"}>
+                            <Link to="#" className="nav-link">
                                 Licenses
-                            </a>
+                            </Link>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link" href={"#"}>
+                            <Link to="#" className="nav-link">
                                 Changelog
-                            </a>
+                            </Link>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link" href={"#"}>
+                            <Link to="#" className="nav-link">
                                 View More
-                            </a>
+                            </Link>
                         </li>
                     </ul>
                 </div>

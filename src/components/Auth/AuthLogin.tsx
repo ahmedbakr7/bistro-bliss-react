@@ -6,6 +6,8 @@ import Input from "../Form/Input";
 import { useMutation } from "@tanstack/react-query";
 import type { FormikHelpers } from "formik";
 import useAuthContext from "../../stores/AuthContext/useAuthContext";
+import { useNavigate } from "react-router-dom";
+import { paths } from "../../utils/routes/routePaths";
 
 export interface LoginDataType {
     email: string;
@@ -14,10 +16,11 @@ export interface LoginDataType {
 
 export default function AuthLogin(): ReactNode {
     const { login } = useAuthContext();
+    const navigate = useNavigate();
 
     const loginMutation = useMutation({
         mutationFn: async (loginData: LoginDataType) => {
-            return await login(loginData.email, loginData.password);
+            await login(loginData.email, loginData.password);
         },
         onSuccess: () => {
             console.log("Login successful!");
@@ -33,6 +36,7 @@ export default function AuthLogin(): ReactNode {
     ) => {
         await loginMutation.mutateAsync(values);
         resetForm();
+        navigate(paths.homePage, { replace: true });
     };
 
     return (
