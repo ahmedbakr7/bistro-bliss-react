@@ -14,6 +14,11 @@ import AuthLayout from "../../pages/AuthLayout";
 import AuthLogin from "../../components/Auth/AuthLogin";
 import AuthRegister from "../../components/Auth/AuthRegister";
 import OtpPage from "../../pages/OtpPage";
+import Users from "../../components/Admin/Users";
+import Products from "../../components/Admin/Products";
+import Orders from "../../components/Admin/Orders";
+import Contacts from "../../components/Admin/Contacts";
+import Bookingsx from "../../components/Admin/Bookingsx";
 
 // Export all components for use in routes.tsx
 export {
@@ -31,5 +36,10 @@ export {
     AuthLayout,
     AuthLogin,
     AuthRegister,
-    OtpPage
+    OtpPage,
+    Users,
+    Products,
+    Orders,
+    Contacts,
+    Bookingsx,
 };

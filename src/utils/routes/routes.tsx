@@ -15,70 +15,15 @@ import {
     AuthLogin,
     AuthRegister,
     OtpPage,
+    Users,
+    Products,
+    Orders,
+    Contacts,
+    Bookingsx,
 } from "./routeImports";
 
 import { paths } from "./routePaths";
 import AuthProvider from "../../stores/AuthContext/AuthProvider";
-
-// Example of route grouping for future use
-/*
-// Public routes - accessible by anyone
-const routesForPublic = [
-  {
-    path: "/service",
-    element: <div>Service Page</div>,
-  },
-  {
-    path: "/about-us",
-    element: <div>About Us</div>,
-  },
-];
-
-// Protected routes - only for authenticated users
-const routesForAuthenticatedOnly = [
-  {
-    path: "/",
-    element: <ProtectedRoute />, // You'll need to create this component
-    children: [
-      {
-        path: "/",
-        element: <div>User Home Page</div>,
-      },
-      {
-        path: "/profile",
-        element: <div>User Profile</div>,
-      },
-      {
-        path: "/logout",
-        element: <div>Logout</div>,
-      },
-    ],
-  },
-];
-
-// Routes for non-authenticated users
-const routesForNotAuthenticatedOnly = [
-  {
-    path: "/",
-    element: <div>Home Page</div>,
-  },
-  {
-    path: "/login",
-    element: <div>Login</div>,
-  },
-];
-*/
-
-// Example of how to use route grouping with authentication:
-/*
-const token = localStorage.getItem('authToken');
-
-const router = createBrowserRouter([
-  ...routesForPublic,
-  ...(!token ? routesForNotAuthenticatedOnly : []),
-  ...(token ? routesForAuthenticatedOnly : []),
-]);
-*/
 
 const router = createBrowserRouter([
     {
@@ -160,7 +105,32 @@ const router = createBrowserRouter([
                 <AdminLayout />
             </AuthProvider>
         ),
-        children: [],
+        children: [
+            {
+                index: true,
+                element: <Users />,
+            },
+            {
+                path: paths.adminUsers,
+                element: <Users />,
+            },
+            {
+                path: paths.adminProducts,
+                element: <Products />,
+            },
+            {
+                path: paths.adminOrders,
+                element: <Orders />,
+            },
+            {
+                path: paths.adminContacts,
+                element: <Contacts />,
+            },
+            {
+                path: paths.adminBookings,
+                element: <Bookingsx />,
+            },
+        ],
     },
 ]);
 export default router;
