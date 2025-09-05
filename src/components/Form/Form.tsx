@@ -30,6 +30,7 @@ export default function Form<T extends FormikValues>({
     children,
     initialValues,
     validationSchema,
+    onReset,
     ...otherFormikProps
 }: FormProps<T>): ReactNode {
     return (
@@ -37,6 +38,7 @@ export default function Form<T extends FormikValues>({
             {...otherFormikProps}
             initialValues={initialValues}
             validationSchema={validationSchema}
+            onReset={onReset}
         >
             {(formikProps) => (
                 <FormikForm>

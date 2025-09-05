@@ -30,6 +30,9 @@ export interface InputProps
             HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
         >
     ) => unknown;
+    // Additional optional attributes to satisfy TS when passing to generic component
+    rows?: number;
+    step?: string | number;
 }
 
 export default function Input({
@@ -41,14 +44,21 @@ export default function Input({
 }: InputProps): ReactNode {
     const [field, meta, helper] = useField(props);
 
-    const handleChange = useCallback((e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-        if (customOnChange) {
-            const newValue = customOnChange(e);
-            helper.setValue(newValue);
-        } else {
-            field.onChange(e);
-        }
-    }, [customOnChange, helper, field]);
+    const handleChange = useCallback(
+        (
+            e: ChangeEvent<
+                HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+            >
+        ) => {
+            if (customOnChange) {
+                const newValue = customOnChange(e);
+                helper.setValue(newValue);
+            } else {
+                field.onChange(e);
+            }
+        },
+        [customOnChange, helper, field]
+    );
 
     return (
         <>

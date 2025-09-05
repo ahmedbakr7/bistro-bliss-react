@@ -9,8 +9,8 @@ interface LinkType {
 
 interface CardBodyProps {
     className?: string;
-    title?: string;
-    subtitle?: string;
+    title?: ReactNode; // changed to allow ReactNode
+    subtitle?: ReactNode; // changed to allow ReactNode / custom styled span
     text?: string;
     links?: LinkType[];
     children?: ReactNode;

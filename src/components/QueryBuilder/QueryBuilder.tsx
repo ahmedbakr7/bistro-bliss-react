@@ -236,13 +236,13 @@ export const QueryBuilder: React.FC<QueryBuilderProps> = ({
                     <div className="mt-2 d-flex gap-2">
                         <button
                             type="submit"
-                            className="btn btn-primary btn-sm w-100"
+                            className="btn theme-btn-primary btn-sm w-100"
                         >
                             {submitLabel}
                         </button>
                         <button
                             type="button"
-                            className="btn btn-outline-secondary btn-sm"
+                            className="btn theme-btn-secondary btn-sm w-100"
                             onClick={handleReset}
                         >
                             {resetLabel}

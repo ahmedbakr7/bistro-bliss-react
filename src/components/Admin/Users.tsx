@@ -180,7 +180,7 @@ export default function Users(): ReactElement {
                     toggleRole.isPending && mutatingId === row.id;
                 const isAdmin = row.role === "admin";
                 const btnClass = `btn btn-sm ${
-                    isAdmin ? "btn-outline-danger" : "btn-outline-success"
+                    isAdmin ? "theme-btn-secondary" : "theme-btn-primary"
                 }`;
                 return (
                     <button
