@@ -13,13 +13,16 @@ export default function TableRow<T extends Record<string, unknown>>({
     const { index: indexColumn, tableHeaders } = useTableContext();
 
     return (
-        <tr key={row.id as string}>
+        <tr key={(row.id as string) ?? rowIndex}>
             {indexColumn && <th scope="row">{rowIndex + 1}</th>}
             {tableHeaders?.map((col, index) => {
-                const value = row[col.key as keyof T];
+                const value = col.key ? (row[col.key as keyof T] as unknown) : undefined;
+                const content = col.render
+                    ? col.render(row as T, value, rowIndex)
+                    : (value as ReactNode);
                 return (
-                    <td key={index} className={col.className}>
-                        {value as string}
+                    <td key={col.key ?? index} className={col.className}>
+                        {content}
                     </td>
                 );
             })}

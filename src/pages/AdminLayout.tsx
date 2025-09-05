@@ -6,8 +6,9 @@ export default function AdminLayout(): ReactNode {
     return (
         <>
             <AdminNavbar />
-            <main style={{ height: "89vh" }}>
-                <section className="w-100 h-100 container theme-bg-surface justify-content-center align-items-center">
+            <main style={{ height: "87vh" }}>
+                {/* Flex container to allow sidebar (e.g., QueryBuilder) + main content */}
+                <section className="w-100 h-100 d-flex flex-row overflow-hidden theme-bg-surface">
                     <Outlet />
                 </section>
             </main>

@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import type { QueryBuilderProps, QueryField, QueryValues } from "./types";
+import Sidebar from "../Sidebar";
 
 function classNames(...classes: (string | false | undefined)[]) {
     return classes.filter(Boolean).join(" ");
@@ -157,7 +158,7 @@ export const QueryBuilder: React.FC<QueryBuilderProps> = ({
     const [values, setValues] = useState<QueryValues>(() => ({
         ...initialValues,
     }));
-    const [open, setOpen] = useState(true);
+    const [isCollapsed, setIsCollapsed] = useState(false);
 
     // keep external changes to initialValues (if they change) in sync
     useEffect(() => {
@@ -189,77 +190,67 @@ export const QueryBuilder: React.FC<QueryBuilderProps> = ({
         onChange?.({ ...initialValues });
     }, [initialValues, onReset, onChange]);
 
-    const sidebarStyle: React.CSSProperties = useMemo(
-        () => ({
-            width: typeof width === "number" ? `${width}px` : width,
-        }),
-        [width]
-    );
+    // const sidebarStyle: React.CSSProperties = useMemo(
+    //     () => ({
+    //         width: typeof width === "number" ? `${width}px` : width,
+    //     }),
+    //     [width]
+    // );
 
     return (
-        <aside
-            className={classNames(
-                "border-end bg-body-tertiary p-3 d-flex flex-column",
-                className
-            )}
-            style={sidebarStyle}
-        >
-            <div className="d-flex align-items-center mb-3">
-                <h6 className="mb-0 me-auto text-uppercase small letter-spacing-1">
-                    {title}
-                </h6>
-                {collapsible && (
-                    <button
-                        type="button"
-                        className="btn btn-sm btn-outline-secondary"
-                        onClick={() => setOpen((o) => !o)}
-                        aria-expanded={open}
-                        aria-label={
-                            open ? "Collapse filters" : "Expand filters"
-                        }
-                    >
-                        {open ? "−" : "+"}
-                    </button>
-                )}
-            </div>
-            <form
-                onSubmit={handleSubmit}
-                className={classNames(
-                    "flex-grow-1 d-flex flex-column",
-                    !open && "d-none"
-                )}
+        <>
+            <Sidebar
+                className={classNames("bg-body-tertiary", className)}
+                // style={sidebarStyle}
+                collapsed={collapsible ? isCollapsed : false}
+                onCollapseChange={(c) => setIsCollapsed(c)}
+                collapseButton={
+                    collapsible
+                        ? (collapsed) => (collapsed ? "+" : "−")
+                        : undefined
+                }
+                containerClassName="d-flex flex-column flex-grow-1"
             >
-                <div
-                    className="flex-grow-1 overflow-auto pe-1"
-                    style={{ maxHeight: "calc(100vh - 220px)" }}
+                <div className="d-flex align-items-center mb-3">
+                    <h6 className="mb-0 me-auto text-uppercase small letter-spacing-1">
+                        {title}
+                    </h6>
+                </div>
+                <form
+                    onSubmit={handleSubmit}
+                    className={classNames("flex-grow-1 d-flex flex-column")}
                 >
-                    {fields.map((f) => (
-                        <FieldRenderer
-                            key={f.name}
-                            field={f}
-                            value={values[f.name]}
-                            setValue={setValue}
-                        />
-                    ))}
-                </div>
-                <div className="mt-2 d-flex gap-2">
-                    <button
-                        type="submit"
-                        className="btn btn-primary btn-sm w-100"
+                    <div
+                        className="flex-grow-1 overflow-auto pe-1"
+                        style={{ maxHeight: "calc(100vh - 220px)" }}
                     >
-                        {submitLabel}
-                    </button>
-                    <button
-                        type="button"
-                        className="btn btn-outline-secondary btn-sm"
-                        onClick={handleReset}
-                    >
-                        {resetLabel}
-                    </button>
-                </div>
-            </form>
-            {!open && <div className="text-muted small fst-italic">Hidden</div>}
-        </aside>
+                        {fields.map((f) => (
+                            <FieldRenderer
+                                key={f.name}
+                                field={f}
+                                value={values[f.name]}
+                                setValue={setValue}
+                            />
+                        ))}
+                    </div>
+                    <div className="mt-2 d-flex gap-2">
+                        <button
+                            type="submit"
+                            className="btn btn-primary btn-sm w-100"
+                        >
+                            {submitLabel}
+                        </button>
+                        <button
+                            type="button"
+                            className="btn btn-outline-secondary btn-sm"
+                            onClick={handleReset}
+                        >
+                            {resetLabel}
+                        </button>
+                    </div>
+                </form>
+            </Sidebar>
+        </>
     );
 };
 

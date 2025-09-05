@@ -10,8 +10,9 @@ export interface TableHeader<
     T extends Record<string, unknown> = Record<string, unknown>
 > {
     name: string;
-    key: keyof T & string;
+    key?: keyof T & string; // made optional to allow purely action/render columns
     className?: string;
+    render?: (row: T, value: unknown, rowIndex: number) => ReactNode; // custom cell renderer
 }
 
 interface TableProps<
@@ -27,6 +28,7 @@ interface TableProps<
     emptyElement?: ReactNode;
     index?: boolean;
     children?: ReactNode;
+    className?: string;
 }
 
 export default function Table<
@@ -39,6 +41,7 @@ export default function Table<
     hoverable = false,
     data,
     children,
+    className = "",
     tableHeaders = [],
     emptyElement = null,
     index = false,
@@ -68,15 +71,15 @@ export default function Table<
                 >[],
             }}
         >
-            <div className="table-responsive">
+            <div className={`table-responsive ${className}`}>
                 <table className={tableClassNames}>
                     {caption && <caption>{caption}</caption>}
                     <thead>
                         <tr>
                             {index && <th scope="col">#</th>}
-                            {tableHeaders.map((h) => (
+                            {tableHeaders.map((h, i) => (
                                 <th
-                                    key={h.key}
+                                    key={h.key ?? i}
                                     scope="col"
                                     className={h.className}
                                 >
