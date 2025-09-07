@@ -1,35 +1,48 @@
+import { paths } from "../../utils/routes/routePaths";
 
 // Basic Menu Item Card
 export const menuItem1 = {
     title: "Breakfast",
     text: "In the new era of technology we look in the future with certainty and pride for our life.",
-    links: [{
-        text:"Explore Menu", href:"#"
-    }]
+    links: [
+        {
+            text: "Explore Menu",
+            href: paths.menu,
+        },
+    ],
 };
 
 export const menuItem2 = {
     title: "Main Dishes",
     text: "In the new era of technology we look in the future with certainty and pride for our life.",
-    links: [{
-        text:"Explore Menu",href:"#"
-    }]
+    links: [
+        {
+            text: "Explore Menu",
+            href: paths.menu,
+        },
+    ],
 };
 
 export const menuItem3 = {
     title: "Breakfast",
     text: "In the new era of technology we look in the future with certainty and pride for our life.",
-    links: [{
-        text:"Explore Menu",href:"#"
-    }]
+    links: [
+        {
+            text: "Explore Menu",
+            href: paths.menu,
+        },
+    ],
 };
 
 export const menuItem4 = {
     title: "Breakfast",
     text: "In the new era of technology we look in the future with certainty and pride for our life.",
-    links: [{
-        text:"Explore Menu",href:"#"
-    }]
+    links: [
+        {
+            text: "Explore Menu",
+            href: paths.menu,
+        },
+    ],
 };
 
 // // Card with Header

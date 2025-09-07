@@ -33,6 +33,11 @@ export interface InputProps
     // Additional optional attributes to satisfy TS when passing to generic component
     rows?: number;
     step?: string | number;
+    // Explicitly include frequent attributes to avoid distribution issues with union
+    min?: string | number;
+    max?: string | number;
+    minLength?: number;
+    maxLength?: number;
 }
 
 export default function Input({

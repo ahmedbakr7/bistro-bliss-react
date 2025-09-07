@@ -13,6 +13,7 @@ import {
     DrinkIcon,
 } from "../common/constants/Svgs";
 import "./HomePage.css";
+import { paths } from "../utils/routes/routePaths";
 
 export default function HomePage(): ReactNode {
     return (
@@ -23,8 +24,10 @@ export default function HomePage(): ReactNode {
 your taste"
                 subtitle="Discover delectable cuisine and unforgettable moments in our welcoming, culinary haven."
                 ctaText="Reserve Your Table"
+                ctaLink={paths.book}
                 image="/src/assets/bg-hero.png"
                 secondaryCtaText="Explore Menu"
+                secondaryCtaLink={paths.menu}
             />
 
             <Section title="Browse Our Menu" className="text-center my-5 py-5 ">
@@ -185,7 +188,7 @@ your taste"
                         title="We provide healthy food for you family."
                         subtitle="Our story began with a vision to create a unique dining experience that merges fine dining, exceptional service, and a vibrant ambiance. Rooted in city's rich culinary culture, we aim to honor our local roots while infusing a global palate."
                         secondaryCtaText="More About Us"
-                        secondaryCtaLink="#"
+                        secondaryCtaLink={paths.about}
                         className="d-flex col h-100 justify-content-center"
                         // style={{flex:"1 0 0"}}
                     />
@@ -353,7 +356,7 @@ your taste"
             </Section>
 
             <Section
-                style={{ minHeight: "80vh",maxWidth:"None" }}
+                style={{ minHeight: "80vh", maxWidth: "None" }}
                 className=" d-flex p-5 flex-column justify-content-evenly theme-bg-surface "
             >
                 <Section className="py-5">

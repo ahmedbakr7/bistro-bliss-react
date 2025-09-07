@@ -299,11 +299,8 @@ export default function Products(): ReactElement {
                                     <div className="ratio ratio-4x3 overflow-hidden bg-light rounded-top-4">
                                         <Card.Image
                                             src={
-                                                p.imageUrl
-                                                    ? import.meta.env
-                                                          .VITE_API_URL +
-                                                      p.imageUrl
-                                                    : "/images/placeholder_image.png"
+                                                p.imageUrl ??
+                                                "/images/placeholder_image.png"
                                             }
                                             alt={p.name}
                                             className="object-fit-cover"

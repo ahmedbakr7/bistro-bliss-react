@@ -16,6 +16,8 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
     // const [token, setToken] = useState<Token>(getTokenLocalStorage());
     const [authState, setAuthState] = useState<AuthState>({
         user: null,
+        cart: [],
+        favourites: [],
         token: null,
     });
 
@@ -36,13 +38,15 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
                 setAuthState({
                     user: data.user,
                     token: data.accessToken,
+                    cart: data.cart,
+                    favourites: data.favourites,
                 });
             });
     }
 
     function logOut() {
         api.post("/auth/logout", {});
-        setAuthState({ user: null, token: null });
+        setAuthState({ user: null, cart: [], favourites: [], token: null });
         navigate("/", { replace: true });
     }
 
@@ -94,11 +98,18 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
                         setAuthState({
                             user: data.user,
                             token: data.accessToken,
+                            cart: data.cart,
+                            favourites: data.favourites,
                         });
 
                         return api(originalRequest);
                     } catch {
-                        setAuthState({ user: null, token: null });
+                        setAuthState({
+                            user: null,
+                            cart: [],
+                            favourites: [],
+                            token: null,
+                        });
                         navigate("/", { replace: true });
                     }
                 }

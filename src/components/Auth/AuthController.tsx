@@ -8,39 +8,39 @@ export const BASE_URL = import.meta.env.VITE_API_URL;
 export async function submitRegister(registerData: RegisterDataType) {
     console.log(registerData);
     try {
-        const body = {
+        // Build a single multipart/form-data payload containing ALL fields
+        const formData = new FormData();
+
+        // Append scalar fields (convert to string just in case)
+        const scalarFields: Record<string, unknown> = {
             name: registerData.name,
             email: registerData.email,
             phoneNumber: registerData.phoneNumber,
             password: registerData.password,
-            // profilePic: response.data.normalizedPath,
         };
+        Object.entries(scalarFields).forEach(([key, value]) => {
+            if (value !== undefined && value !== null) {
+                formData.append(key, String(value));
+            }
+        });
 
-        let { data } = await api.post("/auth/register", body);
-        console.log(data);
-
-        const formData = new FormData();
+        // Append file (image) if present
         if (registerData.profileImage) {
             formData.append("image", registerData.profileImage);
         } else {
-            throw new Error("profile image is null");
+            console.warn("profileImage is not provided; proceeding without it");
         }
 
-        data = await api.post(`/users/${data.id}/upload`, formData, {
+        // Single request to register endpoint expecting multipart/form-data
+        const { data } = await api.post("/auth/register", formData, {
             headers: { "Content-Type": "multipart/form-data" },
         });
-
-        if (data.status !== 200) {
-            throw new Error(
-                `User registered you can login now, but Image Upload failed, reason: ${data.message}`
-            );
-        }
 
         return data;
     } catch (error) {
         console.log(error);
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        throw new Error((error as any).response.data);
+        throw new Error((error as any).response?.data || "Registration failed");
     }
 }
 

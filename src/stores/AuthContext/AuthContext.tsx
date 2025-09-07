@@ -1,4 +1,5 @@
 import { createContext } from "react";
+import type { Product } from "../../components/Admin/Products";
 
 export type Token = string;
 
@@ -7,8 +8,14 @@ export type User = {
     password: string;
 };
 
+export interface CartItem extends Product {
+    count: number;
+}
+
 export interface AuthState {
     user: User | null;
+    favourites: Product[];
+    cart: CartItem[];
     token: Token | null;
 }
 

@@ -1,113 +1,309 @@
 import type { ReactNode } from "react";
+import { useState, useMemo } from "react";
 import Section from "../components/Section";
 import GridContainer from "../components/GridContainer";
 import { Card } from "../components/Card";
 import HeroContent from "../components/Hero/HeroContent";
+import { FaHeart, FaRegHeart } from "react-icons/fa";
+import { FiShoppingCart } from "react-icons/fi";
+
+// Data model for menu items
+interface MenuItem {
+    id: number;
+    title: string;
+    category: string;
+    price: number;
+    image: string;
+    description: string;
+}
+
+const menuItems: MenuItem[] = [
+    {
+        id: 1,
+        title: "Fried Eggs",
+        category: "Breakfast",
+        price: 9.99,
+        image: "/src/assets/bg-hero.png",
+        description:
+            "Made with eggs, lettuce, salt, oil and other ingredients.",
+    },
+    {
+        id: 2,
+        title: "Hawaiian Pizza",
+        category: "Main Dishes",
+        price: 15.99,
+        image: "/src/assets/pizza.png",
+        description: "Classic sweet + savory pineapple & ham experience.",
+    },
+    {
+        id: 3,
+        title: "Fresh Salad Bowl",
+        category: "Breakfast",
+        price: 8.5,
+        image: "/src/assets/salad.png",
+        description: "Crisp greens with a light vinaigrette dressing.",
+    },
+    {
+        id: 4,
+        title: "Gyro Plate",
+        category: "Main Dishes",
+        price: 12.75,
+        image: "/src/assets/gyro.png",
+        description: "Spiced meat, soft pita & refreshing tzatziki sauce.",
+    },
+    {
+        id: 5,
+        title: "Signature Drink",
+        category: "Drinks",
+        price: 6.0,
+        image: "/src/assets/drink.png",
+        description: "House crafted herbal fusion beverage.",
+    },
+    {
+        id: 6,
+        title: "Cupcake Duo",
+        category: "Desserts",
+        price: 5.25,
+        image: "/src/assets/cupcakespng.png",
+        description: "Two fluffy cupcakes with silky buttercream.",
+    },
+    {
+        id: 7,
+        title: "Mac & Cheese",
+        category: "Main Dishes",
+        price: 11.25,
+        image: "/src/assets/mac&cheese.png",
+        description: "Ultra creamy three-cheese macaroni comfort bowl.",
+    },
+    {
+        id: 8,
+        title: "Cheesecake Slice",
+        category: "Desserts",
+        price: 7.4,
+        image: "/src/assets/cupcakespng.png",
+        description: "Velvety baked cheesecake with berry drizzle.",
+    },
+];
+
+const friendlyFontStyle: React.CSSProperties = {
+    fontFamily: '"Poppins", "Segoe UI", system-ui, sans-serif',
+    letterSpacing: "0.25px",
+};
 
 export default function MenuPage(): ReactNode {
+    const [activeCategory, setActiveCategory] = useState<string>("All");
+    const [favorites, setFavorites] = useState<Set<number>>(new Set());
+    const [cart, setCart] = useState<number[]>([]);
+
+    const categories = useMemo(
+        () => ["All", ...Array.from(new Set(menuItems.map((m) => m.category)))],
+        []
+    );
+
+    const filteredItems = useMemo(
+        () =>
+            activeCategory === "All"
+                ? menuItems
+                : menuItems.filter((m) => m.category === activeCategory),
+        [activeCategory]
+    );
+
+    function toggleFavorite(id: number) {
+        setFavorites((prev) => {
+            const next = new Set(prev);
+            if (next.has(id)) {
+                next.delete(id);
+            } else {
+                next.add(id);
+            }
+            return next;
+        });
+    }
+
+    function addToCart(id: number) {
+        setCart((prev) => [...prev, id]);
+        console.log("Added to cart", id);
+    }
+
     return (
-        <main>
+        <main style={friendlyFontStyle} className="friendly-font">
             <Section
                 title="Our Menu"
                 className="justify-content-center p-5 align-items-center gap-4"
             >
-                <p>
-                    We consider all the drivers of change gives you the
-                    components you need to change to create a truly happens.
+                <p className="text-muted mb-4" style={{ maxWidth: 640 }}>
+                    We consider all the drivers of change to give you the
+                    components you need to create a truly joyful dining
+                    experience.
                 </p>
-                <div className="d-flex align-items-center gap-4 w-100" style={{minWidth:"864px"}}>
-                    <button className="theme-button w-100">All</button>
-                    <button className="theme-secondary-button w-100">
-                        Breakfast
-                    </button>
-                    <button className="theme-secondary-button w-100">
-                        Main Dishes
-                    </button>
-                    <button className="theme-secondary-button w-100">Drinks</button>
-                    <button className="theme-secondary-button w-100">Desserts</button>
+
+                {/* Category Filter */}
+                <div
+                    className="d-flex flex-wrap justify-content-center gap-2 mb-4 w-100"
+                    style={{ maxWidth: 900 }}
+                >
+                    {categories.map((cat) => {
+                        const isActive = cat === activeCategory;
+                        return (
+                            <button
+                                key={cat}
+                                onClick={() => setActiveCategory(cat)}
+                                className={`px-4 py-2 rounded-5 fw-semibold border-0 ${
+                                    isActive
+                                        ? "theme-button"
+                                        : "theme-secondary-button"
+                                }`}
+                                style={{
+                                    transition: "all .25s ease",
+                                    fontSize: "0.9rem",
+                                }}
+                            >
+                                {cat}
+                            </button>
+                        );
+                    })}
                 </div>
-                <GridContainer className="text-center g-4" numberOfColumns={4}>
-                    <Card className="rounded-4">
-                        <Card.Image src="/src/assets/bg-hero.png" />
-                        <h3 className="theme-text-primary my-2 fw-bold">
-                            $ 9.99
-                        </h3>
-                        <Card.Body
-                            title="Fried Eggs"
-                            subtitle="Made with eggs, lettuce, salt, oil and other ingredients."
-                        />
-                    </Card>
-                    <Card>
-                        <Card.Image src="/src/assets/bg-hero.png" />
-                        <h3 className="theme-text-primary my-2 fw-bold">
-                            $ 15.99
-                        </h3>
-                        <Card.Body
-                            title="Hawaiian Pizza"
-                            subtitle="Made with eggs, lettuce, salt, oil and other ingredients."
-                        />
-                    </Card>
-                    <Card>
-                        <Card.Image src="/src/assets/bg-hero.png" />
-                        <h3 className="theme-text-primary my-2 fw-bold">
-                            $ 9.99
-                        </h3>
-                        <Card.Body
-                            title="Fried Eggs"
-                            subtitle="Made with eggs, lettuce, salt, oil and other ingredients."
-                        />
-                    </Card>
-                    <Card>
-                        <Card.Image src="/src/assets/bg-hero.png" />
-                        <h3 className="theme-text-primary my-2 fw-bold">
-                            $ 9.99
-                        </h3>
-                        <Card.Body
-                            title="Fried Eggs"
-                            subtitle="Made with eggs, lettuce, salt, oil and other ingredients."
-                        />
-                    </Card>
-                    <Card>
-                        <Card.Image src="/src/assets/bg-hero.png" />
-                        <h3 className="theme-text-primary my-2 fw-bold">
-                            $ 9.99
-                        </h3>
-                        <Card.Body
-                            title="Fried Eggs"
-                            subtitle="Made with eggs, lettuce, salt, oil and other ingredients."
-                        />
-                    </Card>
-                    <Card>
-                        <Card.Image src="/src/assets/bg-hero.png" />
-                        <h3 className="theme-text-primary my-2 fw-bold">
-                            $ 9.99
-                        </h3>
-                        <Card.Body
-                            title="Fried Eggs"
-                            subtitle="Made with eggs, lettuce, salt, oil and other ingredients."
-                        />
-                    </Card>
-                    <Card>
-                        <Card.Image src="/src/assets/bg-hero.png" />
-                        <h3 className="theme-text-primary my-2 fw-bold">
-                            $ 9.99
-                        </h3>
-                        <Card.Body
-                            title="Fried Eggs"
-                            subtitle="Made with eggs, lettuce, salt, oil and other ingredients."
-                        />
-                    </Card>
-                    <Card>
-                        <Card.Image src="/src/assets/bg-hero.png" />
-                        <h3 className="theme-text-primary my-2 fw-bold">
-                            $ 9.99
-                        </h3>
-                        <Card.Body
-                            title="Fried Eggs"
-                            subtitle="Made with eggs, lettuce, salt, oil and other ingredients."
-                        />
-                    </Card>
+
+                {/* Dynamic Grid */}
+                <GridContainer
+                    className="g-4 position-relative"
+                    numberOfColumns={4}
+                >
+                    {filteredItems.map((item) => {
+                        const isFav = favorites.has(item.id);
+                        const inCart = cart.includes(item.id);
+                        return (
+                            <Card
+                                key={item.id}
+                                className="rounded-4 h-100 shadow-sm position-relative overflow-hidden menu-card"
+                                style={{
+                                    background: "#fff",
+                                    border: "1px solid var(--bs-border-color, #eee)",
+                                    transition:
+                                        "transform .3s ease, box-shadow .3s ease",
+                                }}
+                            >
+                                <div
+                                    className="position-absolute top-0 end-0 m-2 p-2 rounded-circle d-flex align-items-center justify-content-center favorite-btn"
+                                    style={{
+                                        background: "rgba(255,255,255,.85)",
+                                        backdropFilter: "blur(6px)",
+                                        cursor: "pointer",
+                                        color: isFav ? "#e63946" : "#555",
+                                        zIndex: 5,
+                                    }}
+                                    aria-label={
+                                        isFav
+                                            ? "Remove from favourites"
+                                            : "Add to favourites"
+                                    }
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        toggleFavorite(item.id);
+                                    }}
+                                >
+                                    {isFav ? <FaHeart /> : <FaRegHeart />}
+                                </div>
+                                <div className="menu-card-media position-relative">
+                                    <Card.Image
+                                        src={item.image}
+                                        className="w-100"
+                                        style={{
+                                            height: 170,
+                                            objectFit: "cover",
+                                            borderRadius: "1rem",
+                                            position: "relative",
+                                            zIndex: 1,
+                                        }}
+                                    />
+                                    <button
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            addToCart(item.id);
+                                        }}
+                                        className={`menu-add-btn theme-btn-primary ${
+                                            inCart ? "is-added" : ""
+                                        } d-flex align-items-center gap-2 px-3 py-2 rounded-4 fw-semibold border-0`}
+                                        style={{
+                                            position: "absolute",
+                                            bottom: 12,
+                                            left: "50%",
+                                            boxShadow:
+                                                "0 4px 14px -4px rgba(0,0,0,.25)",
+                                            fontSize: ".8rem",
+                                            transition:
+                                                "opacity .35s ease, transform .35s ease",
+                                            zIndex: 4,
+                                        }}
+                                        aria-label={
+                                            inCart
+                                                ? "Item added"
+                                                : "Add to cart"
+                                        }
+                                    >
+                                        <FiShoppingCart />
+                                        {inCart ? "Added" : "Add to cart"}
+                                    </button>
+                                </div>
+                                {/* Centered content with price first */}
+                                <div className="pt-3 px-3 pb-4 text-center d-flex flex-column h-100">
+                                    <h4
+                                        className="mb-2 fw-bold theme-text-primary price"
+                                        style={{ fontSize: "1.15rem" }}
+                                    >
+                                        ${item.price.toFixed(2)}
+                                    </h4>
+                                    <h5
+                                        className="mb-2 fw-semibold"
+                                        style={{ fontSize: "1.05rem" }}
+                                    >
+                                        {item.title}
+                                    </h5>
+                                    <p
+                                        className="text-muted flex-grow-1 mb-0"
+                                        style={{
+                                            fontSize: ".8rem",
+                                            lineHeight: 1.3,
+                                        }}
+                                    >
+                                        {item.description}
+                                    </p>
+                                </div>
+                            </Card>
+                        );
+                    })}
                 </GridContainer>
+
+                {/* Inline enhancement styles */}
+                <style>
+                    {`
+                    .menu-card { position: relative; }
+                    .menu-card:hover {transform: translateY(-4px);box-shadow: 0 8px 28px -10px rgba(0,0,0,.15);}
+                    .menu-card .menu-add-btn {
+                        opacity: 0;
+                        transform: translate(-50%, 8px);
+                        pointer-events: none;
+                        transition: opacity .35s ease, transform .35s ease, background-color .25s ease;
+                    }
+                    .menu-card:hover .menu-add-btn, .menu-card .menu-add-btn:focus-visible {
+                        opacity: 1;
+                        transform: translate(-50%, 0);
+                        pointer-events: auto;
+                    }
+                    .menu-card .menu-add-btn:active {transform: translate(-50%, 2px);}
+                    .menu-card .favorite-btn { z-index:5; }
+                    .menu-card .menu-add-btn { z-index:4; }
+
+                    /* Added state overrides (success) */
+                    .menu-card .menu-add-btn.is-added {
+                        background: #198754;
+                    }
+                    .menu-card .menu-add-btn.is-added:hover,
+                    .menu-card .menu-add-btn.is-added:focus {
+                        background:#157347;
+                    }
+                    `}
+                </style>
             </Section>
 
             {/* TODO!!!: finish the rest of the component(logo groups) */}
@@ -123,7 +319,7 @@ export default function MenuPage(): ReactNode {
                                 subtitle="Lorem ipsum dolor sit amet consectetur adipiscing elit enim bibendum sed et aliquet aliquet risus tempor semper."
                             />
                         </div>
-                        <div className="col d-flex flex-column justify-content-between align-items-center gap-3" >
+                        <div className="col d-flex flex-column justify-content-between align-items-center gap-3">
                             <div className="d-flex w-100 justify-content-between">
                                 <div
                                     className="d-flex justify-content-center align-items-center rounded-3"

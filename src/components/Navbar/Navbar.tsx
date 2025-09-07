@@ -1,46 +1,17 @@
 import type { ReactNode } from "react";
 import { Link, NavLink } from "react-router-dom";
-import { FiPhone } from "react-icons/fi";
 import "./Navbar.css";
 import Logo from "./Logo";
-import { MdOutlineMail } from "react-icons/md";
-import SocialMediaRoundels from "../SocialMedia";
 import { paths } from "../../utils/routes/routePaths";
-
-// interface NavbarProps {
-//     children: ReactNode;
-//     [key: string]: unknown;
-// }
+import TopBar from "./TopBar";
 
 export default function Navbar(): ReactNode {
     return (
         <header>
-            <nav role="navigation" className="navbar theme-icon navbar-expand">
-                <div className="container">
-                    <ul className="navbar-nav g-2">
-                        <li className="nav-item me-2">
-                            <div className="d-flex align-items-center">
-                                <FiPhone color="white" className="me-2" />
-                                <span className="theme-text-inverse">
-                                    (414) 857 - 0107
-                                </span>
-                            </div>
-                        </li>
-                        <li className="nav-item">
-                            <div className="d-flex align-items-center">
-                                <MdOutlineMail color="white" className="me-2" />
-                                <span className="theme-text-inverse">
-                                    yummy@bistrobliss
-                                </span>
-                            </div>
-                        </li>
-                    </ul>
-                    <SocialMediaRoundels className="" />
-                </div>
-            </nav>
-
+            <TopBar />
+            {/* Main navigation bar */}
             <nav role="navigation" className="navbar navbar-expand">
-                <div className="container">
+                <div className="container-md">
                     <Logo />
                     <ul className="navbar-nav">
                         <li className="nav-item">
