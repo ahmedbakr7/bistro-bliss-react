@@ -8,17 +8,14 @@ export async function submitContact({
     message,
 }: ContactDataType) {
     // actions: {}
-    try {
-        const response = await api.post("/contact/create-contact", {
-            name,
-            email,
-            subject,
-            message,
-        });
-        console.log(response);
-    } catch (error) {
-        console.log(error);
-    }
+    const response = await api.post("/contacts", {
+        name,
+        email,
+        subject,
+        message,
+    });
+
+    console.log(response);
 }
 
 export function resetContact() {

@@ -100,10 +100,14 @@ export default function Products(): ReactElement {
     const queryClient = useQueryClient();
 
     // Fetcher
-    async function fetchProducts(signal: GenericAbortSignal): Promise<ProductPayload> {
+    async function fetchProducts(
+        signal: GenericAbortSignal
+    ): Promise<ProductPayload> {
         const qs = searchParams.toString();
         const url = "/products" + (qs ? `?${qs}` : "");
-        const { data: payload } = await api.get<ProductPayload>(url, { signal });
+        const { data: payload } = await api.get<ProductPayload>(url, {
+            signal,
+        });
         // update ref with returned pagination meta
         queryRef.current.limit = payload.pagination.limit;
         queryRef.current.page = payload.pagination.page;
@@ -112,7 +116,12 @@ export default function Products(): ReactElement {
     }
 
     // Query
-    const { data: payload, isPending, isError, error } = useQuery<ProductPayload>({
+    const {
+        data: payload,
+        isPending,
+        isError,
+        error,
+    } = useQuery<ProductPayload>({
         queryKey: ["products", searchParams.toString()],
         queryFn: ({ signal }) => fetchProducts(signal as GenericAbortSignal),
         staleTime: 5000,
@@ -146,7 +155,12 @@ export default function Products(): ReactElement {
     // Filter Fields
     const fields: QueryField[] = useMemo(
         () => [
-            { name: "search", label: "Search", type: "string", placeholder: "Name / Description" },
+            {
+                name: "search",
+                label: "Search",
+                type: "string",
+                placeholder: "Name / Description",
+            },
             { name: "minPrice", label: "Min Price", type: "number" },
             { name: "maxPrice", label: "Max Price", type: "number" },
             { name: "createdAfter", label: "Created After", type: "date" },
@@ -196,9 +210,11 @@ export default function Products(): ReactElement {
     }
 
     if (isError) {
+        console.log(`error: ${error}`);
         return (
             <div className="alert alert-danger m-3" role="alert">
-                Failed to load products: {error instanceof Error ? error.message : "Unknown error"}
+                Failed to load products:{" "}
+                {error instanceof Error ? error.message : "Unknown error"}
             </div>
         );
     }
@@ -243,26 +259,38 @@ export default function Products(): ReactElement {
                 )}
 
                 {products.length === 0 && (
-                    <div className="text-muted small py-5 text-center w-100">No products found</div>
+                    <div className="text-muted small py-5 text-center w-100">
+                        No products found
+                    </div>
                 )}
 
                 {products.length > 0 && (
-                    <GridContainer numberOfColumns={4} spacing={4} className="text-center">
+                    <GridContainer
+                        numberOfColumns={4}
+                        spacing={4}
+                        className="text-center"
+                    >
                         {products.map((p) => (
                             <Card
                                 key={p.id}
                                 className="border-0 shadow-sm h-100 rounded-4 position-relative overflow-hidden"
                                 style={{
-                                    transition: "box-shadow .3s ease, transform .3s ease",
+                                    transition:
+                                        "box-shadow .3s ease, transform .3s ease",
                                 }}
                                 onMouseEnter={(e: unknown) => {
-                                    const el = e as unknown as { currentTarget: HTMLElement };
-                                    el.currentTarget.style.transform = "translateY(-3px)";
+                                    const el = e as unknown as {
+                                        currentTarget: HTMLElement;
+                                    };
+                                    el.currentTarget.style.transform =
+                                        "translateY(-3px)";
                                     el.currentTarget.style.boxShadow =
                                         "0 4px 10px -2px rgba(0,0,0,0.12),0 8px 22px -4px rgba(0,0,0,0.10)";
                                 }}
                                 onMouseLeave={(e: unknown) => {
-                                    const el = e as unknown as { currentTarget: HTMLElement };
+                                    const el = e as unknown as {
+                                        currentTarget: HTMLElement;
+                                    };
                                     el.currentTarget.style.transform = "";
                                     el.currentTarget.style.boxShadow = "";
                                 }}
@@ -270,15 +298,33 @@ export default function Products(): ReactElement {
                                 <div className="position-relative">
                                     <div className="ratio ratio-4x3 overflow-hidden bg-light rounded-top-4">
                                         <Card.Image
-                                            src={(p.imageUrl as string) || "/images/placeholder_image.png"}
+                                            src={
+                                                p.imageUrl
+                                                    ? import.meta.env
+                                                          .VITE_API_URL +
+                                                      p.imageUrl
+                                                    : "/images/placeholder_image.png"
+                                            }
                                             alt={p.name}
                                             className="object-fit-cover"
-                                            style={{ transition: "transform .4s ease" }}
-                                            onMouseEnter={(e: React.MouseEvent<HTMLElement>) => {
-                                                (e.currentTarget as HTMLElement).style.transform = "scale(1.04)";
+                                            style={{
+                                                transition:
+                                                    "transform .4s ease",
                                             }}
-                                            onMouseLeave={(e: React.MouseEvent<HTMLElement>) => {
-                                                (e.currentTarget as HTMLElement).style.transform = "";
+                                            onMouseEnter={(
+                                                e: React.MouseEvent<HTMLElement>
+                                            ) => {
+                                                (
+                                                    e.currentTarget as HTMLElement
+                                                ).style.transform =
+                                                    "scale(1.04)";
+                                            }}
+                                            onMouseLeave={(
+                                                e: React.MouseEvent<HTMLElement>
+                                            ) => {
+                                                (
+                                                    e.currentTarget as HTMLElement
+                                                ).style.transform = "";
                                             }}
                                         />
                                         {/* ACTION OVERLAY */}
@@ -290,15 +336,30 @@ export default function Products(): ReactElement {
                                                 color: "#fff",
                                                 opacity: 0,
                                                 transform: "translateY(6%)",
-                                                transition: "opacity .35s ease, transform .4s ease",
+                                                transition:
+                                                    "opacity .35s ease, transform .4s ease",
                                             }}
-                                            onMouseEnter={(e: React.MouseEvent<HTMLElement>) => {
-                                                (e.currentTarget as HTMLElement).style.opacity = "1";
-                                                (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
+                                            onMouseEnter={(
+                                                e: React.MouseEvent<HTMLElement>
+                                            ) => {
+                                                (
+                                                    e.currentTarget as HTMLElement
+                                                ).style.opacity = "1";
+                                                (
+                                                    e.currentTarget as HTMLElement
+                                                ).style.transform =
+                                                    "translateY(0)";
                                             }}
-                                            onMouseLeave={(e: React.MouseEvent<HTMLElement>) => {
-                                                (e.currentTarget as HTMLElement).style.opacity = "0";
-                                                (e.currentTarget as HTMLElement).style.transform = "translateY(6%)";
+                                            onMouseLeave={(
+                                                e: React.MouseEvent<HTMLElement>
+                                            ) => {
+                                                (
+                                                    e.currentTarget as HTMLElement
+                                                ).style.opacity = "0";
+                                                (
+                                                    e.currentTarget as HTMLElement
+                                                ).style.transform =
+                                                    "translateY(6%)";
                                             }}
                                         >
                                             <button
@@ -311,10 +372,17 @@ export default function Products(): ReactElement {
                                             <button
                                                 type="button"
                                                 className="btn theme-btn-primary btn-sm px-3"
-                                                disabled={deleteProduct.isPending && deleteProduct.variables === p.id}
-                                                onClick={() => handleDelete(p.id)}
+                                                disabled={
+                                                    deleteProduct.isPending &&
+                                                    deleteProduct.variables ===
+                                                        p.id
+                                                }
+                                                onClick={() =>
+                                                    handleDelete(p.id)
+                                                }
                                             >
-                                                {deleteProduct.isPending && deleteProduct.variables === p.id
+                                                {deleteProduct.isPending &&
+                                                deleteProduct.variables === p.id
                                                     ? "Deleting..."
                                                     : "Delete"}
                                             </button>
@@ -328,7 +396,8 @@ export default function Products(): ReactElement {
                                                 "linear-gradient(135deg,var(--theme-primary,#ff7a18),var(--theme-primary-accent,#ff3d81))",
                                             color: "#fff",
                                             letterSpacing: ".5px",
-                                            boxShadow: "0 2px 6px -2px rgba(0,0,0,.25)",
+                                            boxShadow:
+                                                "0 2px 6px -2px rgba(0,0,0,.25)",
                                             zIndex: 2,
                                         }}
                                     >
@@ -340,7 +409,10 @@ export default function Products(): ReactElement {
                                     title={
                                         <span
                                             className="fw-semibold"
-                                            style={{ fontSize: ".95rem", letterSpacing: ".3px" }}
+                                            style={{
+                                                fontSize: ".95rem",
+                                                letterSpacing: ".3px",
+                                            }}
                                         >
                                             {p.name}
                                         </span>
@@ -355,12 +427,16 @@ export default function Products(): ReactElement {
                                                 display: "-webkit-box",
                                                 WebkitLineClamp: 2,
                                                 lineClamp: 2,
-                                                WebkitBoxOrient: "vertical" as const,
+                                                WebkitBoxOrient:
+                                                    "vertical" as const,
                                                 overflow: "hidden",
                                                 minHeight: "2.1em",
                                             }}
                                         >
-                                            {(p.description ?? "").slice(0, 120)}
+                                            {(p.description ?? "").slice(
+                                                0,
+                                                120
+                                            )}
                                         </span>
                                     }
                                     style={{ padding: ".75rem .9rem 1rem" }}
@@ -376,7 +452,9 @@ export default function Products(): ReactElement {
                             count={payload.pagination.totalPage}
                             index={payload.pagination.page}
                             handleChange={(pageNumber: number) => {
-                                const next = new URLSearchParams(searchParams.toString());
+                                const next = new URLSearchParams(
+                                    searchParams.toString()
+                                );
                                 if (pageNumber <= 1) {
                                     next.delete("page");
                                 } else {

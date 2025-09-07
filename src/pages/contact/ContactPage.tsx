@@ -154,7 +154,7 @@ export default function ContactPage(): ReactNode {
                                         className="alert alert-danger mt-3"
                                         role="alert"
                                     >
-                                        Failed to book table. Please try again.
+                                    Failed to send a message
                                         <br />
                                         <b>Error</b>
                                         <span className="subtitle">
@@ -169,8 +169,7 @@ export default function ContactPage(): ReactNode {
                                         className="alert alert-success mt-3"
                                         role="alert"
                                     >
-                                        Table booked successfully! We'll confirm
-                                        your reservation shortly.
+                                        Message Submitted, Thank you.
                                     </div>
                                 )}
                             </>
