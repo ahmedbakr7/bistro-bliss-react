@@ -6,6 +6,7 @@ import { Card } from "../components/Card";
 import HeroContent from "../components/Hero/HeroContent";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { FiShoppingCart } from "react-icons/fi";
+import useAuthContext from "../stores/AuthContext/useAuthContext";
 
 // Data model for menu items
 interface MenuItem {
@@ -91,6 +92,9 @@ const friendlyFontStyle: React.CSSProperties = {
 };
 
 export default function MenuPage(): ReactNode {
+    const {authState} = useAuthContext();
+    const {cart, favourites} = authState
+
     const [activeCategory, setActiveCategory] = useState<string>("All");
     const [favorites, setFavorites] = useState<Set<number>>(new Set());
     const [cart, setCart] = useState<number[]>([]);
@@ -165,10 +169,7 @@ export default function MenuPage(): ReactNode {
                 </div>
 
                 {/* Dynamic Grid */}
-                <GridContainer
-                    className="g-4 position-relative"
-                    numberOfColumns={4}
-                >
+                <GridContainer className="g-4 w-100" numberOfColumns={4}>
                     {filteredItems.map((item) => {
                         const isFav = favorites.has(item.id);
                         const inCart = cart.includes(item.id);
