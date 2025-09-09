@@ -47,7 +47,7 @@ export default function BookPage(): ReactNode {
     }, []);
 
     const bookTableMutation = useMutation({
-        mutationFn: async (bookData: BookDataType) => submitBook(bookData),
+        mutationFn: async (bookData: BookDataType) => submitBook(bookData, authState),
         onSuccess: () => {
             console.log("Table booked successfully!");
         },

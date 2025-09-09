@@ -1,7 +1,8 @@
 import api from "../../services/api";
+import type { AuthState } from "../../stores/AuthContext/AuthContext";
 import type { BookDataType } from "./BookPage";
 
-export async function submitBook(bookData: BookDataType) {
+export async function submitBook(bookData: BookDataType, authState: AuthState) {
     try {
         console.log("Submitting booking:", bookData);
         const response = await api.post("/booking/create-booking", bookData);
