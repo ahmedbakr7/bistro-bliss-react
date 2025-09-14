@@ -20,6 +20,7 @@ import {
     Orders,
     Contacts,
     Bookingsx,
+    CartPage,
 } from "./routeImports";
 
 import { paths } from "./routePaths";
@@ -61,6 +62,10 @@ const router = createBrowserRouter([
             {
                 element: <WishlistPage />,
                 path: paths.wishlist,
+            },
+            {
+                element: <CartPage />,
+                path: paths.cart,
             },
             {
                 element: <ProfilePage />,

@@ -5,25 +5,29 @@ import {
     removeFavourite,
     type FavouriteId,
 } from "../services/favouritesApi";
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
+import useAuthContext from "../stores/AuthContext/useAuthContext";
 
 const FAVS_QUERY_KEY = ["favourites"] as const;
 
-export function useFavouritesQuery(enabled = true) {
+export function useFavouritesQuery(userId: string | null, enabled = true) {
     return useQuery({
-        queryKey: FAVS_QUERY_KEY,
-        queryFn: fetchFavourites,
-        enabled,
+        queryKey: [...FAVS_QUERY_KEY, userId] as const,
+        queryFn: () => fetchFavourites(userId as string),
+        enabled: enabled && !!userId,
         staleTime: Infinity,
+        initialData: [] as FavouriteId[],
     });
 }
 
-export function useFavouritesActions() {
+export function useFavouritesActions(userId: string | null, enabled = true) {
     const queryClient = useQueryClient();
 
     const add = useMutation({
-        mutationFn: (productId: FavouriteId) => addFavourite(productId),
+        mutationFn: (productId: FavouriteId) =>
+            addFavourite(userId as string, productId),
         onMutate: async (productId) => {
+            if (!enabled || !userId) return { previous: [] as FavouriteId[] };
             await queryClient.cancelQueries({ queryKey: FAVS_QUERY_KEY });
             const previous =
                 queryClient.getQueryData<FavouriteId[]>(FAVS_QUERY_KEY);
@@ -47,8 +51,10 @@ export function useFavouritesActions() {
     });
 
     const remove = useMutation({
-        mutationFn: (productId: FavouriteId) => removeFavourite(productId),
+        mutationFn: (productId: FavouriteId) =>
+            removeFavourite(userId as string, productId),
         onMutate: async (productId) => {
+            if (!enabled || !userId) return { previous: [] as FavouriteId[] };
             await queryClient.cancelQueries({ queryKey: FAVS_QUERY_KEY });
             const previous =
                 queryClient.getQueryData<FavouriteId[]>(FAVS_QUERY_KEY);
@@ -82,9 +88,10 @@ export function useFavouritesActions() {
     );
 
     return {
-        addToFavourites: (productId: FavouriteId) => add.mutate(productId),
+        addToFavourites: (productId: FavouriteId) =>
+            enabled && userId ? add.mutate(productId) : undefined,
         removeFromFavourites: (productId: FavouriteId) =>
-            remove.mutate(productId),
+            enabled && userId ? remove.mutate(productId) : undefined,
         add,
         remove,
         toggle,
@@ -92,8 +99,23 @@ export function useFavouritesActions() {
 }
 
 export function useFavourites() {
-    const query = useFavouritesQuery();
-    const actions = useFavouritesActions();
+    const { authState } = useAuthContext();
+    const queryClient = useQueryClient();
+    const enabled = !!authState.user && !!authState.token;
+    const userId =
+        (authState.user as unknown as { id?: string; _id?: string })?.id ||
+        (authState.user as unknown as { id?: string; _id?: string })?._id ||
+        null;
+
+    const query = useFavouritesQuery(userId, enabled);
+    const actions = useFavouritesActions(userId, enabled);
+
+    // Ensure empty array when unauthenticated
+    useEffect(() => {
+        if (!enabled || !userId) {
+            queryClient.setQueryData<FavouriteId[]>(FAVS_QUERY_KEY, []);
+        }
+    }, [enabled, userId, queryClient]);
 
     return {
         ...query, // data, isLoading, error

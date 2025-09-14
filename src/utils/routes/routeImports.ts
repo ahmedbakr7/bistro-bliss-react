@@ -7,8 +7,8 @@ import ContactPage from "../../pages/contact/ContactPage";
 import HomePage from "../../pages/HomePage";
 import BookPage from "../../pages/book/BookPage";
 import PageDetailsPage from "../../pages/PageDetailsPage";
-import WishlistPage from "../../pages/Wishlist";
-import ProfilePage from "../../pages/Profile";
+import WishlistPage from "../../pages/FavouritesPage";
+import ProfilePage from "../../pages/ProfilePage";
 import AdminLayout from "../../pages/AdminLayout";
 import AuthLayout from "../../pages/AuthLayout";
 import AuthLogin from "../../components/Auth/AuthLogin";
@@ -19,6 +19,7 @@ import Products from "../../components/Admin/Products";
 import Orders from "../../components/Admin/Orders";
 import Contacts from "../../components/Admin/Contacts";
 import Bookingsx from "../../components/Admin/Bookingsx";
+import CartPage from "../../pages/cart/CartPage";
 
 // Export all components for use in routes.tsx
 export {
@@ -42,4 +43,5 @@ export {
     Orders,
     Contacts,
     Bookingsx,
+    CartPage,
 };

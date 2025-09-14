@@ -14,8 +14,8 @@ export default function Footer(): ReactNode {
                         className="text-start"
                     />
                     <p>
-                        In the new era of technology we look in the futur with
-                        certainty and rpide for our company
+                        In the new era of technology we look in the future with
+                        certainty and pride for our company
                     </p>
                     <SocialMediaRoundels />
                 </div>

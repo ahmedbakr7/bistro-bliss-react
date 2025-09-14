@@ -13,6 +13,7 @@ export type AppRoutePath =
     | "/page-details"
     | "/wishlist"
     | "/profile"
+    | "/cart"
     | "/auth/login"
     | "/auth/register"
     | "/auth/otp"
@@ -34,6 +35,7 @@ export const paths = {
     pageDetails: "/page-details",
     wishlist: "/wishlist",
     profile: "/profile",
+    cart: "/cart",
     login: "/auth/login",
     register: "/auth/register",
     otp: "/auth/otp",

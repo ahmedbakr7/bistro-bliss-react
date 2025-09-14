@@ -58,18 +58,15 @@ export default function TopBar(): ReactNode {
                                 <IoNotificationsOutline size={18} />
                             </button>
                             {/* Cart */}
-                            <button
-                                type="button"
+                            <Link
+                                to={paths.cart}
                                 aria-label="Cart"
                                 className="theme-btn-primary btn-sm d-flex align-items-center justify-content-center position-relative"
                                 style={iconBtnStyle}
-                                onClick={() => {
-                                    // TODO: open cart drawer
-                                }}
                             >
                                 <FiShoppingCart size={16} />
                                 {/* <span className="badge bg-danger position-absolute top-0 start-100 translate-middle p-1 rounded-circle">2</span> */}
-                            </button>
+                            </Link>
                             {/* Favourites / Wishlist */}
                             <Link
                                 to={paths.wishlist}

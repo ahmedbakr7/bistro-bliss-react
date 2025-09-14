@@ -4,8 +4,25 @@ import type { BookDataType } from "./BookPage";
 
 export async function submitBook(bookData: BookDataType, authState: AuthState) {
     try {
-        console.log("Submitting booking:", bookData);
-        const response = await api.post("/booking/create-booking", bookData);
+        // Map UI fields to backend schema
+        const userId = (authState.user as unknown as { id?: string; _id?: string })?.id ||
+            (authState.user as unknown as { id?: string; _id?: string })?._id;
+        if (!userId) throw new Error("User ID is required for booking.");
+        if (!bookData.date || !bookData.time)
+            throw new Error("Both date and time are required.");
+
+        // Combine date and time into an ISO timestamp
+        const bookedAtISO = new Date(`${bookData.date}T${bookData.time}:00`).toISOString();
+
+        const payload = {
+            userId,
+            numberOfPeople: Number(bookData.totalPerson ?? 1),
+            bookedAt: bookedAtISO,
+            // status is optional; default handled by backend (PENDING)
+        };
+
+        console.log("Submitting booking payload:", payload);
+        const response = await api.post("/booking/create-booking", payload);
         console.log("Booking response:", response);
         return response.data; // Return the response data for the mutation
     } catch (error) {
@@ -15,6 +32,6 @@ export async function submitBook(bookData: BookDataType, authState: AuthState) {
 }
 
 export function resetBook() {
-    throw new Error("unimplemented function");
+    // No-op: Formik handles form state reset; keep for API compatibility
     return;
 }

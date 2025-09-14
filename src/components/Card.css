@@ -1,0 +1,29 @@
+.menu-card { position: relative; }
+.menu-card:hover {transform: translateY(-4px);box-shadow: 0 8px 28px -10px rgba(0,0,0,.15);}
+.menu-card .menu-add-btn {
+    opacity: 0;
+    transform: translate(-50%, 8px);
+    pointer-events: none;
+    transition: opacity .35s ease, transform .35s ease, background-color .25s ease;
+    -webkit-transition: opacity .35s ease, transform .35s ease, background-color .25s ease;
+    -moz-transition: opacity .35s ease, transform .35s ease, background-color .25s ease;
+    -ms-transition: opacity .35s ease, transform .35s ease, background-color .25s ease;
+    -o-transition: opacity .35s ease, transform .35s ease, background-color .25s ease;
+}
+.menu-card:hover .menu-add-btn, .menu-card .menu-add-btn:focus-visible {
+    opacity: 1;
+    transform: translate(-50%, 0);
+    pointer-events: auto;
+}
+.menu-card .menu-add-btn:active {transform: translate(-50%, 2px);}
+.menu-card .favorite-btn { z-index:5; }
+.menu-card .menu-add-btn { z-index:4; }
+
+/* Added state overrides (success) */
+.menu-card .menu-add-btn.is-added {
+    background: #198754;
+}
+.menu-card .menu-add-btn.is-added:hover,
+.menu-card .menu-add-btn.is-added:focus {
+    background:#157347;
+}
