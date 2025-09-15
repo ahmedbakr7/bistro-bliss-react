@@ -67,9 +67,9 @@ export async function addFavourite(
     userId: string,
     productId: FavouriteId
 ): Promise<FavouriteId[]> {
-    await api.post(`/users/${userId}/favourites`, { productId });
+    return await api.post(`/users/${userId}/favourites`, { productId });
     // Return latest productId list
-    return fetchFavourites(userId);
+    // return fetchFavourites(userId);
 }
 
 export async function removeFavourite(
@@ -77,15 +77,9 @@ export async function removeFavourite(
     productId: FavouriteId
 ): Promise<FavouriteId[]> {
     // Need detailId to delete; look it up first
-    const payload = await fetchFavouriteDetails(userId);
-    const detail = payload.items.find(
-        (i) => String(i.productId) === String(productId)
-    );
-    if (detail) {
-        await api.delete(`/users/${userId}/favourites/${detail.id}`);
-    }
+    return await api.delete(`/users/${userId}/favourites/${productId}`);
     // Return latest productId list regardless
-    return fetchFavourites(userId);
+    // return fetchFavourites(userId);
 }
 
 export async function toggleFavourite(

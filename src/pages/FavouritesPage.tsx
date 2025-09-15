@@ -46,7 +46,7 @@ export default function WishlistPage(): ReactNode {
         queryKey: ["user-favourite-items", userId],
         queryFn: () => fetchFavouriteDetails(userId),
         enabled: !!userId,
-        staleTime: 30000,
+        staleTime: Infinity,
     });
 
     // Map API payload to view items (use snapshot fields)
