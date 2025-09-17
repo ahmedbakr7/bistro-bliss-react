@@ -1,9 +1,11 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
     addFavourite,
-    fetchFavourites,
+    fetchFavouriteProducts,
     removeFavourite,
     type FavouriteId,
+    type FavouriteProduct,
+    type FavouritesProductsPayload,
 } from "../services/favouritesApi";
 import { useCallback, useEffect } from "react";
 import useAuthContext from "../stores/AuthContext/useAuthContext";
@@ -13,10 +15,9 @@ const FAVS_QUERY_KEY = ["favourites"] as const;
 export function useFavouritesQuery(userId: string | null, enabled = true) {
     return useQuery({
         queryKey: [...FAVS_QUERY_KEY, userId] as const,
-        queryFn: () => fetchFavourites(userId as string),
+        queryFn: () => fetchFavouriteProducts(userId as string),
         enabled: enabled && !!userId,
         staleTime: Infinity,
-        initialData: [] as FavouriteId[],
     });
 }
 
@@ -77,9 +78,13 @@ export function useFavouritesActions(userId: string | null, enabled = true) {
     });
 
     const toggle = useCallback(
-        (productId: FavouriteId, current: FavouriteId[] | undefined) => {
-            if (current?.includes(productId)) {
-                remove.mutate(productId);
+        (productId: string | number, products: FavouriteProduct[]) => {
+            const product = products.find(
+                (product) => product.id === productId
+            );
+
+            if (product) {
+                remove.mutate(product.favouriteDetailId);
             } else {
                 add.mutate(productId);
             }

@@ -25,7 +25,6 @@ export function useCart() {
         queryFn: () => fetchCart(userId as string),
         enabled: enabled && !!userId,
         staleTime: Infinity,
-        initialData: [] as CartItem[],
     });
 
     // Ensure empty array when unauthenticated

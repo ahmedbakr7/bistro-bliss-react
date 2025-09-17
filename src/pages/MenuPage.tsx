@@ -12,6 +12,7 @@ import api from "../services/api";
 import { useCart } from "../hooks/useCart";
 import { useFavourites } from "../hooks/useFavourites";
 import Searchbar from "../components/Searchbar";
+import type { FavouriteProduct } from "../services/favouritesApi";
 
 export interface ProductPayload {
     data: Product[];
@@ -46,7 +47,6 @@ const friendlyFontStyle: React.CSSProperties = {
 };
 
 export default function MenuPage(): ReactNode {
-    // Products from backend (ProductPayload)
     const {
         data: payload,
         isPending,
@@ -59,6 +59,11 @@ export default function MenuPage(): ReactNode {
     });
 
     const [searchTerm, setSearchTerm] = useState("");
+    const [activeCategory, setActiveCategory] = useState<string>("All");
+
+    const { data: cartItems, addToCart } = useCart();
+
+    const { data: favPayload, toggle } = useFavourites();
 
     // Derive array of products from payload
     const items = useMemo(
@@ -67,18 +72,12 @@ export default function MenuPage(): ReactNode {
         [payload]
     );
 
-    // Cart managed by react-query
-    const { data: cartItems, addToCart } = useCart();
-
-    // Favourites: ids list + actions
-    const { data: favouriteIds, toggle } = useFavourites();
-
-    const [activeCategory, setActiveCategory] = useState<string>("All");
-
-    const favouriteSet = useMemo(
-        () => new Set(favouriteIds ?? []),
-        [favouriteIds]
+    const favouriteIds = useMemo(
+        () => favPayload?.products?.map((product) => product.id),
+        [favPayload]
     );
+
+    const favouriteSet = useMemo(() => new Set(favouriteIds), [favouriteIds]);
 
     const cartIdSet = useMemo(
         () => new Set((cartItems ?? []).map((ci) => ci.productId)),
@@ -117,8 +116,8 @@ export default function MenuPage(): ReactNode {
         });
     }, [filteredItems, searchTerm]);
 
-    function toggleFavourite(id: number | string) {
-        toggle(id, favouriteIds);
+    function toggleFavourite(id: string| number) {
+        toggle(id, favPayload?.products ?? []);
     }
 
     function handleAddToCart(id: number | string) {

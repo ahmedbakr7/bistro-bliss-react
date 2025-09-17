@@ -2,96 +2,104 @@ import api from "./api";
 
 export type FavouriteId = number | string;
 
-// Matches OrderDetails from backend (favourites line item)
-export interface FavouriteDetail {
-    id: string | number; // detailId
-    orderId: string | number;
-    productId: string | number;
-    quantity: number;
-    price_snapshot?: number;
-    name_snapshot?: string;
-    createdAt?: string | Date;
-    updatedAt?: string | Date;
-    deletedAt?: string | Date | null;
+// New product representation returned by backend
+export interface FavouriteProduct {
+    favouriteDetailId: string | number;
+    id: string | number; // product id
+    name?: string;
+    price?: number | string;
+    description?: string;
+    imageUrl?: string;
+    [key: string]: unknown; // allow additional product fields
 }
 
-export interface FavouritePayload {
+export interface FavouritesProductsPayload {
     favouritesId: string | number;
-    items: FavouriteDetail[];
+    products: FavouriteProduct[];
 }
 
-async function fetchFavouriteDetails(
+/**
+ * GET /users/:userId/favourites -> { favouritesId, products: [{ favouriteDetailId, ...product }] }
+ */
+export async function fetchFavouriteProducts(
     userId: string
-): Promise<FavouritePayload> {
-    const { data } = await api.get(`/users/${userId}/favourites`);
-    // Server returns { favouritesId, items }
-    const favouritesId = (data?.favouritesId ?? data?.id) as string | number;
-    const items = (Array.isArray(data?.items) ? data.items : data) as unknown[];
+): Promise<FavouritesProductsPayload> {
+    const { data } = await api.get<FavouritesProductsPayload>(
+        `/users/${userId}/favourites`
+    );
+    const favouritesId = data?.favouritesId as string | number;
+    const raw = Array.isArray(data?.products) ? data.products : [];
 
-    // If API already returned the right shape, trust it; else try to coerce
-    const normalizedItems: FavouriteDetail[] = items.map((entry, idx) => {
-        if (entry && typeof entry === "object") {
-            const p = entry as Record<string, unknown>;
+    const products: FavouriteProduct[] = raw.map(
+        (entry: unknown, idx: number) => {
+            if (entry && typeof entry === "object") {
+                const e = entry as Record<string, unknown> & {
+                    favouriteDetailId?: string | number;
+                    id?: string | number;
+                    name?: string;
+                    title?: string;
+                    price?: number | string;
+                    price_snapshot?: number | string;
+                    description?: string;
+                    imageUrl?: string;
+                    photo?: string;
+                };
+                return {
+                    favouriteDetailId: e.favouriteDetailId ?? e.id ?? idx,
+                    id: e.id ?? idx,
+                    name: e.name ?? e.title ?? `Favourite #${idx + 1}`,
+                    price: e.price ?? e.price_snapshot ?? 0,
+                    description: e.description,
+                    imageUrl: e.imageUrl || e.photo || e.image,
+                    ...e,
+                } as FavouriteProduct;
+            }
             return {
-                id: (p.id ?? idx) as string | number,
-                orderId: (p.orderId ?? favouritesId ?? "") as string | number,
-                productId: (p.productId ?? p["product_id"]) as string | number,
-                quantity: Number(
-                    (p.quantity as number | string | undefined) ?? 1
-                ),
-                price_snapshot: p.price_snapshot as number | undefined,
-                name_snapshot: p.name_snapshot as string | undefined,
-                createdAt: p.createdAt as string | Date | undefined,
-                updatedAt: p.updatedAt as string | Date | undefined,
-                deletedAt:
-                    (p.deletedAt as string | Date | null | undefined) ?? null,
-            };
+                favouriteDetailId: idx,
+                id: entry as string | number,
+                name: `Favourite #${idx + 1}`,
+                price: 0,
+            } as FavouriteProduct;
         }
-        return {
-            id: idx,
-            orderId: favouritesId ?? "",
-            productId: entry as string | number,
-            quantity: 1,
-        } as FavouriteDetail;
-    });
+    );
 
-    return { favouritesId, items: normalizedItems };
+    return { favouritesId, products };
 }
 
-export async function fetchFavourites(userId: string): Promise<FavouriteId[]> {
-    const payload = await fetchFavouriteDetails(userId);
-    return payload.items.map((i) => i.productId);
-}
-
+/**
+ * POST /users/:userId/favourites { productId } -> returns product with favouriteDetailId
+ */
 export async function addFavourite(
     userId: string,
     productId: FavouriteId
-): Promise<FavouriteId[]> {
-    return await api.post(`/users/${userId}/favourites`, { productId });
-    // Return latest productId list
-    // return fetchFavourites(userId);
+): Promise<FavouriteProduct> {
+    const { data } = await api.post(`/users/${userId}/favourites`, {
+        productId,
+    });
+    return data as FavouriteProduct;
 }
 
+/**
+ * DELETE /users/:userId/favourites/:detailId (uses favouriteDetailId, not productId)
+ */
 export async function removeFavourite(
     userId: string,
-    productId: FavouriteId
-): Promise<FavouriteId[]> {
-    // Need detailId to delete; look it up first
-    return await api.delete(`/users/${userId}/favourites/${productId}`);
-    // Return latest productId list regardless
-    // return fetchFavourites(userId);
+    favouriteDetailId: FavouriteId
+): Promise<void> {
+    await api.delete(`/users/${userId}/favourites/${favouriteDetailId}`);
 }
 
-export async function toggleFavourite(
-    userId: string,
-    productId: FavouriteId
-): Promise<FavouriteId[]> {
+/**
+ * Toggle helper: tries add first; if already exists, resolves detail id and removes.
+ * Returns refreshed array of product ids.
+ */
+export async function toggleFavourite(userId: string, productId: FavouriteId) {
     try {
-        return await addFavourite(userId, productId);
+        await addFavourite(userId, productId);
     } catch {
-        return await removeFavourite(userId, productId);
+        // On conflict, fetch list to find detail id then remove
+        const products = await fetchFavouriteProducts(userId);
+        const match = products.products.find((p) => p.id === productId);
+        if (match) await removeFavourite(userId, match.favouriteDetailId);
     }
 }
-
-// Optional export if consumers need full detail rows
-export { fetchFavouriteDetails };

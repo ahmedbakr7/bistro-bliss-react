@@ -1,29 +1,15 @@
 import "../components/Card.css";
 import type { ReactNode } from "react";
 import { useMemo } from "react";
-import { useQuery } from "@tanstack/react-query";
 import Section from "../components/Section";
 import GridContainer from "../components/GridContainer";
 import { Card } from "../components/Card";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { FiShoppingCart } from "react-icons/fi";
-import {
-    fetchFavouriteDetails,
-    type FavouritePayload,
-} from "../services/favouritesApi";
 import { useCart } from "../hooks/useCart";
 import { useFavourites } from "../hooks/useFavourites";
 import useAuthContext from "../stores/AuthContext/useAuthContext";
-
-// Define a simple view model for rendering favourites lines
-interface FavouriteViewItem {
-    detailId: string | number;
-    productId: string | number;
-    name: string;
-    price: number;
-    description?: string;
-    imageUrl?: string;
-}
+import type { FavouriteProduct } from "../services/favouritesApi";
 
 const friendlyFontStyle: React.CSSProperties = {
     fontFamily: '"Poppins", "Segoe UI", system-ui, sans-serif',
@@ -31,51 +17,33 @@ const friendlyFontStyle: React.CSSProperties = {
 };
 
 export default function WishlistPage(): ReactNode {
-    const { authState } = useAuthContext();
-    const userId =
-        (authState.user as unknown as { id?: string; _id?: string })?.id ||
-        (authState.user as unknown as { id?: string; _id?: string })?._id ||
-        "";
-
-    const {
-        data: favPayload,
-        isPending,
-        isError,
-        error,
-    } = useQuery<FavouritePayload>({
-        queryKey: ["user-favourite-items", userId],
-        queryFn: () => fetchFavouriteDetails(userId),
-        enabled: !!userId,
-        staleTime: Infinity,
-    });
-
-    // Map API payload to view items (use snapshot fields)
-    const viewItems = useMemo<FavouriteViewItem[]>(() => {
-        const rows = favPayload?.items ?? [];
-        return rows.map((r, idx) => ({
-            detailId: r.id ?? idx,
-            productId: r.productId,
-            name: r.name_snapshot ?? `Favourite #${idx + 1}`,
-            price: Number(r.price_snapshot ?? 0),
-            description: undefined,
-            imageUrl: undefined,
-        }));
-    }, [favPayload]);
+    // const { authState } = useAuthContext();
 
     const { data: cartItems, addToCart } = useCart();
-    const { data: favouriteIds, toggle } = useFavourites();
+    const {
+        data: favPayload,
+        toggle,
+        isPending,
+        error,
+        isError,
+    } = useFavourites();
 
-    const favouriteSet = useMemo(
-        () => new Set(favouriteIds ?? []),
-        [favouriteIds]
-    );
     const cartIdSet = useMemo(
         () => new Set((cartItems ?? []).map((ci) => ci.productId)),
         [cartItems]
     );
 
-    function toggleFavourite(productId: number | string) {
-        toggle(productId, favouriteIds);
+    const favouriteIds = useMemo(
+        () => favPayload?.products?.map((product) => product.id),
+        [favPayload]
+    );
+
+    const favouriteSet = useMemo(() => new Set(favouriteIds), [favouriteIds]);
+
+    const viewItems = useMemo(() => favPayload?.products ?? [], [favPayload]);
+
+    function toggleFavourite(item: FavouriteProduct) {
+        toggle(item.id, favPayload?.products ?? []);
     }
 
     function handleAddToCart(productId: number | string) {
@@ -121,8 +89,8 @@ export default function WishlistPage(): ReactNode {
                 ) : (
                     <GridContainer className="g-4 w-100" numberOfColumns={4}>
                         {viewItems.map((item) => {
-                            const isFav = favouriteSet.has(item.productId);
-                            const inCart = cartIdSet.has(item.productId);
+                            const isFav = favouriteSet.has(item.id);
+                            const inCart = cartIdSet.has(item.id);
                             const imgSrc =
                                 item.imageUrl ??
                                 "/images/placeholder_image.png";
@@ -154,7 +122,7 @@ export default function WishlistPage(): ReactNode {
                                         }
                                         onClick={(e) => {
                                             e.stopPropagation();
-                                            toggleFavourite(item.productId);
+                                            toggleFavourite(item);
                                         }}
                                     >
                                         {isFav ? <FaHeart /> : <FaRegHeart />}
@@ -175,9 +143,7 @@ export default function WishlistPage(): ReactNode {
                                             onClick={(e) => {
                                                 e.stopPropagation();
                                                 if (!inCart)
-                                                    handleAddToCart(
-                                                        item.productId
-                                                    );
+                                                    handleAddToCart(item.id);
                                             }}
                                             className={`menu-add-btn theme-btn-primary ${
                                                 inCart ? "is-added" : ""
