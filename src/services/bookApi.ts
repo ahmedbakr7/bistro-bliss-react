@@ -1,18 +1,21 @@
-import api from "../../services/api";
-import type { AuthState } from "../../stores/AuthContext/AuthContext";
-import type { BookDataType } from "./BookPage";
+import api from "./api";
+import type { AuthState } from "../stores/AuthContext/AuthContext";
+import type { BookDataType } from "../pages/book/BookPage";
 
 export async function submitBook(bookData: BookDataType, authState: AuthState) {
     try {
         // Map UI fields to backend schema
-        const userId = (authState.user as unknown as { id?: string; _id?: string })?.id ||
+        const userId =
+            (authState.user as unknown as { id?: string; _id?: string })?.id ||
             (authState.user as unknown as { id?: string; _id?: string })?._id;
         if (!userId) throw new Error("User ID is required for booking.");
         if (!bookData.date || !bookData.time)
             throw new Error("Both date and time are required.");
 
         // Combine date and time into an ISO timestamp
-        const bookedAtISO = new Date(`${bookData.date}T${bookData.time}:00`).toISOString();
+        const bookedAtISO = new Date(
+            `${bookData.date}T${bookData.time}:00`
+        ).toISOString();
 
         const payload = {
             userId,

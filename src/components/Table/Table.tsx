@@ -28,7 +28,8 @@ interface TableProps<
     emptyElement?: ReactNode;
     index?: boolean;
     children?: ReactNode;
-    className?: string;
+    className?: string; // wrapper div
+    tableClassName?: string; // classes applied to <table>
 }
 
 export default function Table<
@@ -45,6 +46,7 @@ export default function Table<
     tableHeaders = [],
     emptyElement = null,
     index = false,
+    tableClassName = "",
 }: TableProps<T>): ReactNode {
     const tableClassNames = [
         "table",
@@ -56,6 +58,7 @@ export default function Table<
                 : "table-striped"
             : "",
         hoverable ? "table-hover" : "",
+        tableClassName,
     ]
         .filter(Boolean)
         .join(" ");

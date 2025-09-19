@@ -13,6 +13,7 @@ import { useCart } from "../hooks/useCart";
 import { useFavourites } from "../hooks/useFavourites";
 import Searchbar from "../components/Searchbar";
 import type { FavouriteProduct } from "../services/favouritesApi";
+import type { RawCartLine } from "../services/cartApi";
 
 export interface ProductPayload {
     data: Product[];
@@ -25,7 +26,7 @@ export interface ProductPayload {
 }
 
 export interface Product {
-    id: string | number;
+    id: string;
     name: string;
     description?: string | null;
     imageUrl?: string | null;
@@ -80,7 +81,13 @@ export default function MenuPage(): ReactNode {
     const favouriteSet = useMemo(() => new Set(favouriteIds), [favouriteIds]);
 
     const cartIdSet = useMemo(
-        () => new Set((cartItems ?? []).map((ci) => ci.productId)),
+        () =>
+            new Set(
+                (Array.isArray(cartItems)
+                    ? cartItems
+                    : cartItems?.items ?? []
+                ).map((ci: RawCartLine) => ci.productId)
+            ),
         [cartItems]
     );
 
@@ -120,7 +127,7 @@ export default function MenuPage(): ReactNode {
         toggle(id, favPayload?.products ?? []);
     }
 
-    function handleAddToCart(id: number | string) {
+    function handleAddToCart(id: string) {
         addToCart(id, 1);
     }
 

@@ -3,7 +3,7 @@ import { useMutation } from "@tanstack/react-query";
 import type { FormikHelpers } from "formik";
 import Form from "../../components/Form/Form";
 import { bookSchema } from "../../schemas/book/book";
-import { resetBook, submitBook } from "./BookController";
+import { resetBook, submitBook } from "../../services/bookApi";
 import Input from "../../components/Form/Input";
 import useAuthContext from "../../stores/AuthContext/useAuthContext";
 import { Navigate, useLocation } from "react-router-dom";
@@ -47,7 +47,8 @@ export default function BookPage(): ReactNode {
     }, []);
 
     const bookTableMutation = useMutation({
-        mutationFn: async (bookData: BookDataType) => submitBook(bookData, authState),
+        mutationFn: async (bookData: BookDataType) =>
+            submitBook(bookData, authState),
         onSuccess: () => {
             console.log("Table booked successfully!");
         },

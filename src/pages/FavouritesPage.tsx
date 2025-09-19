@@ -8,8 +8,8 @@ import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { FiShoppingCart } from "react-icons/fi";
 import { useCart } from "../hooks/useCart";
 import { useFavourites } from "../hooks/useFavourites";
-import useAuthContext from "../stores/AuthContext/useAuthContext";
 import type { FavouriteProduct } from "../services/favouritesApi";
+import type { RawCartLine } from "../services/cartApi";
 
 const friendlyFontStyle: React.CSSProperties = {
     fontFamily: '"Poppins", "Segoe UI", system-ui, sans-serif',
@@ -29,7 +29,13 @@ export default function WishlistPage(): ReactNode {
     } = useFavourites();
 
     const cartIdSet = useMemo(
-        () => new Set((cartItems ?? []).map((ci) => ci.productId)),
+        () =>
+            new Set(
+                (Array.isArray(cartItems)
+                    ? cartItems
+                    : cartItems?.items ?? []
+                ).map((ci: RawCartLine) => ci.productId)
+            ),
         [cartItems]
     );
 
@@ -46,7 +52,7 @@ export default function WishlistPage(): ReactNode {
         toggle(item.id, favPayload?.products ?? []);
     }
 
-    function handleAddToCart(productId: number | string) {
+    function handleAddToCart(productId: string) {
         addToCart(productId, 1);
     }
 

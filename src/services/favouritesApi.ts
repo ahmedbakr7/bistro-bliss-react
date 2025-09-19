@@ -4,8 +4,8 @@ export type FavouriteId = number | string;
 
 // New product representation returned by backend
 export interface FavouriteProduct {
-    favouriteDetailId: string | number;
-    id: string | number; // product id
+    favouriteDetailId: string;
+    id: string; // product id
     name?: string;
     price?: number | string;
     description?: string;
