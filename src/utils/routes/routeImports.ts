@@ -18,7 +18,7 @@ import Users from "../../components/Admin/Users";
 import Products from "../../components/Admin/Products";
 import Orders from "../../components/Admin/Orders";
 import Contacts from "../../components/Admin/Contacts";
-import Bookingsx from "../../components/Admin/Bookingsx";
+import Bookingsx from "../../components/Admin/Bookings";
 import CartPage from "../../pages/cart/CartPage";
 
 // Export all components for use in routes.tsx

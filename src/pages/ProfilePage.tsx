@@ -9,6 +9,11 @@ import burgerImg from "../assets/burger-sandwich.png";
 import friesImg from "../assets/fries.png";
 import saladImg from "../assets/salad.png";
 import pizzaImg from "../assets/pizza.png";
+import { useProfile } from "../hooks/useProfile";
+import Form from "../components/Form/Form";
+import Input from "../components/Form/Input";
+import * as Yup from "yup";
+import useAuthContext from "../stores/AuthContext/useAuthContext";
 
 // Dummy data for local testing
 export type DetailRow = OrderDetail & { image: string };
@@ -96,6 +101,45 @@ const DUMMY_DETAILS: Record<string, DetailRow[]> = {
 };
 
 export default function ProfilePage(): ReactNode {
+    // Profile hook
+    const profileMutation = useProfile();
+
+    const { authState, setAuthState } = useAuthContext();
+
+    const profile = authState.user;
+
+    type ProfileFormValues = {
+        name: string;
+        email: string;
+        phoneNumber: string;
+    };
+
+    const initialValues: ProfileFormValues = useMemo(
+        () => ({
+            name: (profile?.name as string) || "",
+            email: (profile?.email as string) || "",
+            phoneNumber: (profile?.phoneNumber as string) || "",
+        }),
+        [profile?.name, profile?.email, profile?.phoneNumber]
+    );
+
+    const validationSchema = useMemo(
+        () =>
+            Yup.object({
+                name: Yup.string()
+                    .max(50, "Max 50 characters")
+                    .required("Name is required"),
+                email: Yup.string()
+                    .email("Enter a valid email")
+                    .max(50, "Max 50 characters")
+                    .required("Email is required"),
+                phoneNumber: Yup.string()
+                    .max(50, "Max 50 characters")
+                    .required("Phone number is required"),
+            }),
+        []
+    );
+
     // no need to select an order; we're rendering grouped big table
     const orders = DUMMY_ORDERS;
 
@@ -274,54 +318,95 @@ export default function ProfilePage(): ReactNode {
                         rounded
                         image={{
                             className: "rounded-circle",
-                            src: "https://randomuser.me/api/portraits/men/32.jpg",
+                            src:
+                                (`http://localhost:3000/uploads/${profile?.imageUrl}` as string) ||
+                                "https://randomuser.me/api/portraits/men/32.jpg",
                             alt: "User Image",
                             style: { height: "81px" },
                         }}
                     />
-                    <div className="mb-3">
-                        <label
-                            htmlFor="subjectFormControl"
-                            className="form-label text-start w-100"
-                        >
-                            Name
-                        </label>
-                        <input
-                            type="text"
-                            placeholder="Write a subject"
-                            className="form-control"
-                            id="subjectFormControl"
-                        />
-                    </div>
-                    <div className="mb-3">
-                        <label
-                            htmlFor="subjectFormControl"
-                            className="form-label text-start w-100"
-                        >
-                            Email
-                        </label>
-                        <input
-                            type="text"
-                            placeholder="Write a subject"
-                            className="form-control"
-                            id="subjectFormControl"
-                        />
-                    </div>
-                    <div className="mb-3">
-                        <label
-                            htmlFor="subjectFormControl"
-                            className="form-label text-start w-100"
-                        >
-                            Phone
-                        </label>
-                        <input
-                            type="text"
-                            placeholder="Write a subject"
-                            className="form-control"
-                            id="subjectFormControl"
-                        />
-                    </div>
-                    <button className="theme-button ">Edit</button>
+                    <Form
+                        initialValues={initialValues}
+                        validationSchema={validationSchema}
+                        onSubmit={async (values, { setSubmitting }) => {
+                            try {
+                                await profileMutation.mutateAsync(values);
+                                if (profileMutation.data) {
+                                    setAuthState({
+                                        ...authState,
+                                        user: profileMutation.data,
+                                    });
+                                }
+                            } finally {
+                                setSubmitting(false);
+                            }
+                        }}
+                        onReset={() => void 0}
+                        enableReinitialize
+                    >
+                        {(formik) => (
+                            <>
+                                <div className="mb-3">
+                                    <label className="form-label text-start w-100">
+                                        Name
+                                    </label>
+                                    <Input
+                                        name="name"
+                                        type="text"
+                                        placeholder="Your name"
+                                        className="form-control"
+                                        disabled={
+                                            profileMutation.isPending ||
+                                            formik.isSubmitting
+                                        }
+                                    />
+                                </div>
+                                <div className="mb-3">
+                                    <label className="form-label text-start w-100">
+                                        Email
+                                    </label>
+                                    <Input
+                                        name="email"
+                                        type="email"
+                                        placeholder="Your email"
+                                        className="form-control"
+                                        disabled={
+                                            profileMutation.isPending ||
+                                            formik.isSubmitting
+                                        }
+                                    />
+                                </div>
+                                <div className="mb-3">
+                                    <label className="form-label text-start w-100">
+                                        Phone number
+                                    </label>
+                                    <Input
+                                        name="phoneNumber"
+                                        type="text"
+                                        placeholder="Your phone number"
+                                        className="form-control"
+                                        disabled={
+                                            profileMutation.isPending ||
+                                            formik.isSubmitting
+                                        }
+                                    />
+                                </div>
+                                <button
+                                    type="submit"
+                                    className="theme-button "
+                                    disabled={
+                                        profileMutation.isPending ||
+                                        formik.isSubmitting
+                                    }
+                                >
+                                    {profileMutation.isPending ||
+                                    formik.isSubmitting
+                                        ? "Saving..."
+                                        : "Save"}
+                                </button>
+                            </>
+                        )}
+                    </Form>
                 </div>
             </Section>
             <Section className="d-flex flex-column justify-content-evenly align-items-center w-100">

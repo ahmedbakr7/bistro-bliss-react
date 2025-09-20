@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import AuthContext, {
     type AuthContextType,
     type AuthState,
+    type User,
 } from "./AuthContext";
 import { useNavigate } from "react-router-dom";
 import api from "../../services/api";
@@ -10,6 +11,42 @@ import type { AxiosRequestHeaders, InternalAxiosRequestConfig } from "axios";
 
 interface CustomAxiosRequestConfig extends InternalAxiosRequestConfig {
     _retry?: boolean;
+}
+
+function normalizeUser(raw: unknown): User {
+    const r = (raw || {}) as Record<string, unknown> & {
+        id?: string;
+        _id?: string;
+        name?: string;
+        fullName?: string;
+        username?: string;
+        email?: string;
+        phoneNumber?: string;
+        phone?: string;
+        imageUrl?: string | null;
+        avatarUrl?: string | null;
+        image?: string | null;
+        photo?: string | null;
+        role?: "user" | "admin";
+    };
+
+    return {
+        id: (r.id as string) ?? (r._id as string) ?? "",
+        name:
+            (r.name as string) ??
+            (r.fullName as string) ??
+            (r.username as string) ??
+            "",
+        email: (r.email as string) ?? "",
+        phoneNumber: (r.phoneNumber as string) ?? (r.phone as string) ?? "",
+        imageUrl:
+            (r.imageUrl as string | null) ??
+            (r.avatarUrl as string | null) ??
+            (r.image as string | null) ??
+            (r.photo as string | null) ??
+            null,
+        role: (r.role as "user" | "admin") ?? "user",
+    } satisfies User;
 }
 
 export default function AuthProvider({ children }: { children: ReactNode }) {
@@ -32,11 +69,11 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
                     email,
                     password,
                 },
-                {}
+                // {}
             )
             .then(({ data }) => {
                 setAuthState({
-                    user: data.user,
+                    user: normalizeUser(data.user),
                     token: data.accessToken,
                     cart: data.cart,
                     favourites: data.favourites,
@@ -96,7 +133,7 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
                         originalRequest._retry = true;
 
                         setAuthState({
-                            user: data.user,
+                            user: normalizeUser(data.user),
                             token: data.accessToken,
                             cart: data.cart,
                             favourites: data.favourites,
