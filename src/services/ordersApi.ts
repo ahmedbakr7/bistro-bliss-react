@@ -50,6 +50,32 @@ export interface OrderDetail {
     [key: string]: unknown;
 }
 
+export interface OrdersQuery {
+    page?: number;
+    limit?: number;
+    status?: OrderStatus | "";
+    userId?: string;
+    createdAfter?: string; // ISO date
+    createdBefore?: string; // ISO date
+    [key: string]: unknown;
+}
+
+// Fetch orders list with optional AbortSignal and URLSearchParams (admin)
+export async function fetchOrders(
+    signal: AbortSignal | undefined,
+    searchParams: URLSearchParams
+): Promise<OrdersPayload> {
+    const qs = searchParams.toString();
+    const url = "/orders" + (qs ? `?${qs}` : "");
+    const { data } = await api.get<OrdersPayload>(url, { signal });
+    return (
+        data ?? {
+            data: [],
+            pagination: { count: 0, limit: 10, page: 1, pages: 1 },
+        }
+    );
+}
+
 export async function fetchUserOrders(userId: string): Promise<OrdersPayload> {
     const { data } = await api.get<OrdersPayload>(`/users/${userId}/orders`);
     return data ?? [];
