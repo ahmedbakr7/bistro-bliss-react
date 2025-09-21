@@ -100,8 +100,8 @@ export default function BookPage(): ReactNode {
                 >
                     <Form<BookDataType>
                         initialValues={{
-                            name: "",
-                            phone: "",
+                            name: authState.user.name,
+                            phone: authState.user.phoneNumber,
                             totalPerson: 1,
                             date: dateConstraints.defaultValue,
                             time: timeConstraints.defaultTime,
@@ -173,6 +173,7 @@ export default function BookPage(): ReactNode {
                                                 style={{
                                                     borderRadius: "9999px",
                                                 }}
+                                                disabled
                                                 placeholder="Enter your name"
                                                 id="nameFormControl"
                                             />
@@ -190,6 +191,7 @@ export default function BookPage(): ReactNode {
                                                 name="phone"
                                                 id="phoneFormControl"
                                                 type="tel"
+                                                disabled
                                                 className="form-control"
                                                 placeholder="x-xxx-xxx-xxxx"
                                                 minLength={11}
@@ -255,7 +257,6 @@ export default function BookPage(): ReactNode {
                                         <br />
                                         <b>Error</b>
                                         <span className="subtitle">
-                                            {" "}
                                             {bookTableMutation.error.message}
                                         </span>
                                     </div>

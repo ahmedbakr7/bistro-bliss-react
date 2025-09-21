@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import { TableContext } from "./TableContext";
 import TableRow from "./TableRow";
 
@@ -30,6 +30,7 @@ interface TableProps<
     children?: ReactNode;
     className?: string; // wrapper div
     tableClassName?: string; // classes applied to <table>
+    style?: CSSProperties;
 }
 
 export default function Table<
@@ -47,6 +48,7 @@ export default function Table<
     emptyElement = null,
     index = false,
     tableClassName = "",
+    style,
 }: TableProps<T>): ReactNode {
     const tableClassNames = [
         "table",
@@ -74,7 +76,7 @@ export default function Table<
                 >[],
             }}
         >
-            <div className={`table-responsive ${className}`}>
+            <div className={`table-responsive ${className}`} style={style}>
                 <table className={tableClassNames}>
                     {caption && <caption>{caption}</caption>}
                     <thead>
@@ -94,8 +96,8 @@ export default function Table<
                     <tbody>
                         {hasData
                             ? data.map((row, index) => (
-                                  <TableRow row={row} rowIndex={index} />
-                              ))
+                                    <TableRow row={row} rowIndex={index} />
+                                ))
                             : children ?? emptyElement}
                     </tbody>
                 </table>

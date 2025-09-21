@@ -1,5 +1,3 @@
-import type { GenericAbortSignal } from "axios";
-import api from "../../services/api";
 import type { ReactElement } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import Table from "../Table/Table";
@@ -9,57 +7,14 @@ import QueryBuilder from "../QueryBuilder/QueryBuilder";
 import type { QueryField } from "../QueryBuilder/types";
 import { useSearchParams } from "react-router-dom";
 import Pagination from "../Pagination";
-
-export type BookingStatus =
-    | "PENDING"
-    | "CONFIRMED"
-    | "CANCELLED_BY_CUSTOMER"
-    | "CANCELLED_BY_RESTAURANT"
-    | "NO_SHOW"
-    | "SEATED"
-    | "COMPLETED";
-
-export interface Booking {
-    id: string;
-    userId?: string;
-    numberOfPeople: number;
-    bookedAt: Date | string;
-    status: BookingStatus;
-    createdAt: Date | string;
-    updatedAt: Date | string;
-    [key: string]: unknown;
-}
-
-export interface BookingPayload {
-    data: Booking[];
-    pagination: {
-        total: number;
-        page: number;
-        limit: number;
-        totalPage: number;
-    };
-}
-
-interface BookingQuery {
-    page?: number;
-    totalPages?: number;
-    limit?: number;
-    status?: BookingStatus | "";
-    userId?: string;
-    createdAfter?: string;
-    createdBefore?: string;
-    [key: string]: unknown; // added for compatibility with Record usage
-}
-
-async function fetchBookings(
-    signal: GenericAbortSignal,
-    searchParams: URLSearchParams
-): Promise<BookingPayload> {
-    const qs = searchParams.toString();
-    const url = "/bookings" + (qs ? `?${qs}` : "");
-    const { data } = await api.get<BookingPayload>(url, { signal });
-    return data;
-}
+import {
+    fetchBookings,
+    updateBookingStatus,
+    type Booking,
+    type BookingPayload,
+    type BookingQuery,
+    type BookingStatus,
+} from "../../services/bookingsApi";
 
 export default function Bookingsx(): ReactElement {
     const [searchParams, setSearchParams] = useSearchParams();
@@ -104,8 +59,7 @@ export default function Bookingsx(): ReactElement {
         error,
     } = useQuery<BookingPayload>({
         queryKey: ["bookings", searchParams.toString()],
-        queryFn: ({ signal }) =>
-            fetchBookings(signal as GenericAbortSignal, searchParams),
+        queryFn: ({ signal }) => fetchBookings(signal, searchParams),
         staleTime: 5000,
     });
 
@@ -118,12 +72,7 @@ export default function Bookingsx(): ReactElement {
         }: {
             id: string;
             status: BookingStatus;
-        }) => {
-            const { data } = await api.patch<Booking>(`/bookings/${id}`, {
-                status,
-            });
-            return data;
-        },
+        }) => updateBookingStatus(id, status),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["bookings"] });
         },
@@ -264,17 +213,6 @@ export default function Bookingsx(): ReactElement {
         [setSearchParams]
     );
 
-    if (isPending)
-        return <span className="align-self-center m-auto">loading...</span>;
-
-    if (isError)
-        return (
-            <div className="alert alert-danger" role="alert">
-                Failed to load bookings:{" "}
-                {error instanceof Error ? error.message : "Unknown error"}
-            </div>
-        );
-
     const bookings = (payload as BookingPayload | undefined)?.data ?? [];
 
     return (
@@ -287,39 +225,54 @@ export default function Bookingsx(): ReactElement {
                 title="Booking Filters"
             />
             <div className="flex-grow-1 p-3 overflow-auto d-flex flex-column gap-3">
-                <Table<Booking>
-                    data={bookings}
-                    tableHeaders={bookingHeaders}
-                    caption="Table of Bookings"
-                    emptyElement={
-                        <tr>
-                            <td
-                                colSpan={bookingHeaders.length + 1}
-                                className="text-center"
-                            >
-                                No bookings found
-                            </td>
-                        </tr>
-                    }
-                    index
-                />
-                {payload && payload.pagination.totalPage > 1 && (
-                    <Pagination
-                        count={payload.pagination.totalPage}
-                        index={payload.pagination.page}
-                        handleChange={(pageNumber: number) => {
-                            const next = new URLSearchParams(
-                                searchParams.toString()
-                            );
-                            if (pageNumber <= 1) {
-                                next.delete("page");
-                            } else {
-                                next.set("page", String(pageNumber));
+                {isPending ? (
+                    <div className="d-flex justify-content-center align-items-center py-5">
+                        <span className="text-muted">loading...</span>
+                    </div>
+                ) : isError ? (
+                    <div className="alert alert-danger" role="alert">
+                        Failed to load bookings:{" "}
+                        {error instanceof Error
+                            ? error.message
+                            : "Unknown error"}
+                    </div>
+                ) : (
+                    <>
+                        <Table<Booking>
+                            data={bookings}
+                            tableHeaders={bookingHeaders}
+                            caption="Table of Bookings"
+                            emptyElement={
+                                <tr>
+                                    <td
+                                        colSpan={bookingHeaders.length + 1}
+                                        className="text-center"
+                                    >
+                                        No bookings found
+                                    </td>
+                                </tr>
                             }
-                            queryRef.current.page = pageNumber;
-                            setSearchParams(next);
-                        }}
-                    />
+                            index
+                        />
+                        {payload && payload.pagination.totalPage > 1 && (
+                            <Pagination
+                                count={payload.pagination.totalPage}
+                                index={payload.pagination.page}
+                                handleChange={(pageNumber: number) => {
+                                    const next = new URLSearchParams(
+                                        searchParams.toString()
+                                    );
+                                    if (pageNumber <= 1) {
+                                        next.delete("page");
+                                    } else {
+                                        next.set("page", String(pageNumber));
+                                    }
+                                    queryRef.current.page = pageNumber;
+                                    setSearchParams(next);
+                                }}
+                            />
+                        )}
+                    </>
                 )}
             </div>
         </div>

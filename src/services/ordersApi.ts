@@ -1,4 +1,15 @@
+import type { Product } from "../pages/MenuPage";
 import api from "./api";
+
+export interface OrdersPayload {
+    data: Order[];
+    pagination: {
+        count: number;
+        limit: number;
+        page: number;
+        pages: number;
+    };
+}
 
 export type OrderStatus =
     | "CANCELED"
@@ -21,13 +32,15 @@ export interface Order {
     createdAt: string | Date;
     updatedAt: string | Date;
     deletedAt: string | Date;
+    // When joined from backend, orders may include details
+    orderDetails?: OrderDetail[];
     [key: string]: unknown;
 }
 
 export interface OrderDetail {
     id: string;
     orderId: string;
-    productId: string;
+    product: Product;
     quantity: number;
     price_snapshot?: number | null;
     name_snapshot?: string | null;
@@ -37,8 +50,8 @@ export interface OrderDetail {
     [key: string]: unknown;
 }
 
-export async function fetchUserOrders(userId: string): Promise<Order[]> {
-    const { data } = await api.get<Order[]>(`/${userId}/orders`);
+export async function fetchUserOrders(userId: string): Promise<OrdersPayload> {
+    const { data } = await api.get<OrdersPayload>(`/users/${userId}/orders`);
     return data ?? [];
 }
 

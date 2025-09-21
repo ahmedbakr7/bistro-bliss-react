@@ -4,101 +4,26 @@ import Roundel from "../components/Roundel/Roundel";
 import Table from "../components/Table/Table";
 import type { TableHeader } from "../components/Table/Table";
 import { useMemo } from "react";
-import type { Order, OrderDetail, OrderStatus } from "../services/ordersApi";
-import burgerImg from "../assets/burger-sandwich.png";
-import friesImg from "../assets/fries.png";
-import saladImg from "../assets/salad.png";
-import pizzaImg from "../assets/pizza.png";
+import type { Order, OrderDetail } from "../services/ordersApi";
 import { useProfile } from "../hooks/useProfile";
 import Form from "../components/Form/Form";
 import Input from "../components/Form/Input";
 import * as Yup from "yup";
 import useAuthContext from "../stores/AuthContext/useAuthContext";
+import { useUserOrders } from "../hooks/useOrders";
 
 // Dummy data for local testing
-export type DetailRow = OrderDetail & { image: string };
-
-const DUMMY_ORDERS: Order[] = [
-    {
-        id: "ord_1001",
-        status: "pending" as OrderStatus,
-        userId: "user_1",
-        totalPrice: 0,
-        acceptedAt: null,
-        deliveredAt: null,
-        receivedAt: null,
-        createdAt: new Date(Date.now() - 1000 * 60 * 60 * 2).toISOString(),
-        updatedAt: new Date().toISOString(),
-        deletedAt: new Date().toISOString(),
-    },
-    {
-        id: "ord_1002",
-        status: "accepted" as OrderStatus,
-        userId: "user_1",
-        totalPrice: 0,
-        acceptedAt: new Date(Date.now() - 1000 * 60 * 30).toISOString(),
-        deliveredAt: null,
-        receivedAt: null,
-        createdAt: new Date(Date.now() - 1000 * 60 * 60 * 24).toISOString(),
-        updatedAt: new Date().toISOString(),
-        deletedAt: new Date().toISOString(),
-    },
-];
-
-const DUMMY_DETAILS: Record<string, DetailRow[]> = {
-    ord_1001: [
-        {
-            id: "itm_1",
-            orderId: "ord_1001",
-            productId: "burger",
-            name_snapshot: "Cheese Burger",
-            price_snapshot: 12.5,
-            quantity: 2,
-            image: burgerImg,
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString(),
-            deletedAt: new Date().toISOString(),
-        },
-        {
-            id: "itm_2",
-            orderId: "ord_1001",
-            productId: "fries",
-            name_snapshot: "French Fries",
-            price_snapshot: 4.75,
-            quantity: 1,
-            image: friesImg,
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString(),
-            deletedAt: new Date().toISOString(),
-        },
-    ],
-    ord_1002: [
-        {
-            id: "itm_3",
-            orderId: "ord_1002",
-            productId: "salad",
-            name_snapshot: "Garden Salad",
-            price_snapshot: 7.25,
-            quantity: 3,
-            image: saladImg,
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString(),
-            deletedAt: new Date().toISOString(),
-        },
-        {
-            id: "itm_4",
-            orderId: "ord_1002",
-            productId: "pizza",
-            name_snapshot: "Pepperoni Pizza",
-            price_snapshot: 15,
-            quantity: 1,
-            image: pizzaImg,
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString(),
-            deletedAt: new Date().toISOString(),
-        },
-    ],
+export type DetailRow = OrderDetail & {
+    product?: {
+        name?: string | null;
+        imageUrl?: string | null;
+        price?: number | null;
+        [k: string]: unknown;
+    };
+    image?: string;
 };
+
+// Removed DUMMY_ORDERS and DUMMY_DETAILS in favor of API-driven data
 
 export default function ProfilePage(): ReactNode {
     // Profile hook
@@ -140,15 +65,20 @@ export default function ProfilePage(): ReactNode {
         []
     );
 
-    // no need to select an order; we're rendering grouped big table
-    const orders = DUMMY_ORDERS;
+    // Fetch user's orders (includes orderDetails from API)
+    const { data: ordersPayload, isLoading, isError } = useUserOrders();
+
+    const orders: Order[] = useMemo(
+        () => (ordersPayload?.data ?? []) as Order[],
+        [ordersPayload]
+    );
 
     type OrderGroup = { order: Order; details: DetailRow[] };
     const groupedData: OrderGroup[] = useMemo(
         () =>
-            orders.map((o) => ({
+            (orders ?? []).map((o) => ({
                 order: o,
-                details: DUMMY_DETAILS[o.id] ?? [],
+                details: (o.orderDetails ?? []) as DetailRow[],
             })),
         [orders]
     );
@@ -172,12 +102,12 @@ export default function ProfilePage(): ReactNode {
                     return (
                         <div
                             className={containerClass}
-                            style={{
-                                borderTop:
-                                    rowIndex > 0
-                                        ? "1px solid #dee2e6"
-                                        : undefined,
-                            }}
+                            // style={{
+                            //     borderTop:
+                            //         rowIndex > 0
+                            //             ? "1px solid #dee2e6"
+                            //             : undefined,
+                            // }}
                         >
                             {/* Remove row negative margins inside table cell to prevent horizontal scroll */}
                             <div className="row g-4 mx-0">
@@ -197,8 +127,15 @@ export default function ProfilePage(): ReactNode {
                                         >
                                             <div className="d-flex align-items-center gap-2">
                                                 <img
-                                                    src={d.image as string}
+                                                    src={
+                                                        d.product?.imageUrl
+                                                            ? `${d.product.imageUrl}`
+                                                            : d.image ??
+                                                              "/images/placeholder_image.png"
+                                                    }
                                                     alt={
+                                                        (d.product
+                                                            ?.name as string) ??
                                                         (d.name_snapshot as string) ??
                                                         String(d.productId)
                                                     }
@@ -210,7 +147,8 @@ export default function ProfilePage(): ReactNode {
                                                     }}
                                                 />
                                                 <span>
-                                                    {d.name_snapshot ??
+                                                    {d.product?.name ??
+                                                        d.name_snapshot ??
                                                         String(d.productId)}
                                                 </span>
                                             </div>
@@ -220,7 +158,10 @@ export default function ProfilePage(): ReactNode {
                                             >
                                                 $
                                                 {(
-                                                    d.price_snapshot ?? 0
+                                                    d.price_snapshot ??
+                                                    undefined ??
+                                                    d.product?.price ??
+                                                    0
                                                 ).toFixed(2)}
                                             </div>
                                             <div
@@ -303,6 +244,38 @@ export default function ProfilePage(): ReactNode {
         ],
         []
     );
+
+    const emptyEl = useMemo(() => {
+        if (isLoading)
+            return (
+                <tr>
+                    <td
+                        colSpan={groupHeaders.length + 1}
+                        className="text-center"
+                    >
+                        Loading orders...
+                    </td>
+                </tr>
+            );
+        if (isError)
+            return (
+                <tr>
+                    <td
+                        colSpan={groupHeaders.length + 1}
+                        className="text-center"
+                    >
+                        Failed to load orders
+                    </td>
+                </tr>
+            );
+        return (
+            <tr>
+                <td colSpan={groupHeaders.length + 1} className="text-center">
+                    No orders found
+                </td>
+            </tr>
+        );
+    }, [groupHeaders.length, isError, isLoading]);
 
     return (
         <main>
@@ -427,16 +400,7 @@ export default function ProfilePage(): ReactNode {
                     data={groupedData}
                     tableHeaders={groupHeaders}
                     className="w-100"
-                    emptyElement={
-                        <tr>
-                            <td
-                                colSpan={groupHeaders.length + 1}
-                                className="text-center"
-                            >
-                                No orders found
-                            </td>
-                        </tr>
-                    }
+                    emptyElement={emptyEl}
                 />
             </Section>
         </main>

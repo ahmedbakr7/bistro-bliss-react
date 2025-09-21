@@ -5,6 +5,7 @@ import {
     fetchUserOrders,
     type Order,
     type OrderDetail,
+    type OrdersPayload,
 } from "../services/ordersApi";
 
 const ORDERS_QUERY_KEY = ["orders"] as const;
@@ -17,11 +18,10 @@ export function useUserOrders() {
 
     const enabled = !!authState.user && !!authState.token && !!userId;
 
-    return useQuery<Order[]>({
+    return useQuery<OrdersPayload>({
         queryKey: [...ORDERS_QUERY_KEY, userId],
         queryFn: () => fetchUserOrders(userId as string),
         enabled,
-        initialData: [] as Order[],
         staleTime: 1000 * 30,
     });
 }
