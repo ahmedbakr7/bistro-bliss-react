@@ -89,3 +89,16 @@ export async function fetchOrderDetails(
     const { data } = await api.get<OrderDetail[]>(`/orders/${orderId}/details`);
     return data ?? [];
 }
+
+// Update an order's status (admin)
+export async function updateOrderStatus(
+    id: string,
+    status: OrderStatus,
+    options?: { etaMinutes?: number }
+): Promise<Order> {
+    const payload: Record<string, unknown> = { status };
+    if (options?.etaMinutes !== undefined)
+        payload.etaMinutes = options.etaMinutes;
+    const { data } = await api.patch<Order>(`/orders/${id}`, payload);
+    return data;
+}

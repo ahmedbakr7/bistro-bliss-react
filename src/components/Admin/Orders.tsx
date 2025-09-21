@@ -1,6 +1,6 @@
 import type { ReactElement } from "react";
 import { useMemo, useRef, useCallback } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useSearchParams } from "react-router-dom";
 import QueryBuilder from "../QueryBuilder/QueryBuilder";
 import type { QueryField } from "../QueryBuilder/types";
@@ -15,6 +15,7 @@ import {
     type OrdersQuery,
     type Order,
     type OrderStatus,
+    updateOrderStatus,
 } from "../../services/ordersApi";
 
 export default function Orders(): ReactElement {
@@ -117,20 +118,56 @@ export default function Orders(): ReactElement {
         }));
     }, [payload]);
 
+    const queryClient = useQueryClient();
+
+    const updateStatus = useMutation({
+        mutationFn: async ({
+            id,
+            status,
+            etaMinutes,
+        }: {
+            id: string;
+            status: OrderStatus;
+            etaMinutes?: number;
+        }) => updateOrderStatus(id, status, { etaMinutes }),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["orders"] });
+        },
+    });
+
     const groupHeaders: TableHeader<OrderGroup>[] = useMemo(
         () => [
             {
                 name: "Orders",
                 render: (row, _value, rowIndex) => (
-                    <OrderGroupRow group={row} rowIndex={rowIndex} />
+                    <OrderGroupRow
+                        group={row}
+                        rowIndex={rowIndex}
+                        isAdmin
+                        onUpdateStatus={(
+                            next: OrderStatus,
+                            options?: { etaMinutes?: number }
+                        ) =>
+                            updateStatus.mutate({
+                                id: row.order.id,
+                                status: next,
+                                etaMinutes: options?.etaMinutes,
+                            })
+                        }
+                        isUpdating={updateStatus.isPending}
+                    />
                 ),
             },
         ],
-        []
+        [updateStatus]
     );
 
     return (
-        <div className="d-flex flex-row w-100 h-100">
+        <div
+            className="d-flex flex-row w-100 h-100"
+            role="region"
+            aria-label="Orders panel"
+        >
             <QueryBuilder
                 fields={fields}
                 onSubmit={applyFilters}
@@ -140,7 +177,12 @@ export default function Orders(): ReactElement {
             />
             <div className="flex-grow-1 p-3 overflow-auto d-flex flex-column gap-3">
                 {isPending ? (
-                    <div className="d-flex justify-content-center align-items-center py-5">
+                    <div
+                        className="d-flex justify-content-center align-items-center py-5"
+                        role="status"
+                        aria-live="polite"
+                        aria-busy="true"
+                    >
                         <span className="text-muted">loading...</span>
                     </div>
                 ) : isError ? (
@@ -168,6 +210,7 @@ export default function Orders(): ReactElement {
                         />
                         {payload && payload.pagination.pages > 1 && (
                             <Pagination
+                                ariaLabel="Orders pages"
                                 count={payload.pagination.pages}
                                 index={payload.pagination.page}
                                 handleChange={(pageNumber: number) => {

@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import OrderItemRow from "./OrderItemRow";
 import OrderSummary from "./OrderSummary";
-import type { Order } from "../../services/ordersApi";
+import type { Order, OrderStatus } from "../../services/ordersApi";
 import type { DetailRow } from "./types";
 
 export type OrderGroup = { order: Order; details: DetailRow[] };
@@ -9,9 +9,21 @@ export type OrderGroup = { order: Order; details: DetailRow[] };
 export type OrderGroupRowProps = {
     group: OrderGroup;
     rowIndex: number;
+    isAdmin?: boolean;
+    isUpdating?: boolean;
+    onUpdateStatus?: (
+        next: OrderStatus,
+        options?: { etaMinutes?: number }
+    ) => void;
 };
 
-const OrderGroupRow: React.FC<OrderGroupRowProps> = ({ group, rowIndex }) => {
+const OrderGroupRow: React.FC<OrderGroupRowProps> = ({
+    group,
+    rowIndex,
+    isAdmin = false,
+    onUpdateStatus,
+    isUpdating,
+}) => {
     const { order, details } = group;
 
     const subtotal = useMemo(
@@ -40,7 +52,13 @@ const OrderGroupRow: React.FC<OrderGroupRowProps> = ({ group, rowIndex }) => {
                     ))}
                 </div>
                 <div className="col-lg-4">
-                    <OrderSummary subtotal={subtotal} status={order.status} />
+                    <OrderSummary
+                        subtotal={subtotal}
+                        status={order.status}
+                        isAdmin={isAdmin}
+                        onUpdateStatus={onUpdateStatus}
+                        isUpdating={isUpdating}
+                    />
                 </div>
             </div>
         </div>
