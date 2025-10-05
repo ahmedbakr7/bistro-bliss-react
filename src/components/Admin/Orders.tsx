@@ -16,6 +16,7 @@ import {
     type Order,
     type OrderStatus,
     updateOrderStatus,
+    deleteOrder,
 } from "../../services/ordersApi";
 
 export default function Orders(): ReactElement {
@@ -125,11 +126,30 @@ export default function Orders(): ReactElement {
             id,
             status,
             etaMinutes,
+            acceptedAt,
+            receivedAt,
+            deliveredAt,
         }: {
             id: string;
             status: OrderStatus;
             etaMinutes?: number;
-        }) => updateOrderStatus(id, status, { etaMinutes }),
+            acceptedAt?: string;
+            receivedAt?: string;
+            deliveredAt?: string;
+        }) =>
+            updateOrderStatus(id, status, {
+                etaMinutes,
+                acceptedAt,
+                receivedAt,
+                deliveredAt,
+            }),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["orders"] });
+        },
+    });
+
+    const removeOrder = useMutation({
+        mutationFn: async ({ id }: { id: string }) => deleteOrder(id),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["orders"] });
         },
@@ -146,20 +166,33 @@ export default function Orders(): ReactElement {
                         isAdmin
                         onUpdateStatus={(
                             next: OrderStatus,
-                            options?: { etaMinutes?: number }
+                            options?: {
+                                etaMinutes?: number;
+                                acceptedAt?: string;
+                                receivedAt?: string;
+                                deliveredAt?: string;
+                            }
                         ) =>
                             updateStatus.mutate({
                                 id: row.order.id,
                                 status: next,
                                 etaMinutes: options?.etaMinutes,
+                                acceptedAt: options?.acceptedAt,
+                                receivedAt: options?.receivedAt,
+                                deliveredAt: options?.deliveredAt,
                             })
                         }
-                        isUpdating={updateStatus.isPending}
+                        onDelete={() =>
+                            removeOrder.mutate({ id: row.order.id })
+                        }
+                        isUpdating={
+                            updateStatus.isPending || removeOrder.isPending
+                        }
                     />
                 ),
             },
         ],
-        [updateStatus]
+        [updateStatus, removeOrder]
     );
 
     return (

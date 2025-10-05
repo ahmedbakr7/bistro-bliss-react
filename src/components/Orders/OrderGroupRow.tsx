@@ -13,8 +13,14 @@ export type OrderGroupRowProps = {
     isUpdating?: boolean;
     onUpdateStatus?: (
         next: OrderStatus,
-        options?: { etaMinutes?: number }
+        options?: {
+            etaMinutes?: number;
+            acceptedAt?: string;
+            receivedAt?: string;
+            deliveredAt?: string;
+        }
     ) => void;
+    onDelete?: () => void;
 };
 
 const OrderGroupRow: React.FC<OrderGroupRowProps> = ({
@@ -23,6 +29,7 @@ const OrderGroupRow: React.FC<OrderGroupRowProps> = ({
     isAdmin = false,
     onUpdateStatus,
     isUpdating,
+    onDelete,
 }) => {
     const { order, details } = group;
 
@@ -58,6 +65,7 @@ const OrderGroupRow: React.FC<OrderGroupRowProps> = ({
                         isAdmin={isAdmin}
                         onUpdateStatus={onUpdateStatus}
                         isUpdating={isUpdating}
+                        onDelete={onDelete}
                     />
                 </div>
             </div>

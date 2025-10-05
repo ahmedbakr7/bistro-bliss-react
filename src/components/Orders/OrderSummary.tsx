@@ -9,9 +9,10 @@ export type OrderSummaryProps = {
     isAdmin?: boolean;
     onUpdateStatus?: (
         next: OrderStatus,
-        options?: { etaMinutes?: number }
+        options?: { etaMinutes?: number; acceptedAt?: string; receivedAt?: string; deliveredAt?: string }
     ) => void;
     isUpdating?: boolean;
+    onDelete?: () => void;
 };
 
 const DEFAULT_SHIPPING = 15;
@@ -67,6 +68,7 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({
     isAdmin = false,
     onUpdateStatus,
     isUpdating = false,
+    onDelete,
 }) => {
     const total = subtotal + shipping;
 
@@ -81,29 +83,45 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({
         return totalMins > 0 ? totalMins : undefined;
     }
 
+    function buildTimestampsFromEta(etaMinutes?: number) {
+        const now = new Date();
+        const acceptedAt = now.toISOString();
+        const receivedAt = etaMinutes
+            ? new Date(now.getTime() + etaMinutes * 60000).toISOString()
+            : undefined;
+        return { acceptedAt, receivedAt };
+    }
+
     const renderAdminControls = () => {
         const s = (status ?? "DRAFT") as OrderStatus;
         if (s === "CREATED") {
+            const eta = parseEta();
+            const disableAccept = !eta || isUpdating;
             return (
                 <div className="d-flex flex-column gap-2" aria-live="polite">
                     <div className="d-flex flex-column gap-2">
                         <button
                             type="button"
                             className="btn btn-success rounded-pill"
-                            onClick={() =>
+                            onClick={() => {
+                                const etaMins = parseEta();
+                                const { acceptedAt, receivedAt } =
+                                    buildTimestampsFromEta(etaMins);
                                 onUpdateStatus?.("PREPARING", {
-                                    etaMinutes: parseEta(),
-                                })
-                            }
+                                    etaMinutes: etaMins,
+                                    acceptedAt,
+                                    receivedAt,
+                                });
+                            }}
                             aria-label="Accept order"
-                            disabled={isUpdating}
+                            disabled={disableAccept}
                         >
                             {isUpdating ? "Updating..." : "Accept Order"}
                         </button>
                         <button
                             type="button"
                             className="btn btn-danger rounded-pill"
-                            onClick={() => onUpdateStatus?.("CANCELED")}
+                            onClick={() => onDelete?.()}
                             aria-label="Cancel order"
                             disabled={isUpdating}
                         >
@@ -147,22 +165,6 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({
                                 disabled={isUpdating}
                             />
                         </div>
-                    </div>
-
-                    <div className="d-flex justify-content-center">
-                        <button
-                            type="button"
-                            className="btn btn-primary rounded-pill px-4"
-                            onClick={() =>
-                                onUpdateStatus?.("PREPARING", {
-                                    etaMinutes: parseEta(),
-                                })
-                            }
-                            aria-label="Send ETA"
-                            disabled={isUpdating}
-                        >
-                            {isUpdating ? "Updating..." : "Send"}
-                        </button>
                     </div>
                 </div>
             );

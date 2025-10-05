@@ -94,11 +94,24 @@ export async function fetchOrderDetails(
 export async function updateOrderStatus(
     id: string,
     status: OrderStatus,
-    options?: { etaMinutes?: number }
+    options?: {
+        etaMinutes?: number;
+        acceptedAt?: string; // ISO
+        receivedAt?: string; // ISO
+        deliveredAt?: string; // ISO
+    }
 ): Promise<Order> {
     const payload: Record<string, unknown> = { status };
     if (options?.etaMinutes !== undefined)
         payload.etaMinutes = options.etaMinutes;
+    if (options?.acceptedAt) payload.acceptedAt = options.acceptedAt;
+    if (options?.receivedAt) payload.receivedAt = options.receivedAt;
+    if (options?.deliveredAt) payload.deliveredAt = options.deliveredAt;
     const { data } = await api.patch<Order>(`/orders/${id}`, payload);
     return data;
+}
+
+// Delete an order (admin cancel)
+export async function deleteOrder(id: string): Promise<void> {
+    await api.delete(`/orders/${id}`);
 }
