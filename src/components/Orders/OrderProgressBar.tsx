@@ -65,7 +65,7 @@ const OrderProgressBar: React.FC<OrderProgressBarProps> = ({ order }) => {
     const { percent, inTransit } = useMemo(() => {
         if (!acceptedAt) return { percent: 0, inTransit: false };
         if (receivedAt) return { percent: 100, inTransit: false };
-        if (status === 'DELIVERING' && etaAt) {
+        if (status === "DELIVERING" && etaAt) {
             const prog = pct(Math.min(tick, etaAt));
             return { percent: prog, inTransit: true };
         }
@@ -77,7 +77,8 @@ const OrderProgressBar: React.FC<OrderProgressBarProps> = ({ order }) => {
     }, [acceptedAt, etaAt, receivedAt, tick, pct, status]);
 
     const remaining = useMemo(() => {
-        if (!acceptedAt || !etaAt || receivedAt || status !== 'DELIVERING') return undefined;
+        if (!acceptedAt || !etaAt || receivedAt || status !== "DELIVERING")
+            return undefined;
         const diff = etaAt - tick;
         if (diff <= 0) return undefined;
         const mins = Math.round(diff / 60000);
@@ -90,7 +91,13 @@ const OrderProgressBar: React.FC<OrderProgressBarProps> = ({ order }) => {
     }, [acceptedAt, etaAt, tick, receivedAt, status]);
 
     // Build dynamic markers
-    interface Marker { key: string; label: string; left: number; time?: number; state: 'done' | 'current' | 'pending'; }
+    interface Marker {
+        key: string;
+        label: string;
+        left: number;
+        time?: number;
+        state: "done" | "current" | "pending";
+    }
     const markers: Marker[] = [];
 
     // Placed always visible at start
@@ -117,16 +124,29 @@ const OrderProgressBar: React.FC<OrderProgressBarProps> = ({ order }) => {
         });
     }
 
-    const showDelivering = status === 'DELIVERING' && acceptedAt && etaAt && !receivedAt;
+    const showDelivering =
+        status === "DELIVERING" && acceptedAt && etaAt && !receivedAt;
     if (showDelivering) {
         const currentTs = Math.min(Math.max(tick, acceptedAt!), etaAt!);
         const currentLeft = pct(currentTs);
-        markers.push({ key: 'delivering', label: 'Delivering', left: currentLeft, time: currentTs, state: 'current' });
+        markers.push({
+            key: "delivering",
+            label: "Delivering",
+            left: currentLeft,
+            time: currentTs,
+            state: "current",
+        });
     }
 
     // End marker: ETA while in transit, Received when completed
     if (acceptedAt && etaAt && !receivedAt) {
-        markers.push({ key: 'eta', label: 'ETA', left: 100, time: etaAt, state: showDelivering ? 'pending' : 'pending' });
+        markers.push({
+            key: "eta",
+            label: "ETA",
+            left: 100,
+            time: etaAt,
+            state: showDelivering ? "pending" : "pending",
+        });
     }
     if (receivedAt) {
         // Replace ETA endpoint
@@ -198,7 +218,9 @@ const OrderProgressBar: React.FC<OrderProgressBarProps> = ({ order }) => {
                 })}
             </div>
             {inTransit && remaining && (
-                <div className="order-progress__eta mt-1" aria-live="polite">Est. arrival in {remaining}</div>
+                <div className="order-progress__eta mt-1" aria-live="polite">
+                    Est. arrival in {remaining}
+                </div>
             )}
         </div>
     );
