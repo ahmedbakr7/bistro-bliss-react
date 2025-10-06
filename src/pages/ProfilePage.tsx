@@ -140,7 +140,7 @@ export default function ProfilePage(): ReactNode {
                             className: "rounded-circle",
                             src:
                                 (`http://localhost:3000/uploads/${profile?.imageUrl}` as string) ||
-                                "https://randomuser.me/api/portraits/men/32.jpg",
+                                "/images/placeholder_image.png",
                             alt: "User Image",
                             style: { height: "81px" },
                         }}

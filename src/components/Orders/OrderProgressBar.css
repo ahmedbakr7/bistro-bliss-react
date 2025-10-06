@@ -1,0 +1,25 @@
+.order-progress { font-size: 12px; position: relative; padding-top:34px; }
+.order-progress__track {
+     position: relative;
+     background: var(--bs-gray-300, #e2e6ea);
+     height: 8px;
+     border-radius: 4px;
+     margin-bottom: 12px;
+     /*reducedbecauselabelsnowabove*/-webkit-border-radius: 4px;
+     -moz-border-radius: 4px;
+     -ms-border-radius: 4px;
+     -o-border-radius: 4px;
+     -webkit-border-radius: 4px;
+}
+.order-progress__fill { position: absolute; top:0; left:0; bottom:0; background: var(--bs-primary, #0d6efd); border-radius: 4px; transition: width .4s ease; }
+/* Step now only centers the dot; label is absolutely positioned above */
+.order-progress__step { position: absolute; top: 50%; transform: translate(-50%, -50%); text-align: center; width: 80px; }
+.order-progress__dot { width:18px; height:18px; border-radius:50%; background:#fff; border:3px solid var(--bs-gray-500,#adb5bd); margin:0 auto; box-sizing: content-box; z-index:2; position:relative; }
+.order-progress__step--done .order-progress__dot { background: var(--bs-primary,#0d6efd); border-color: var(--bs-primary,#0d6efd); }
+.order-progress__step--current .order-progress__dot { border-color: var(--bs-primary,#0d6efd); animation: pulse 1.5s infinite; }
+/* Label positioned above the dot */
+.order-progress__label { position:absolute; bottom:22px; left:50%; transform:translateX(-50%); width:100%; }
+.order-progress__label span { display:block; font-weight:500; }
+.order-progress__eta { font-size: 11px; color: var(--bs-gray-700,#495057); }
+@keyframes pulse { 0%{box-shadow:0 0 0 0 rgba(13,110,253,.6);} 70%{box-shadow:0 0 0 10px rgba(13,110,253,0);} 100%{box-shadow:0 0 0 0 rgba(13,110,253,0);} }
+@media (max-width: 576px) { .order-progress__step { width:60px; } }

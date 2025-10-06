@@ -66,6 +66,7 @@ const OrderGroupRow: React.FC<OrderGroupRowProps> = ({
                         onUpdateStatus={onUpdateStatus}
                         isUpdating={isUpdating}
                         onDelete={onDelete}
+                        order={order}
                     />
                 </div>
             </div>

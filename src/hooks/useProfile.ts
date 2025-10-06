@@ -1,10 +1,7 @@
-import { useEffect } from "react";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import useAuthContext from "../stores/AuthContext/useAuthContext";
 import {
-    fetchUserProfile,
     updateUserProfile,
-    type Profile,
     type UpdateProfilePayload,
 } from "../services/profileApi";
 

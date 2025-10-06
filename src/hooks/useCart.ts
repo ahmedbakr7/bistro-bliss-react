@@ -2,8 +2,8 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
     fetchCartPayload,
     addCartItem,
-    removeCartItem,
-    updateCartItem,
+    removeCartItemByDetailId,
+    updateCartItemByDetailId,
     type CartProductLine,
     clearRemoteCart,
     checkoutCart,
@@ -116,12 +116,12 @@ export function useCartActions(userId: string | null, enabled = true) {
     const update = useMutation<
         CartProductLine,
         unknown,
-        { productId: string; quantity: number },
+        { detailId: string; quantity: number },
         MutationCtx
     >({
-        mutationFn: ({ productId, quantity }) =>
-            updateCartItem(userId as string, productId, quantity),
-        onMutate: async ({ productId, quantity }) => {
+        mutationFn: ({ detailId, quantity }) =>
+            updateCartItemByDetailId(userId as string, detailId, quantity),
+        onMutate: async ({ detailId, quantity }) => {
             if (!enabled || !userId)
                 return { previous: { cartId: "guest", items: [] } };
             await queryClient.cancelQueries({ queryKey: cartKey(userId) });
@@ -140,7 +140,9 @@ export function useCartActions(userId: string | null, enabled = true) {
                             items: [],
                         } as CartState);
                     const items = base.items.map((i) =>
-                        i.productId === productId ? { ...i, quantity } : i
+                        i.cartDetailId === detailId || String(i.id) === detailId
+                            ? { ...i, quantity }
+                            : i
                     );
                     return { ...base, items };
                 }
@@ -161,8 +163,10 @@ export function useCartActions(userId: string | null, enabled = true) {
     });
 
     const remove = useMutation<void, unknown, string, MutationCtx>({
-        mutationFn: (productId) => removeCartItem(userId as string, productId),
-        onMutate: async (productId) => {
+        // detailId corresponds to cartDetailId / line id
+        mutationFn: (detailId) =>
+            removeCartItemByDetailId(userId as string, detailId),
+        onMutate: async (detailId) => {
             if (!enabled || !userId)
                 return { previous: { cartId: "guest", items: [] } };
             await queryClient.cancelQueries({ queryKey: cartKey(userId) });
@@ -181,7 +185,9 @@ export function useCartActions(userId: string | null, enabled = true) {
                             items: [],
                         } as CartState);
                     const items = base.items.filter(
-                        (i) => i.productId !== productId
+                        (i) =>
+                            i.cartDetailId !== detailId &&
+                            String(i.id) !== String(detailId)
                     );
                     return { ...base, items };
                 }
@@ -211,10 +217,17 @@ export function useCartActions(userId: string | null, enabled = true) {
         },
     });
 
-    const checkout = useMutation<CheckoutResponse, unknown, CheckoutPayload | void>({
+    const checkout = useMutation<
+        CheckoutResponse,
+        unknown,
+        CheckoutPayload | void
+    >({
         mutationFn: async (payload) => {
             if (!enabled || !userId) throw new Error("No user");
-            return checkoutCart(userId as string, (payload ?? {}) as CheckoutPayload);
+            return checkoutCart(
+                userId as string,
+                (payload ?? {}) as CheckoutPayload
+            );
         },
         onSettled: () => {
             queryClient.invalidateQueries({ queryKey: cartKey(userId) });
@@ -234,8 +247,14 @@ export function useCartActions(userId: string | null, enabled = true) {
             if (!current) {
                 add.mutate({ productId, quantity: delta });
             } else {
+                const detailId = ((): string => {
+                    if (typeof current.cartDetailId === "string")
+                        return current.cartDetailId;
+                    if (typeof current.id === "string") return current.id;
+                    return String(current.productId);
+                })();
                 update.mutate({
-                    productId,
+                    detailId,
                     quantity: (current.quantity ?? 0) + delta,
                 });
             }
@@ -252,11 +271,11 @@ export function useCartActions(userId: string | null, enabled = true) {
         checkout,
         addToCart: (productId: string, quantity = 1) =>
             enabled && userId ? add.mutate({ productId, quantity }) : undefined,
-        removeFromCart: (productId: string) =>
-            enabled && userId ? remove.mutate(productId) : undefined,
-        updateQuantity: (productId: string, quantity: number) =>
+        removeFromCart: (detailId: string) =>
+            enabled && userId ? remove.mutate(detailId) : undefined,
+        updateQuantity: (detailId: string, quantity: number) =>
             enabled && userId
-                ? update.mutate({ productId, quantity })
+                ? update.mutate({ detailId, quantity })
                 : undefined,
         clearCart: () => (enabled && userId ? clear.mutate() : undefined),
         checkoutNow: (payload?: CheckoutPayload) =>

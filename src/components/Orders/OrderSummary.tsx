@@ -1,9 +1,7 @@
 import React from "react";
-import type { OrderStatus } from "../../services/ordersApi";
+import type { OrderStatus, Order } from "../../services/ordersApi";
+import OrderProgressBar from "./OrderProgressBar";
 
-/**
- * Metadata describing how each order status should be presented.
- */
 const STATUS_META: Record<OrderStatus, { label: string; className: string }> = {
     DRAFT: {
         label: "Draft",
@@ -76,10 +74,11 @@ type AdminControlsProps = {
 function buildTimestampsFromEta(etaMinutes?: number) {
     const now = new Date();
     const acceptedAt = now.toISOString();
-    const receivedAt = etaMinutes
+    // deliveredAt represents the ETA (future scheduled time)
+    const deliveredAt = etaMinutes
         ? new Date(now.getTime() + etaMinutes * 60000).toISOString()
         : undefined;
-    return { acceptedAt, receivedAt };
+    return { acceptedAt, deliveredAt };
 }
 
 /**
@@ -117,12 +116,12 @@ const AdminControls: React.FC<AdminControlsProps> = ({
                         className="btn btn-success rounded-pill"
                         onClick={() => {
                             const etaMins = parseEta();
-                            const { acceptedAt, receivedAt } =
+                            const { acceptedAt, deliveredAt } =
                                 buildTimestampsFromEta(etaMins);
                             onUpdateStatus?.("PREPARING", {
                                 etaMinutes: etaMins,
                                 acceptedAt,
-                                receivedAt,
+                                deliveredAt,
                             });
                         }}
                         aria-label="Accept order"
@@ -211,7 +210,7 @@ const AdminControls: React.FC<AdminControlsProps> = ({
                     className="btn btn-success rounded-pill"
                     onClick={() =>
                         onUpdateStatus?.("RECEIVED", {
-                            deliveredAt: new Date().toISOString(),
+                            receivedAt: new Date().toISOString(),
                         })
                     }
                     aria-label="Complete delivery"
@@ -249,6 +248,8 @@ export type OrderSummaryProps = {
     onDelete?: () => void;
     /** Custom currency formatter (defaults to USD style). */
     formatCurrency?: (amount: number) => string;
+    /** Full order object for progress bar timeline */
+    order?: Order;
 };
 
 const DEFAULT_SHIPPING = 15;
@@ -265,6 +266,7 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({
     isUpdating = false,
     onDelete,
     formatCurrency = defaultFormatCurrency,
+    order,
 }) => {
     const total = subtotal + shipping;
 
@@ -313,24 +315,13 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({
                     />
                 ) : (
                     <>
+                        {order && <OrderProgressBar order={order} />}
                         <div className="mb-3">
                             <small className="text-muted">
-                                Order will be delivered soon
+                                {order?.deliveredAt
+                                    ? "ETA displayed above"
+                                    : "Order will be delivered soon"}
                             </small>
-                        </div>
-                        <div className="d-flex align-items-center gap-2">
-                            <span className="text-muted">
-                                <small>Created</small>
-                            </span>
-                            <span
-                                className="rounded-circle bg-danger"
-                                style={{
-                                    width: 24,
-                                    height: 24,
-                                    display: "inline-block",
-                                }}
-                                aria-hidden="true"
-                            ></span>
                         </div>
                     </>
                 )}

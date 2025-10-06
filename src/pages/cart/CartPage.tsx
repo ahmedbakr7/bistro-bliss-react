@@ -15,10 +15,12 @@ export default function CartPage() {
     const {
         data: cartPayload,
         isLoading,
-        increment,
+        // increment removed (now using updateQuantity with detailId)
         remove,
         clear,
         checkout,
+        updateQuantity,
+        addToCart,
     } = useCart();
 
     const cartItems = useMemo(
@@ -108,10 +110,16 @@ export default function CartPage() {
                         className="btn btn-sm btn-outline-secondary"
                         onClick={() => {
                             const q = Number(row.quantity ?? 0);
+                            const detailId = ((): string => {
+                                if (typeof row.cartDetailId === "string")
+                                    return row.cartDetailId;
+                                if (typeof row.id === "string") return row.id;
+                                return String(row.productId ?? "");
+                            })();
                             if (q <= 1) {
-                                remove.mutate(row.productId as string);
+                                remove.mutate(detailId);
                             } else {
-                                increment(row.productId as string, -1);
+                                updateQuantity(detailId, q - 1);
                             }
                         }}
                     >
@@ -126,7 +134,20 @@ export default function CartPage() {
                     <button
                         aria-label="Increase"
                         className="btn btn-sm btn-outline-secondary"
-                        onClick={() => increment(row.productId as string, 1)}
+                        onClick={() => {
+                            const q = Number(row.quantity ?? 0);
+                            const detailId = ((): string => {
+                                if (typeof row.cartDetailId === "string")
+                                    return row.cartDetailId;
+                                if (typeof row.id === "string") return row.id;
+                                return String(row.productId ?? "");
+                            })();
+                            if (row.cartDetailId || row.id) {
+                                updateQuantity(detailId, q + 1);
+                            } else if (row.productId) {
+                                addToCart(String(row.productId), 1);
+                            }
+                        }}
                     >
                         +
                     </button>

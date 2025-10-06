@@ -135,7 +135,7 @@ export async function removeCartItemByDetailId(
     await api.delete(`/users/${userId}/cart/items/${detailId}`);
 }
 
-// Resolve detail id from React Query cache (no network)
+// Resolve detail id from React Query cache (no network). Prefer cartDetailId.
 async function resolveDetailId(
     userId: string,
     productId: string
@@ -143,7 +143,7 @@ async function resolveDetailId(
     const payload = queryClient.getQueryData<CartPayload>(["cart", userId]);
     if (!payload) return undefined;
     const match = payload.items.find((i) => String(i.productId) === productId);
-    return match?.id;
+    return match?.cartDetailId || match?.id; // fall back to id for backwards compat
 }
 
 export async function updateCartItem(
