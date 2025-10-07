@@ -21,6 +21,7 @@ import {
     Contacts,
     Bookingsx,
     CartPage,
+    ErrorPage,
 } from "./routeImports";
 
 import { paths } from "./routePaths";
@@ -34,6 +35,7 @@ const router = createBrowserRouter([
                 <RootLayout />
             </AuthProvider>
         ),
+        errorElement: <ErrorPage status={500} />, // top-level error boundary
         children: [
             {
                 index: true,
@@ -75,6 +77,7 @@ const router = createBrowserRouter([
                 element: <ContactPage />,
                 path: paths.contact,
             },
+            { path: paths.error, element: <ErrorPage status={404} /> },
         ],
     },
     {
@@ -84,6 +87,7 @@ const router = createBrowserRouter([
                 <AuthLayout />
             </AuthProvider>
         ),
+        errorElement: <ErrorPage status={500} />,
         children: [
             {
                 element: <AuthLogin />,
@@ -101,6 +105,7 @@ const router = createBrowserRouter([
                 element: <OtpPage />,
                 path: paths.otp,
             },
+            { path: paths.error, element: <ErrorPage status={404} /> },
         ],
     },
     {
@@ -110,6 +115,7 @@ const router = createBrowserRouter([
                 <AdminLayout />
             </AuthProvider>
         ),
+        errorElement: <ErrorPage status={500} />,
         children: [
             {
                 index: true,
@@ -135,6 +141,7 @@ const router = createBrowserRouter([
                 path: paths.adminBookings,
                 element: <Bookingsx />,
             },
+            { path: paths.error, element: <ErrorPage status={404} /> },
         ],
     },
 ]);

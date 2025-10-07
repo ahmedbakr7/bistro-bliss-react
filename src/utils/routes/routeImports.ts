@@ -20,6 +20,7 @@ import Orders from "../../components/Admin/Orders";
 import Contacts from "../../components/Admin/Contacts";
 import Bookingsx from "../../components/Admin/Bookings";
 import CartPage from "../../pages/cart/CartPage";
+import ErrorPage from "../../pages/ErrorPage";
 
 // Export all components for use in routes.tsx
 export {
@@ -44,4 +45,5 @@ export {
     Contacts,
     Bookingsx,
     CartPage,
+    ErrorPage,
 };

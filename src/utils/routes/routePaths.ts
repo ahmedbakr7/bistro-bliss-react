@@ -22,7 +22,8 @@ export type AppRoutePath =
     | "/admin/products"
     | "/admin/orders"
     | "/admin/contacts"
-    | "/admin/bookings";
+    | "/admin/bookings"
+    | "*"; // error / catch-all
 
 // Path constants for use throughout the application
 export const paths = {
@@ -45,4 +46,5 @@ export const paths = {
     adminOrders: "/admin/orders",
     adminContacts: "/admin/contacts",
     adminBookings: "/admin/bookings",
+    error: "*",
 };
