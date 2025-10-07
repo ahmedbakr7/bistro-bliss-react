@@ -8,6 +8,7 @@ import type { FormikHelpers } from "formik";
 import FileUploader from "../FileUploader";
 import { Link, useNavigate } from "react-router-dom";
 import { paths } from "../../utils/routes/routePaths";
+import { toast } from "react-toastify";
 
 export interface RegisterDataType {
     name: string;
@@ -27,12 +28,15 @@ export default function AuthRegister(): ReactNode {
             return await submitRegister(values);
         },
         onSuccess: () => {
-            console.log("Registration successful!");
+            toast.success("Registration successful. Verify OTP");
             navigate(paths.otp);
         },
-        onError: (error) => {
-            // Handle registration error - UI will show error message
-            console.error("Registration failed:", error);
+        onError: (error: unknown) => {
+            const message =
+                (typeof error === "object" && error && "message" in error
+                    ? (error as { message?: string }).message
+                    : undefined) || "Registration failed";
+            toast.error(message);
         },
     });
 
@@ -69,7 +73,7 @@ export default function AuthRegister(): ReactNode {
                 onSubmit={handleSubmit}
                 validationSchema={registerSchema}
             >
-                {(formProps) => (
+                {() => (
                     <>
                         <div className="row g-3">
                             <div className="col-md-6">
@@ -194,42 +198,22 @@ export default function AuthRegister(): ReactNode {
                             className="theme-button w-100"
                             disabled={registerMutation.isPending}
                         >
-                            Create Account
+                            {registerMutation.isPending
+                                ? "Creating..."
+                                : "Create Account"}
                         </button>
 
                         <div className="text-center mt-3">
                             <span className="text-muted small me-2">
                                 Already have an account?
                             </span>
-                            <Link to={paths.login} className="small theme-text-primary">
+                            <Link
+                                to={paths.login}
+                                className="small theme-text-primary"
+                            >
                                 Sign In
                             </Link>
                         </div>
-
-                        {registerMutation.isError && (
-                            <div
-                                className="alert alert-danger mt-3"
-                                role="alert"
-                            >
-                                Failed to create account. Please try again.
-                                <br />
-                                <b>Error:</b>{" "}
-                                <span className="subtitle">
-                                    {registerMutation.error.message}
-                                </span>
-                            </div>
-                        )}
-
-                        {/* Display success message if mutation succeeded */}
-                        {registerMutation.isSuccess && (
-                            <div
-                                className="alert alert-success mt-3"
-                                role="alert"
-                            >
-                                Account created successfully! You can now sign
-                                in with your credentials.
-                            </div>
-                        )}
                     </>
                 )}
             </Form>

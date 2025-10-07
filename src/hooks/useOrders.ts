@@ -3,7 +3,6 @@ import useAuthContext from "../stores/AuthContext/useAuthContext";
 import {
     fetchOrderDetails,
     fetchUserOrders,
-    type Order,
     type OrderDetail,
     type OrdersPayload,
 } from "../services/ordersApi";
@@ -23,6 +22,7 @@ export function useUserOrders() {
         queryFn: () => fetchUserOrders(userId as string),
         enabled,
         staleTime: 1000 * 30,
+        retry: 1,
     });
 }
 

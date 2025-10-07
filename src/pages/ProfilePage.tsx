@@ -15,6 +15,7 @@ import type {
     DetailRow,
     OrderGroup as OrdersOrderGroup,
 } from "../components/Orders/types";
+import { toast } from "react-toastify";
 
 // Removed DUMMY_ORDERS and DUMMY_DETAILS in favor of API-driven data
 
@@ -218,6 +219,13 @@ export default function ProfilePage(): ReactNode {
                                         profileMutation.isPending ||
                                         formik.isSubmitting
                                     }
+                                    onClick={() => {
+                                        if (profileMutation.isError) {
+                                            toast.error("Save failed");
+                                        } else if (profileMutation.isSuccess) {
+                                            toast.success("Profile saved");
+                                        }
+                                    }}
                                 >
                                     {profileMutation.isPending ||
                                     formik.isSubmitting

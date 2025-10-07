@@ -8,6 +8,7 @@ import AuthContext, {
 import { useNavigate } from "react-router-dom";
 import api from "../../services/api";
 import type { AxiosRequestHeaders, InternalAxiosRequestConfig } from "axios";
+import { toast } from "react-toastify";
 
 interface CustomAxiosRequestConfig extends InternalAxiosRequestConfig {
     _retry?: boolean;
@@ -68,7 +69,7 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
                 {
                     email,
                     password,
-                },
+                }
                 // {}
             )
             .then(({ data }) => {
@@ -78,6 +79,13 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
                     cart: data.cart,
                     favourites: data.favourites,
                 });
+                toast.success("Signed in successfully");
+            })
+            .catch((err) => {
+                toast.error(
+                    (err?.response?.data?.message as string) || "Login failed"
+                );
+                throw err;
             });
     }
 
@@ -85,6 +93,7 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
         api.post("/auth/logout", {});
         setAuthState({ user: null, cart: [], favourites: [], token: null });
         navigate("/", { replace: true });
+        toast.info("Signed out");
     }
 
     // keep ref updated whenever state changes
@@ -138,6 +147,7 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
                             cart: data.cart,
                             favourites: data.favourites,
                         });
+                        toast.success("Session refreshed", { autoClose: 1500 });
 
                         return api(originalRequest);
                     } catch {
@@ -148,6 +158,7 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
                             token: null,
                         });
                         navigate("/", { replace: true });
+                        toast.warn("Session expired. Please sign in again.");
                     }
                 }
                 return Promise.reject(error);

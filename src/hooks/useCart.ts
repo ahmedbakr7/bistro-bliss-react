@@ -12,6 +12,7 @@ import {
 } from "../services/cartApi";
 import useAuthContext from "../stores/AuthContext/useAuthContext";
 import { useCallback, useEffect } from "react";
+import { toast } from "react-toastify";
 
 const CART_QUERY_KEY = ["cart"] as const;
 const cartKey = (userId: string | null) => [...CART_QUERY_KEY, userId] as const;
@@ -107,6 +108,10 @@ export function useCartActions(userId: string | null, enabled = true) {
                     ctx.previous
                 );
             }
+            toast.error("Failed to add to cart");
+        },
+        onSuccess: () => {
+            toast.success(`Added to cart`);
         },
         onSettled: () => {
             queryClient.invalidateQueries({ queryKey: cartKey(userId) });
@@ -156,7 +161,9 @@ export function useCartActions(userId: string | null, enabled = true) {
                     ctx.previous
                 );
             }
+            toast.error("Failed to update cart item");
         },
+        onSuccess: () => toast.info("Cart updated"),
         onSettled: () => {
             queryClient.invalidateQueries({ queryKey: cartKey(userId) });
         },
@@ -201,7 +208,9 @@ export function useCartActions(userId: string | null, enabled = true) {
                     ctx.previous
                 );
             }
+            toast.error("Failed to remove item");
         },
+        onSuccess: () => toast.success("Removed from cart"),
         onSettled: () => {
             queryClient.invalidateQueries({ queryKey: cartKey(userId) });
         },
@@ -212,6 +221,8 @@ export function useCartActions(userId: string | null, enabled = true) {
             if (!enabled || !userId) throw new Error("No user");
             await clearRemoteCart(userId as string);
         },
+        onSuccess: () => toast.success("Cart cleared"),
+        onError: () => toast.error("Failed to clear cart"),
         onSettled: () => {
             queryClient.invalidateQueries({ queryKey: cartKey(userId) });
         },
@@ -229,6 +240,8 @@ export function useCartActions(userId: string | null, enabled = true) {
                 (payload ?? {}) as CheckoutPayload
             );
         },
+        onSuccess: () => toast.success("Checkout successful"),
+        onError: () => toast.error("Checkout failed"),
         onSettled: () => {
             queryClient.invalidateQueries({ queryKey: cartKey(userId) });
         },

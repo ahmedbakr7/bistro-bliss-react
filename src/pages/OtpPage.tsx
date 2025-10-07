@@ -1,14 +1,13 @@
 import { useState, useEffect, type ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
-import { Formik, Form, type FormikHelpers } from "formik";
 import { paths } from "../utils/routes/routePaths";
-import Otp from "../components/Otp/Otp";
-import { otpSchema, type OtpFormData } from "../schemas/auth/otpSchema";
-import { verifyOtp, resendOtp } from "../services/otpApi";
+import Otp from "../components/otp/Otp";
+import { verifyOtp } from "../services/otpApi";
+import { toast } from "react-toastify";
 
 export default function OtpPage(): ReactNode {
-    const [resendCount, setResendCount] = useState(0);
+    const [resendCount] = useState(0);
     const [timeLeft, setTimeLeft] = useState(60);
     const [canResend, setCanResend] = useState(false);
     const [otpValue, setOtpValue] = useState("");
@@ -29,12 +28,14 @@ export default function OtpPage(): ReactNode {
     const verifyMutation = useMutation({
         mutationFn: async (otp: string) => verifyOtp(otp),
         onSuccess: () => {
+            toast.success("OTP verified. Redirecting to login...");
             setTimeout(() => {
                 navigate(paths.login, { replace: true });
-            }, 3000);
+            }, 1500);
         },
         onError: (error) => {
             console.error("OTP verification failed:", error);
+            toast.error("Invalid or expired OTP");
         },
     });
 
@@ -46,12 +47,6 @@ export default function OtpPage(): ReactNode {
             // Error handled by mutation
         }
     };
-
-    // const handleResend = () => {
-    //     if (canResend && !resendMutation.isPending) {
-    //         resendMutation.mutate();
-    //     }
-    // };
 
     return (
         <div
@@ -67,7 +62,7 @@ export default function OtpPage(): ReactNode {
             <div className="d-flex flex-column gap-3">
                 <div>
                     <Otp
-                        otpInputStyle={{width:"50px",textAlign:"center"}}
+                        otpInputStyle={{ width: "50px", textAlign: "center" }}
                         length={6}
                         shouldAutoFocus
                         shouldAutoSubmit={false}

@@ -23,6 +23,7 @@ Data fetching, caching, optimistic UI and server state management are handled wi
 - Forms & Validation: Formik + Yup (login/registration/bookings forms)
 - UI / Styling: Custom CSS, Bootstrap utility classes, bespoke component styles
 - Icons: `react-icons`
+- Notifications: `react-toastify` (centralized toast feedback layer)
 
 ## High-Level Layering
 ```
@@ -172,6 +173,42 @@ File: `src/utils/routes/routes.tsx`
 - Implement optimistic checkout state & order creation feedback flow
 - Expand `useOtp` to manage lifecycle (countdown, resend throttle, error states)
 - Add analytics events (cart add/remove, favourite toggle, booking submit)
+
+## User Feedback & Toast Notifications
+Implemented lightweight global notification layer using `react-toastify`.
+
+Mount Point:
+- `App.tsx`: `<ToastContainer />` with colored theme, top-right position, 3s auto close.
+
+Current Coverage:
+- Auth (`AuthProvider`): login success/failure, logout, token refresh success, session expiry warning.
+- Cart (`useCart`): add, update, remove, clear, checkout (success & error states).
+- Favourites (`useFavourites`): add/remove success & failure.
+- Profile (`useProfile` + `ProfilePage`): profile update success/failure.
+- OTP (`OtpPage`): verification success (with redirect) & failure.
+- Orders (`useOrders`): (placeholder – basic query errors currently surface via UI; toast hooks ready for extension).
+
+Refactors:
+- Replaced inline success/error alert blocks in `AuthLogin` & `AuthRegister` with toasts for consistency and reduced DOM noise.
+
+Pattern:
+- Mutations: use `onSuccess` / `onError` callbacks to trigger concise, user-friendly messages.
+- Queries (future): wrap high-level failures in a shared utility (e.g., `notifyQueryError(key, error)`).
+- Keep messages short; avoid leaking raw server error objects—map or sanitize before display.
+
+Extending:
+1. Import `toast` from `react-toastify` inside the hook / component.
+2. Add feedback in `onSuccess` / `onError` or after optimistic rollback.
+3. Prefer centralized translation layer (planned) for repeated backend error codes.
+
+Accessibility:
+- `react-toastify` handles `aria-live` region by default; ensure messages are brief.
+
+Performance:
+- Toast bundle is small; single import. Avoid dynamic creation of multiple containers.
+
+Testing (future):
+- Abstract toast calls behind a tiny wrapper (e.g., `src/lib/toast.ts`) to mock in tests.
 
 ## File / Directory Summary
 - `src/services/`: Pure data access + transformation

@@ -8,6 +8,7 @@ import type { FormikHelpers } from "formik";
 import useAuthContext from "../../stores/AuthContext/useAuthContext";
 import { useNavigate } from "react-router-dom";
 import { paths } from "../../utils/routes/routePaths";
+import { toast } from "react-toastify";
 
 export interface LoginDataType {
     email: string;
@@ -23,10 +24,14 @@ export default function AuthLogin(): ReactNode {
             await login(loginData.email, loginData.password);
         },
         onSuccess: () => {
-            console.log("Login successful!");
+            toast.success("Login successful");
         },
-        onError: (error) => {
-            console.error("Login failed:", error);
+        onError: (error: unknown) => {
+            const message =
+                (typeof error === "object" && error && "message" in error
+                    ? (error as { message?: string }).message
+                    : undefined) || "Login failed";
+            toast.error(message);
         },
     });
 
@@ -50,7 +55,7 @@ export default function AuthLogin(): ReactNode {
                 onSubmit={handleSubmit}
                 onReset={resetLogin}
             >
-                {(formProps) => (
+                {() => (
                     <>
                         <div className="mb-3">
                             <label htmlFor="email" className="form-label">
@@ -85,30 +90,6 @@ export default function AuthLogin(): ReactNode {
                                 ? "Logging in..."
                                 : "Login"}
                         </button>
-                        {loginMutation.isError && (
-                            <div
-                                className="alert alert-danger mt-3"
-                                role="alert"
-                            >
-                                Failed to sign in. Please check your credentials
-                                and try again.
-                                <br />
-                                <b>Error:</b>{" "}
-                                <span className="subtitle">
-                                    {(loginMutation.error as Error).message}
-                                </span>
-                            </div>
-                        )}
-
-                        {/* Display success message if mutation succeeded */}
-                        {loginMutation.isSuccess && (
-                            <div
-                                className="alert alert-success mt-3"
-                                role="alert"
-                            >
-                                Successfully signed in! Welcome back.
-                            </div>
-                        )}
                     </>
                 )}
             </Form>

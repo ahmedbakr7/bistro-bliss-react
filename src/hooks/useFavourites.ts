@@ -5,10 +5,10 @@ import {
     removeFavourite,
     type FavouriteId,
     type FavouriteProduct,
-    type FavouritesProductsPayload,
 } from "../services/favouritesApi";
 import { useCallback, useEffect } from "react";
 import useAuthContext from "../stores/AuthContext/useAuthContext";
+import { toast } from "react-toastify";
 
 const FAVS_QUERY_KEY = ["favourites"] as const;
 
@@ -45,7 +45,9 @@ export function useFavouritesActions(userId: string | null, enabled = true) {
             if (context?.previous) {
                 queryClient.setQueryData(FAVS_QUERY_KEY, context.previous);
             }
+            toast.error("Failed to add favourite");
         },
+        onSuccess: () => toast.success("Added to favourites"),
         onSettled: () => {
             queryClient.invalidateQueries({ queryKey: FAVS_QUERY_KEY });
         },
@@ -71,7 +73,9 @@ export function useFavouritesActions(userId: string | null, enabled = true) {
             if (context?.previous) {
                 queryClient.setQueryData(FAVS_QUERY_KEY, context.previous);
             }
+            toast.error("Failed to remove favourite");
         },
+        onSuccess: () => toast.info("Removed from favourites"),
         onSettled: () => {
             queryClient.invalidateQueries({ queryKey: FAVS_QUERY_KEY });
         },
