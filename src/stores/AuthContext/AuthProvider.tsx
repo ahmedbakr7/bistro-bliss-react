@@ -79,7 +79,6 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
                     cart: data.cart,
                     favourites: data.favourites,
                 });
-                toast.success("Signed in successfully");
             })
             .catch((err) => {
                 toast.error(

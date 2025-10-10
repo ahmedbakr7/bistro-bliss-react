@@ -40,26 +40,33 @@ function normalize(raw: unknown, idx: number): Notification {
     };
 }
 
-// GET /users/:userId/notifications -> Notification[]
+// GET /users/:userId/notifications -> { data: Notification[], pagination: {...} } | Notification[] | { items: Notification[] }
 export async function fetchUserNotifications(
     userId: string
 ): Promise<Notification[]> {
-    const { data } = await api.get(`/users/${userId}/notifications`);
-    let arr: unknown = data;
-    if (!Array.isArray(arr) && arr && typeof arr === "object") {
-        const maybe = arr as { items?: unknown };
-        if (Array.isArray(maybe.items)) arr = maybe.items;
+    const resp = await api.get(`/users/${userId}/notifications`);
+    const payload: unknown = resp.data;
+
+    let list: unknown = [];
+
+    if (Array.isArray(payload)) {
+        list = payload;
+    } else if (payload && typeof payload === "object") {
+        const obj = payload as { data?: unknown; items?: unknown };
+        if (Array.isArray(obj.data)) list = obj.data;
+        else if (Array.isArray(obj.items)) list = obj.items;
     }
-    return (Array.isArray(arr) ? arr : []).map(normalize);
+
+    return (Array.isArray(list) ? list : []).map(normalize);
 }
 
-// PATCH /users/:userId/notifications/:id/read -> updated notification
+// POST /users/:userId/notifications/:id/read -> updated notification
 // Adjust endpoint if your backend differs.
 export async function markNotificationRead(
     userId: string,
     notificationId: string
 ): Promise<Notification> {
-    const { data } = await api.patch(
+    const { data } = await api.post(
         `/users/${userId}/notifications/${notificationId}/read`,
         {}
     );

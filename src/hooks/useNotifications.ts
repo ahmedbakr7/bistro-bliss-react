@@ -16,8 +16,7 @@ export function useNotificationsQuery(userId: string | null, enabled = true) {
         queryKey: key(userId),
         queryFn: () => fetchUserNotifications(userId as string),
         enabled: enabled && !!userId,
-        initialData: [] as Notification[],
-        staleTime: 1000 * 30,
+        staleTime: 1000 * 3,
     });
 }
 

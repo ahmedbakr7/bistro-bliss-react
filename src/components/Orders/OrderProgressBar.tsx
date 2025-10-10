@@ -35,11 +35,12 @@ const OrderProgressBar: React.FC<OrderProgressBarProps> = ({ order }) => {
     const etaAt = toMs(order.deliveredAt); // ETA target
     const receivedAt = toMs(order.receivedAt);
 
-    // Timeline end is ETA while in transit, else received if completed, else ETA if future, else accepted
+    // Timeline end is ETA while in transit, else received if completed, else ETA if future, else accepted/created
     const timelineEnd =
         receivedAt || etaAt || acceptedAt || createdAt || Date.now();
+    // Requirement: before acceptance, start at createdAt; once accepted, start at acceptedAt
     const timelineStart =
-        createdAt || acceptedAt || etaAt || receivedAt || Date.now();
+        acceptedAt || createdAt || etaAt || receivedAt || Date.now();
     const span =
         timelineEnd && timelineStart
             ? Math.max(1, timelineEnd - timelineStart)
@@ -59,18 +60,25 @@ const OrderProgressBar: React.FC<OrderProgressBarProps> = ({ order }) => {
 
     // Progress fill percent rules now depend on status:
     // - Before accepted: 0
-    // - PREPARING (accepted but not delivering): fill up to Accepted marker only
-    // - DELIVERING: animate between Accepted and ETA
+    // - PREPARING: animate from Accepted to ETA
+    // - DELIVERING: animate from Accepted to ETA
     // - RECEIVED: 100
     const { percent, inTransit } = useMemo(() => {
         if (!acceptedAt) return { percent: 0, inTransit: false };
         if (receivedAt) return { percent: 100, inTransit: false };
-        if (status === "DELIVERING" && etaAt) {
-            const prog = pct(Math.min(tick, etaAt));
+
+        const isActiveTransit =
+            (status === "PREPARING" || status === "DELIVERING") &&
+            !!etaAt &&
+            !!acceptedAt &&
+            !receivedAt;
+
+        if (isActiveTransit) {
+            const prog = pct(Math.min(tick, etaAt!));
             return { percent: prog, inTransit: true };
         }
         if (etaAt) {
-            // Accepted but still preparing: freeze at accepted position
+            // Accepted but not yet in an advancing phase
             return { percent: pct(acceptedAt), inTransit: false };
         }
         return { percent: 100, inTransit: false };
@@ -100,8 +108,8 @@ const OrderProgressBar: React.FC<OrderProgressBarProps> = ({ order }) => {
     }
     const markers: Marker[] = [];
 
-    // Placed always visible at start
-    if (createdAt) {
+    // Before acceptance: show Placed at the start
+    if (!acceptedAt && createdAt) {
         markers.push({
             key: "placed",
             label: "Placed",
@@ -111,16 +119,29 @@ const OrderProgressBar: React.FC<OrderProgressBarProps> = ({ order }) => {
         });
     }
 
-    // Accepted appears only when acceptedAt exists
+    // Once accepted: start is Accepted at left 0
     if (acceptedAt) {
-        // Position relative to timeline (created->ETA). If no eta yet, keep near start (e.g., 25%).
-        const left = etaAt ? pct(acceptedAt) : 25;
         markers.push({
             key: "accepted",
             label: "Accepted",
-            left,
+            left: 0,
             time: acceptedAt,
             state: "done",
+        });
+    }
+
+    // Show a moving marker during PREPARING
+    const showPreparing =
+        status === "PREPARING" && acceptedAt && etaAt && !receivedAt;
+    if (showPreparing) {
+        const currentTs = Math.min(Math.max(tick, acceptedAt!), etaAt!);
+        const currentLeft = pct(currentTs);
+        markers.push({
+            key: "preparing",
+            label: "Preparing",
+            left: currentLeft,
+            time: currentTs,
+            state: "current",
         });
     }
 

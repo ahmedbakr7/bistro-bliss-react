@@ -21,7 +21,7 @@ export function useUserOrders() {
         queryKey: [...ORDERS_QUERY_KEY, userId],
         queryFn: () => fetchUserOrders(userId as string),
         enabled,
-        staleTime: 1000 * 30,
+        staleTime: 1000,
         retry: 1,
     });
 }
