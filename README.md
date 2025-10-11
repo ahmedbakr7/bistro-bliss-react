@@ -1,5 +1,9 @@
 # Bistro Bliss Front-End Architecture
 
+Demo video (YouTube): https://www.youtube.com/watch?v=CUjnutBiQ3Y
+
+[![Watch the demo on YouTube](https://img.youtube.com/vi/CUjnutBiQ3Y/hqdefault.jpg)](https://www.youtube.com/watch?v=CUjnutBiQ3Y)
+
 ## Overview
 
 A TypeScript + React 19 single-page application bootstrapped with Vite. It implements a restaurant / food ordering & booking experience including:
