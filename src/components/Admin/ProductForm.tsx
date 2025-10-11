@@ -59,7 +59,7 @@ export default function ProductForm({
                 formData.append("image", values.imageFile);
 
                 if (product) {
-                    const { data } = await api.patch<Product>(
+                    const { data } = await api.post<Product>(
                         `/products/${product.id}`,
                         formData,
                         {
@@ -83,7 +83,7 @@ export default function ProductForm({
                     imageUrl: values.imageUrl.trim() || null,
                 };
                 if (product) {
-                    const { data } = await api.patch<Product>(
+                    const { data } = await api.post<Product>(
                         `/products/${product.id}`,
                         jsonPayload
                     );

@@ -24,17 +24,17 @@ export const productSchema = yup.object({
         .test("positive", "Must be >= 0", (v) =>
             v == null || v === "" ? true : Number(v) >= 0
         ),
-    imageUrl: yup
-        .string()
-        .trim()
-        .url("Must be a valid URL")
-        .nullable()
-        .optional()
-        .test("empty-to-null", (value, ctx) => {
-            if (value === "") {
-                // convert empty string to null for consistency
-                (ctx.parent as Record<string, unknown>).imageUrl = null;
-            }
-            return true;
-        }),
+    // imageUrl: yup
+    //     .string()
+    //     .trim()
+    //     .url("Must be a valid URL")
+    //     .nullable()
+    //     .optional()
+    //     .test("empty-to-null", (value, ctx) => {
+    //         if (value === "") {
+    //             // convert empty string to null for consistency
+    //             (ctx.parent as Record<string, unknown>).imageUrl = null;
+    //         }
+    //         return true;
+    //     }),
 });

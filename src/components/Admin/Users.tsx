@@ -54,6 +54,7 @@ export type UserQuery = {
     phoneNumber?: string;
     imageUrl?: string;
     name?: string;
+    search?: string;
     createdAfter?: string;
     createdBefore?: string;
 };

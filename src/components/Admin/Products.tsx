@@ -224,16 +224,14 @@ export default function Products(): ReactElement {
     return (
         <div className="d-flex flex-row w-100 h-100">
             {/* Filters Sidebar */}
-            <div style={{ width: 260 }} className="border-end bg-body-tertiary">
-                <QueryBuilder
-                    fields={fields}
-                    onSubmit={applyFilters}
-                    className="p-4"
-                    initialValues={queryRef.current}
-                    width={260}
-                    title="Product Filters"
-                />
-            </div>
+            <QueryBuilder
+                fields={fields}
+                onSubmit={applyFilters}
+                className="p-4"
+                initialValues={queryRef.current}
+                width={260}
+                title="Product Filters"
+            />
 
             {/* Main Content */}
             <div className="flex-grow-1 p-4 d-flex flex-column gap-3 overflow-auto">
